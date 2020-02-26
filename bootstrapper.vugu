@@ -1,0 +1,30 @@
+<form class="bootstraper" @submit='data.Bootstrap(event)'>
+   <div class="form-group">
+       <label for="node-count">Node Count</label>
+       <input type="text" @change="data.SetNodeCount(event)" class="form-control" id="node-count" placeholder="4"/>
+   </div>
+   <button type="submit" class="btn btn-primary">Bootstrap!</button>
+</form>
+
+<script type="application/x-go">
+func(bd *Bootstrapper) NewData(props vugu.Props) (interface{}, error) { 
+  return &BootstrapperData{
+    BootstrapPtr: props["bootstrapped-ptr"].(*bool),
+    NodeCount: 4,
+  }, nil
+}
+
+type BootstrapperData struct {
+  BootstrapPtr *bool
+  NodeCount int
+}
+
+func (bd *BootstrapperData) SetNodeCount(event *vugu.DOMEvent) {
+  fmt.Sscanf(event.JSEvent().Get("target").Get("value").String(), "%d", &bd.NodeCount)
+}
+
+func(bd *BootstrapperData) Bootstrap(event *vugu.DOMEvent) {
+  *bd.BootstrapPtr = true
+  fmt.Printf("Submitting bootstrap with value %d\n", bd.NodeCount)
+}
+</script>

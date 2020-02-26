@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="column">
+            <h1>MirBFT Demo</h1>
+        </div>
+    </div>
+    <div class="row">
+        <bootstrapper vg-if='!data.Bootstrapped' :bootstrapped-ptr="&data.Bootstrapped" />
+    </div>
+</div>
+
+<script type="application/x-go">
+type RootData struct {
+  Bootstrapped bool
+}
+</script>
