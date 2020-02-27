@@ -1,0 +1,3 @@
+<div class="col-12">
+        <node vg-for='_, node := range data.Nodes' :node="node"/>
+</div>

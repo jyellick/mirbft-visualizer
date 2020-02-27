@@ -6,31 +6,10 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
-func (bd *Bootstrapper) NewData(props vugu.Props) (interface{}, error) {
-	return &BootstrapperData{
-		BootstrapPtr: props["bootstrapped-ptr"].(*bool),
-		NodeCount:    4,
-	}, nil
-}
+var _ vugu.ComponentType = (*Bootstrap)(nil)
 
-type BootstrapperData struct {
-	BootstrapPtr *bool
-	NodeCount    int
-}
-
-func (bd *BootstrapperData) SetNodeCount(event *vugu.DOMEvent) {
-	fmt.Sscanf(event.JSEvent().Get("target").Get("value").String(), "%d", &bd.NodeCount)
-}
-
-func (bd *BootstrapperData) Bootstrap(event *vugu.DOMEvent) {
-	*bd.BootstrapPtr = true
-	fmt.Printf("Submitting bootstrap with value %d\n", bd.NodeCount)
-}
-
-var _ vugu.ComponentType = (*Bootstrapper)(nil)
-
-func (comp *Bootstrapper) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
-	data := dataI.(*BootstrapperData)
+func (comp *Bootstrap) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
+	data := dataI.(*BootstrapData)
 	_ = data
 	_ = fmt.Sprint
 	_ = reflect.Value{}
@@ -74,8 +53,11 @@ func (comp *Bootstrapper) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *
 			}
 			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", DataAtom: vugu.VGAtom(281349), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}, vugu.VGAttribute{Namespace: "", Key: "id", Val: "node-count"}, vugu.VGAttribute{Namespace: "", Key: "placeholder", Val: "4"}}}
+			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", DataAtom: vugu.VGAtom(281349), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}, vugu.VGAttribute{Namespace: "", Key: "id", Val: "node-count"}}}
 			parent.AppendChild(n)
+			n.Props = vugu.Props{
+				"value": data.NodeCount,
+			}
 			// @change = { data.SetNodeCount(event) }
 			{
 				var i_ interface{} = data
@@ -110,6 +92,6 @@ func (comp *Bootstrapper) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *
 	return
 }
 
-type Bootstrapper struct {}
+type Bootstrap struct {}
 
-func init() { vugu.RegisterComponentType("bootstrapper", &Bootstrapper{}) }
+func init() { vugu.RegisterComponentType("bootstrap", &Bootstrap{}) }

@@ -1,0 +1,9 @@
+<div>
+<thead>
+    <tr>
+        <th colSpan="2">Buckets x Sequence</th>
+        <th vg-for="i := data.LowWatermark; i <= data.HighWatermark; i++" vg-html="i">
+        </th>
+    </tr>
+</thead>
+</div>

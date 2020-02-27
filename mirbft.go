@@ -18,8 +18,24 @@ import (
 	"github.com/IBM/mirbft/sample"
 
 	"github.com/pkg/errors"
+	"github.com/vugu/vugu"
 	"go.uber.org/zap"
 )
+
+type MirNode struct {
+	Actions *mirbft.Actions
+	Node    *mirbft.Node
+	Status  *mirbft.Status
+}
+
+func (mn *MirNode) DataHash() uint64 {
+	return vugu.ComputeHash(fmt.Sprintf("%p", mn.Node))
+}
+
+func (mn *MirNode) Tick() {
+	mn.Node.Tick()
+	mn.Status, _ = mn.Node.Status(context.Background())
+}
 
 func ActionsLength(a *mirbft.Actions) int {
 	return len(a.Broadcast) +

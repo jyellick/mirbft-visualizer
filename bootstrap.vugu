@@ -1,0 +1,7 @@
+<form class="bootstraper" @submit='data.Bootstrap(event)'>
+   <div class="form-group">
+       <label for="node-count">Node Count</label>
+       <input type="text" @change="data.SetNodeCount(event)" class="form-control" id="node-count" :value='data.NodeCount'/>
+   </div>
+   <button type="submit" class="btn btn-primary">Bootstrap!</button>
+</form>

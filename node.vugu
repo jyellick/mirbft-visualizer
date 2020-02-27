@@ -1,0 +1,17 @@
+<div class="row border">
+    <div class="col-1">
+        <span vg-html='"Node", data.ID'> </span>
+    </div>
+    <div class="col-3">
+        <node-control :mir-node="data.MirNode" />
+    </div>
+    <div class="col-8">
+        <table bordered class="sm">
+            <sequence-headers :low-watermark="int(data.MirNode.Status.LowWatermark)" :high-watermark="int(data.MirNode.Status.HighWatermark)"><sequence-headers/>
+        </table>
+    </div>
+</div>
+
+<script @load="data.Monitor(event)" type="application/x-go">
+var _ = 3
+</script>

@@ -6,10 +6,6 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
-type RootData struct {
-	Bootstrapped bool
-}
-
 var _ vugu.ComponentType = (*Root)(nil)
 
 func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
@@ -42,7 +38,7 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 				parent.AppendChild(n)
 				{
 					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "MirBFT Demo", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "MirBFT Visualization", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 					parent.AppendChild(n)
 				}
 				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
@@ -59,11 +55,32 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 			parent := n
 			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
-			if !data.Bootstrapped {
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "bootstrapper", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			if !data.BootstrapData.Bootstrapped {
+				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "bootstrap", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 				parent.AppendChild(n)
 				n.Props = vugu.Props{
-					"bootstrapped-ptr": &data.Bootstrapped,
+					"data": data.BootstrapData,
+				}
+				{
+					parent := n
+					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					parent.AppendChild(n)
+				}
+			}
+		}
+		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+		parent.AppendChild(n)
+		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+		parent.AppendChild(n)
+		{
+			parent := n
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			parent.AppendChild(n)
+			if data.BootstrapData.Bootstrapped {
+				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "network", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+				parent.AppendChild(n)
+				n.Props = vugu.Props{
+					"bootstrap-data": data.BootstrapData,
 				}
 				{
 					parent := n
@@ -79,7 +96,5 @@ func (comp *Root) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 }
 
 type Root struct {}
-
-func (ct *Root) NewData(props vugu.Props) (interface{}, error) { return &RootData{}, nil }
 
 func init() { vugu.RegisterComponentType("root", &Root{}) }
