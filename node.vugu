@@ -1,8 +1,8 @@
-<div class="row border">
-    <div class="col-1">
-        <span vg-html='"Node", data.ID'> </span>
+<div class="row border rounded mb-2" style="border-width:3px">
+    <div class="col-1 my-auto">
+        <span class="text-center" vg-html='"Node", data.ID'> </span>
     </div>
-    <div class="col-3">
+    <div class="col-3 border-right border-left">
         <node-control :mir-node="data.MirNode" />
     </div>
     <div class="col-8">

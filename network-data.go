@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	// "io/ioutil"
 
@@ -15,19 +14,16 @@ import (
 
 type lockingWriterSync struct {
 	EventEnv vugu.EventEnv
-	Buffer   bytes.Buffer
 }
 
 func (lws *lockingWriterSync) Write(p []byte) (int, error) {
-	return lws.Buffer.Write(p)
+	lws.EventEnv.Lock()
+	fmt.Printf("MIRBFT LOGGER: %s\n", string(p))
+	lws.EventEnv.UnlockRender()
+	return len(p), nil
 }
 
-func (lws *lockingWriterSync) Sync() {
-	lws.EventEnv.Lock()
-	defer lws.EventEnv.UnlockRender()
-	fmt.Printf(lws.Buffer.String())
-	lws.Buffer.Reset()
-}
+func (lws *lockingWriterSync) Sync() {}
 
 func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 	for prop, value := range props {
@@ -52,6 +48,10 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 	//core := zapcore.NewCore(consoleEncoder, discarder, allPriority)
 
 	logger := zap.New(core)
+
+	go func() {
+		logger.Error("JKY JKY JKY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+	}()
 
 	replicas := make([]mirbft.Replica, bootstrapData.NodeCount)
 	for i := range replicas {

@@ -22,27 +22,73 @@ func (comp *NodeControl) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *v
 		parent := n
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", DataAtom: vugu.VGAtom(102662), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "submit"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
+		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "actions", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
-		// @click = { data.Tick(event) }
-		{
-			var i_ interface{} = data
-			idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-			var i2_ interface{} = data.Tick
-			i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
-			n.SetDOMEventHandler("click", vugu.DOMEventHandler{
-				ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-				Method:                reflect.ValueOf(data).MethodByName("Tick"),
-				Args:                  []interface{}{event},
-			})
-		}
-		if false {
-			// force compiler to check arguments for type safety
-			data.Tick(event)
+		n.Props = vugu.Props{
+			"pending": data.MirNode.Actions,
 		}
 		{
 			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Tick", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			parent.AppendChild(n)
+		}
+		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+		parent.AppendChild(n)
+		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn-group w-100"}, vugu.VGAttribute{Namespace: "", Key: "role", Val: "group"}}}
+		parent.AppendChild(n)
+		{
+			parent := n
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n     ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			parent.AppendChild(n)
+			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", DataAtom: vugu.VGAtom(102662), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "submit"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
+			parent.AppendChild(n)
+			// @click = { data.Process(event) }
+			{
+				var i_ interface{} = data
+				idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
+				var i2_ interface{} = data.Process
+				i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
+				n.SetDOMEventHandler("click", vugu.DOMEventHandler{
+					ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
+					Method:                reflect.ValueOf(data).MethodByName("Process"),
+					Args:                  []interface{}{event},
+				})
+			}
+			if false {
+				// force compiler to check arguments for type safety
+				data.Process(event)
+			}
+			{
+				parent := n
+				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Process", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+				parent.AppendChild(n)
+			}
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n     ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			parent.AppendChild(n)
+			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", DataAtom: vugu.VGAtom(102662), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "submit"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-secondary"}}}
+			parent.AppendChild(n)
+			// @click = { data.Tick(event) }
+			{
+				var i_ interface{} = data
+				idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
+				var i2_ interface{} = data.Tick
+				i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
+				n.SetDOMEventHandler("click", vugu.DOMEventHandler{
+					ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
+					Method:                reflect.ValueOf(data).MethodByName("Tick"),
+					Args:                  []interface{}{event},
+				})
+			}
+			if false {
+				// force compiler to check arguments for type safety
+				data.Tick(event)
+			}
+			{
+				parent := n
+				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Tick", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+				parent.AppendChild(n)
+			}
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}

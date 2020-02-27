@@ -1,3 +1,7 @@
 <form>
-   <button type="submit" class="btn btn-primary" @click="data.Tick(event)">Tick</button>
+   <actions :pending="data.MirNode.Actions"> </actions>
+  <div class="btn-group w-100" role="group">
+     <button type="submit" class="btn btn-primary" @click="data.Process(event)">Process</button>
+     <button type="submit" class="btn btn-secondary" @click="data.Tick(event)">Tick</button>
+  </div>
 </form>

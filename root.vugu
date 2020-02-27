@@ -1,13 +1,13 @@
 <div class="container-fluid">
-    <div class="row">
+    <div class="row m-2">
         <div class="column">
             <h1>MirBFT Visualization</h1>
         </div>
     </div>
-    <div class="row">
+    <div class="row m-2">
         <bootstrap vg-if='!data.BootstrapData.Bootstrapped' :data="data.BootstrapData" />
     </div>
-    <div class="row">
+    <div class="row m-2">
         <network vg-if='data.BootstrapData.Bootstrapped' :bootstrap-data="data.BootstrapData" />
     </div>
 </div>

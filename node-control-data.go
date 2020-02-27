@@ -18,3 +18,8 @@ func (ncd *NodeControlData) Tick(event *vugu.DOMEvent) {
 	event.PreventDefault()
 	ncd.MirNode.Tick()
 }
+
+func (ncd *NodeControlData) Process(event *vugu.DOMEvent) {
+	event.PreventDefault()
+	ncd.MirNode.Process()
+}
