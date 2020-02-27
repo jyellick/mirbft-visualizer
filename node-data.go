@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/IBM/mirbft"
 	"github.com/vugu/vugu"
 )
 
@@ -16,5 +17,6 @@ func (n *Node) NewData(props vugu.Props) (interface{}, error) {
 
 type NodeData struct {
 	ID      int
+	Status  *mirbft.Status
 	MirNode *MirNode
 }

@@ -38,20 +38,13 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 		EventEnv: bootstrapData.EventEnv,
 	})
 
-	// discarder := zapcore.AddSync(ioutil.Discard)
-
 	allPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return true
 	})
 
 	core := zapcore.NewCore(consoleEncoder, lockingWriteSyncer, allPriority)
-	//core := zapcore.NewCore(consoleEncoder, discarder, allPriority)
 
 	logger := zap.New(core)
-
-	go func() {
-		logger.Error("JKY JKY JKY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-	}()
 
 	replicas := make([]mirbft.Replica, bootstrapData.NodeCount)
 	for i := range replicas {
@@ -95,6 +88,7 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 		nodeDatas[i] = &NodeData{
 			ID:      i,
 			MirNode: mirNode,
+			Status:  mirNode.Status,
 		}
 
 		go mirNode.Maintain(bootstrapData.EventEnv)

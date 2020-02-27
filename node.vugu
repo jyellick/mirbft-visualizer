@@ -3,11 +3,9 @@
         <span class="text-center" vg-html='"Node", data.ID'> </span>
     </div>
     <div class="col-3 border-right border-left">
-        <node-control :mir-node="data.MirNode" />
+        <node-control :mir-node="data.MirNode"></node-control>
     </div>
     <div class="col-8">
-        <table bordered class="sm">
-            <sequence-headers :low-watermark="int(data.MirNode.Status.LowWatermark)" :high-watermark="int(data.MirNode.Status.HighWatermark)"><sequence-headers/>
-        </table>
+        <sequence-headers :status="data.MirNode.Status"><sequence-headers/>
     </div>
 </div>

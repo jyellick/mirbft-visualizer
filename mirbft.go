@@ -102,8 +102,11 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 			mn.Actions.Clear()
 			statusC = closedC
 		case <-statusC:
-			mn.Status, _ = mn.Node.Status(context.Background())
-			logf("setting status:\n %s", mn.Status.Pretty())
+			status, _ := mn.Node.Status(context.Background())
+			eventEnv.Lock()
+			*mn.Status = *status
+			eventEnv.UnlockRender()
+			logf("set status:\n%s", mn.Status.Pretty())
 			statusC = nil
 		case <-mn.TickC:
 			logf("ticking")

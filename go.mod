@@ -6,6 +6,8 @@ replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-2020022521155
 
 replace github.com/vugu/vugu => github.com/jyellick/vugu v0.1.0-fork
 
+// replace github.com/vugu/vugu => /home/yellickj/oss/vugu
+
 require (
 	github.com/IBM/mirbft v0.0.0-00010101000000-000000000000
 	github.com/pkg/errors v0.9.1

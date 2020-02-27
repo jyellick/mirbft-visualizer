@@ -1,9 +1,19 @@
-<div>
-<thead>
-    <tr>
-        <th colSpan="2">Buckets x Sequence</th>
-        <th vg-for="i := data.LowWatermark; i <= data.HighWatermark; i++" vg-html="i">
-        </th>
-    </tr>
-</thead>
+<div class="m-0 p-0">
+  <table class="table table-bordered my-auto" style="border-style: hidden">
+    <thead>
+      <tr>
+        <th rowspan=2>Buckets</th>
+        <th :colspan="data.Status.HighWatermark-data.Status.LowWatermark"> Sequences </th>
+      </tr>
+      <tr>
+        <th vg-for="i := data.Status.LowWatermark; i < data.Status.HighWatermark; i++" vg-html="i"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr vg-for="i, bucketStatus := range data.Status.Buckets">
+        <td vg-html='fmt.Sprintf("Bucket %d", i)'></td>
+        <td vg-for="_, seqState := range bucketStatus.Sequences" vg-html='SeqStateToChar(seqState)'> </td>
+      </tr>
+    <tbody>
+  </table>
 </div>

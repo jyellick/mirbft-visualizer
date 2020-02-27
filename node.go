@@ -52,11 +52,8 @@ func (comp *Node) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 			n.Props = vugu.Props{
 				"mir-node": data.MirNode,
 			}
-			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-			}
+			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+			parent.AppendChild(n)
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
@@ -69,8 +66,7 @@ func (comp *Node) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "sequence-headers", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 			parent.AppendChild(n)
 			n.Props = vugu.Props{
-				"high-watermark": int(data.MirNode.Status.HighWatermark),
-				"low-watermark":  int(data.MirNode.Status.LowWatermark),
+				"status": data.MirNode.Status,
 			}
 			{
 				parent := n
@@ -78,19 +74,10 @@ func (comp *Node) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGN
 				parent.AppendChild(n)
 				{
 					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 					parent.AppendChild(n)
 				}
 			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "table", DataAtom: vugu.VGAtom(365829), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "bordered", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-			parent.AppendChild(n)
-			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
 		}
 		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 		parent.AppendChild(n)
