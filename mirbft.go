@@ -23,21 +23,100 @@ import (
 )
 
 type MirNode struct {
-	Actions *mirbft.Actions
-	Node    *mirbft.Node
-	Status  *mirbft.Status
+	Node      *mirbft.Node
+	Actions   *mirbft.Actions
+	Status    *mirbft.Status
+	Processor *sample.SerialProcessor
+	Log       *SampleLog
+	TickC     chan struct{}
+	ProcessC  chan struct{}
+}
+
+func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
+	nodeStatus, err := node.Status(context.Background())
+	if err != nil {
+		return nil, errors.WithMessagef(err, "could get node status for %d", node.Config.ID)
+	}
+
+	sampleLog := &SampleLog{
+		LastBytes: make([]byte, 8),
+	}
+
+	processor := &sample.SerialProcessor{
+		Node:      node,
+		Validator: sample.ValidatorFunc(func(*mirbft.Request) error { return nil }),
+		Hasher:    sha256.New,
+		Committer: &sample.SerialCommitter{
+			Log:               sampleLog,
+			OutstandingSeqNos: map[uint64]*mirbft.Commit{},
+		},
+		Link: link,
+	}
+
+	return &MirNode{
+		Node:      node,
+		Actions:   &mirbft.Actions{},
+		Status:    nodeStatus,
+		Processor: processor,
+		Log:       sampleLog,
+		TickC:     make(chan struct{}),
+		ProcessC:  make(chan struct{}),
+	}, nil
 }
 
 func (mn *MirNode) DataHash() uint64 {
-	return vugu.ComputeHash(fmt.Sprintf("%p", mn.Node))
+	return vugu.ComputeHash(fmt.Sprintf("%p-%d-%p", mn.Node, ActionsLength(mn.Actions), mn.Status))
 }
 
 func (mn *MirNode) Tick() {
-	mn.Node.Tick()
-	mn.Status, _ = mn.Node.Status(context.Background())
+	mn.TickC <- struct{}{}
+}
+
+func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
+	closedC := make(chan struct{})
+	close(closedC)
+
+	logf := func(format string, args ...interface{}) {
+		eventEnv.Lock()
+		fmt.Printf(format, args...)
+		eventEnv.UnlockRender()
+	}
+
+	statusC := closedC
+	processC := closedC
+	for {
+		logf("Looping for node %d\n", mn.Node.Config.ID)
+		if ActionsLength(mn.Actions) == 0 {
+			processC = nil
+		}
+
+		select {
+		case newActions := <-mn.Node.Ready():
+			if mn.Actions == nil {
+				mn.Actions = &newActions
+			} else {
+				mn.Actions.Append(&newActions)
+			}
+
+			processC = closedC
+		case <-processC:
+			mn.Actions.Clear()
+			statusC = closedC
+		case <-statusC:
+			mn.Status, _ = mn.Node.Status(context.Background())
+			statusC = nil
+		case <-mn.TickC:
+			mn.Node.Tick()
+			processC = closedC
+		}
+	}
 }
 
 func ActionsLength(a *mirbft.Actions) int {
+	if a == nil {
+		return 0
+	}
+
 	return len(a.Broadcast) +
 		len(a.Unicast) +
 		len(a.Preprocess) +

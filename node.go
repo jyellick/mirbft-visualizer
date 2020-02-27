@@ -6,8 +6,6 @@ import "fmt"
 import "reflect"
 import "github.com/vugu/vugu"
 
-var _ = 3
-
 var _ vugu.ComponentType = (*Node)(nil)
 
 func (comp *Node) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {

@@ -11,7 +11,3 @@
         </table>
     </div>
 </div>
-
-<script @load="data.Monitor(event)" type="application/x-go">
-var _ = 3
-</script>
