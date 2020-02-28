@@ -1,11 +1,12 @@
 <div class="row border rounded mb-2" style="border-width:3px">
-    <div class="col-1 my-auto">
-        <span class="text-center" vg-html='"Node", data.ID'> </span>
-    </div>
-    <div class="col-3 border-right border-left">
+    <div class="col-3">
+        <strong vg-html='"Node", data.ID'> </strong>
         <node-control :mir-node="data.MirNode"></node-control>
     </div>
-    <div class="col-8">
+    <div class="col-3 border-right border-left">
+        <actions :pending="data.MirNode.Actions"> </actions>
+    </div>
+    <div class="col-6">
         <sequence-headers :status="data.MirNode.Status"><sequence-headers/>
     </div>
 </div>

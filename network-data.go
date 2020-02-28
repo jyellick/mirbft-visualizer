@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	// "io/ioutil"
 
 	"github.com/IBM/mirbft"
 	"github.com/IBM/mirbft/sample"

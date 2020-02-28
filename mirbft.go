@@ -10,6 +10,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"time"
 
 	"github.com/IBM/mirbft"
 	pb "github.com/IBM/mirbft/mirbftpb"
@@ -20,13 +21,17 @@ import (
 )
 
 type MirNode struct {
-	Node      *mirbft.Node
-	Actions   *mirbft.Actions
-	Status    *mirbft.Status
-	Processor *sample.SerialProcessor
-	Log       *SampleLog
-	TickC     chan struct{}
-	ProcessC  chan struct{}
+	Node              *mirbft.Node
+	Actions           *mirbft.Actions
+	Status            *mirbft.Status
+	Processor         *sample.SerialProcessor
+	Log               *SampleLog
+	AutoTickTicker    *time.Ticker
+	AutoTickC         <-chan time.Time
+	ManualTickC       chan struct{}
+	AutoProcessTicker *time.Ticker
+	AutoProcessC      <-chan time.Time
+	ManualProcessC    chan struct{}
 }
 
 func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
@@ -50,15 +55,18 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Link: link,
 	}
 
-	return &MirNode{
-		Node:      node,
-		Actions:   &mirbft.Actions{},
-		Status:    nodeStatus,
-		Processor: processor,
-		Log:       sampleLog,
-		TickC:     make(chan struct{}),
-		ProcessC:  make(chan struct{}),
-	}, nil
+	mn := &MirNode{
+		Node:           node,
+		Actions:        &mirbft.Actions{},
+		Status:         nodeStatus,
+		Processor:      processor,
+		Log:            sampleLog,
+		ManualTickC:    make(chan struct{}),
+		ManualProcessC: make(chan struct{}),
+	}
+
+	mn.ProcessEvery(0)
+	return mn, nil
 }
 
 func (mn *MirNode) DataHash() uint64 {
@@ -66,11 +74,46 @@ func (mn *MirNode) DataHash() uint64 {
 }
 
 func (mn *MirNode) Tick() {
-	mn.TickC <- struct{}{}
+	mn.ManualTickC <- struct{}{}
 }
 
 func (mn *MirNode) Process() {
-	mn.ProcessC <- struct{}{}
+	mn.ManualProcessC <- struct{}{}
+}
+
+func (mn *MirNode) DisableAutoTick() {
+	if mn.AutoTickTicker != nil {
+		mn.AutoTickTicker.Stop()
+	}
+	mn.AutoTickTicker = nil
+	mn.AutoTickC = nil
+}
+
+func (mn *MirNode) TickEvery(interval time.Duration) {
+	mn.DisableAutoTick()
+	mn.AutoTickTicker = time.NewTicker(interval)
+	mn.AutoTickC = mn.AutoTickTicker.C
+}
+
+func (mn *MirNode) DisableAutoProcess() {
+	if mn.AutoProcessTicker != nil {
+		mn.AutoProcessTicker.Stop()
+	}
+	mn.AutoProcessTicker = nil
+	mn.AutoProcessC = nil
+}
+
+func (mn *MirNode) ProcessEvery(interval time.Duration) {
+	mn.DisableAutoProcess()
+
+	if interval > 0 {
+		mn.AutoProcessTicker = time.NewTicker(interval)
+		mn.AutoProcessC = mn.AutoProcessTicker.C
+	} else {
+		closedC := make(chan time.Time)
+		close(closedC)
+		mn.AutoProcessC = closedC
+	}
 }
 
 func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
@@ -87,17 +130,22 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 	for {
 		logf("looping")
 
+		var autoProcessC <-chan time.Time
+
+		if ActionsLength(mn.Actions) > 0 {
+			autoProcessC = mn.AutoProcessC
+		}
+
 		select {
 		case newActions := <-mn.Node.Ready():
 			logf("read new actions")
-			if mn.Actions == nil {
-				mn.Actions = &newActions
-			} else {
-				mn.Actions.Append(&newActions)
-			}
-			statusC = closedC
-		case <-mn.ProcessC:
-			logf("processing")
+			mn.Actions.Append(&newActions)
+		case <-autoProcessC:
+			logf("automatic processing")
+			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+			mn.Actions.Clear()
+		case <-mn.ManualProcessC:
+			logf("manual processing")
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
 			mn.Actions.Clear()
 			statusC = closedC
@@ -108,11 +156,16 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 			eventEnv.UnlockRender()
 			logf("set status:\n%s", mn.Status.Pretty())
 			statusC = nil
-		case <-mn.TickC:
-			logf("ticking")
+			continue
+		case <-mn.AutoTickC:
+			logf("auto ticking")
 			mn.Node.Tick()
-			statusC = closedC
+		case <-mn.ManualTickC:
+			logf("manual ticking")
+			mn.Node.Tick()
 		}
+
+		statusC = closedC
 	}
 }
 

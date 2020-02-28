@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/vugu/vugu"
 )
 
@@ -22,4 +24,24 @@ func (ncd *NodeControlData) Tick(event *vugu.DOMEvent) {
 func (ncd *NodeControlData) Process(event *vugu.DOMEvent) {
 	event.PreventDefault()
 	ncd.MirNode.Process()
+}
+
+func (ncd *NodeControlData) SwitchProcessing(event *vugu.DOMEvent) {
+	interval := event.JSEvent().Get("target").Get("value").String()
+	if interval == "manual" {
+		ncd.MirNode.DisableAutoProcess()
+	} else {
+		interval, _ := time.ParseDuration(interval)
+		ncd.MirNode.ProcessEvery(interval)
+	}
+}
+
+func (ncd *NodeControlData) SwitchTicking(event *vugu.DOMEvent) {
+	interval := event.JSEvent().Get("target").Get("value").String()
+	if interval == "manual" {
+		ncd.MirNode.DisableAutoTick()
+	} else {
+		interval, _ := time.ParseDuration(interval)
+		ncd.MirNode.TickEvery(interval)
+	}
 }
