@@ -123,15 +123,12 @@ func (mn *MirNode) Sync() {
 }
 
 func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
-	closedC := make(chan struct{})
-	close(closedC)
-
 	localActions := &mirbft.Actions{}
 
 	for {
 		var autoProcessC <-chan time.Time
 
-		if ActionsLength(mn.Actions) > 0 {
+		if ActionsLength(localActions) > 0 {
 			autoProcessC = mn.AutoProcessC
 		}
 
@@ -149,9 +146,10 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 		case <-mn.ManualTickC:
 			mn.Node.Tick()
 		case <-mn.SyncC:
-			// syncC should only read whil the render lock is held
+			// syncC should only read while the render lock is held
 			status, _ := mn.Node.Status(context.Background())
-			fmt.Printf("set status:\n%s", mn.Status.Pretty())
+			_ = fmt.Printf
+			// fmt.Printf("set status:\n%s", mn.Status.Pretty())
 			*mn.Status = *status
 			*mn.Actions = *localActions
 		}
