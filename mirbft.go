@@ -55,18 +55,19 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Link: link,
 	}
 
-	mn := &MirNode{
+	closedC := make(chan time.Time)
+	close(closedC)
+
+	return &MirNode{
 		Node:           node,
 		Actions:        &mirbft.Actions{},
 		Status:         nodeStatus,
 		Processor:      processor,
 		Log:            sampleLog,
+		AutoProcessC:   closedC,
 		ManualTickC:    make(chan struct{}),
 		ManualProcessC: make(chan struct{}),
-	}
-
-	mn.ProcessEvery(0)
-	return mn, nil
+	}, nil
 }
 
 func (mn *MirNode) DataHash() uint64 {
@@ -93,6 +94,7 @@ func (mn *MirNode) TickEvery(interval time.Duration) {
 	mn.DisableAutoTick()
 	mn.AutoTickTicker = time.NewTicker(interval)
 	mn.AutoTickC = mn.AutoTickTicker.C
+	mn.Tick()
 }
 
 func (mn *MirNode) DisableAutoProcess() {
@@ -114,6 +116,8 @@ func (mn *MirNode) ProcessEvery(interval time.Duration) {
 		close(closedC)
 		mn.AutoProcessC = closedC
 	}
+
+	mn.Process()
 }
 
 func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
@@ -126,9 +130,10 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 		eventEnv.UnlockRender()
 	}
 
-	statusC := closedC
+	var timerC <-chan time.Time
+
 	for {
-		logf("looping")
+		logf("looping autotick channel is %v", mn.AutoTickC == nil)
 
 		var autoProcessC <-chan time.Time
 
@@ -148,24 +153,27 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 			logf("manual processing")
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
 			mn.Actions.Clear()
-			statusC = closedC
-		case <-statusC:
-			status, _ := mn.Node.Status(context.Background())
-			eventEnv.Lock()
-			*mn.Status = *status
-			eventEnv.UnlockRender()
-			logf("set status:\n%s", mn.Status.Pretty())
-			statusC = nil
-			continue
 		case <-mn.AutoTickC:
 			logf("auto ticking")
 			mn.Node.Tick()
 		case <-mn.ManualTickC:
 			logf("manual ticking")
 			mn.Node.Tick()
+		case <-timerC:
+			// We try to avoid constantly polling for status if there's still work to be done
+			status, _ := mn.Node.Status(context.Background())
+			logf("set status:\n%s", mn.Status.Pretty())
+			eventEnv.Lock()
+			*mn.Status = *status
+			eventEnv.UnlockRender()
+			timerC = nil
+			continue
 		}
 
-		statusC = closedC
+		if timerC == nil {
+			timerC = time.After(10 * time.Millisecond)
+		}
+
 	}
 }
 
