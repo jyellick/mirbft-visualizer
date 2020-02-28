@@ -1,22 +1,16 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/IBM/mirbft"
-	"github.com/vugu/vugu"
 )
 
-func (n *Node) NewData(props vugu.Props) (interface{}, error) {
-	for prop, value := range props {
-		fmt.Printf("Node props has key %s value %v\n", prop, value)
-	}
-
-	return props["node"].(*NodeData), nil
+type Node struct {
+	MirNode *MirNode
+	ID      uint64         `vugu:"data"`
+	Status  *mirbft.Status `vugu:"data"`
 }
 
-type NodeData struct {
-	ID      int
-	Status  *mirbft.Status
-	MirNode *MirNode
+func (n *Node) BeforeBuild() {
+	n.Status = n.MirNode.Status
+	n.ID = n.MirNode.Node.Config.ID
 }

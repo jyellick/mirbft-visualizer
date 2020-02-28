@@ -2,15 +2,13 @@ package main
 
 import (
 	"github.com/IBM/mirbft"
-	"github.com/vugu/vugu"
 )
 
-func (a *Actions) NewData(props vugu.Props) (interface{}, error) {
-	return &ActionsData{
-		Actions: props["pending"].(*mirbft.Actions),
-	}, nil
+type Actions struct {
+	MirNode *MirNode
+	Actions *mirbft.Actions `vugu:"data"`
 }
 
-type ActionsData struct {
-	Actions *mirbft.Actions
+func (a *Actions) BeforeBuild() {
+	a.Actions = a.MirNode.Actions
 }

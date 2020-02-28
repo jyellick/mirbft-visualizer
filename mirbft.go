@@ -72,10 +72,6 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 	}, nil
 }
 
-func (mn *MirNode) DataHash() uint64 {
-	return vugu.ComputeHash(fmt.Sprintf("%p-%d-%p", mn.Node, ActionsLength(mn.Actions), mn.Status))
-}
-
 func (mn *MirNode) Tick() {
 	mn.ManualTickC <- struct{}{}
 }
@@ -155,7 +151,7 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 		case <-mn.SyncC:
 			// syncC should only read whil the render lock is held
 			status, _ := mn.Node.Status(context.Background())
-			// fmt.Printf("set status:\n%s", mn.Status.Pretty())
+			fmt.Printf("set status:\n%s", mn.Status.Pretty())
 			*mn.Status = *status
 			*mn.Actions = *localActions
 		}

@@ -6,42 +6,36 @@ import (
 	"github.com/vugu/vugu"
 )
 
-func (nc *NodeControl) NewData(props vugu.Props) (interface{}, error) {
-	return &NodeControlData{
-		MirNode: props["mir-node"].(*MirNode),
-	}, nil
-}
-
-type NodeControlData struct {
+type NodeControl struct {
 	MirNode *MirNode
 }
 
-func (ncd *NodeControlData) Tick(event *vugu.DOMEvent) {
+func (nc *NodeControl) Tick(event *vugu.DOMEvent) {
 	event.PreventDefault()
-	ncd.MirNode.Tick()
+	nc.MirNode.Tick()
 }
 
-func (ncd *NodeControlData) Process(event *vugu.DOMEvent) {
+func (nc *NodeControl) Process(event *vugu.DOMEvent) {
 	event.PreventDefault()
-	ncd.MirNode.Process()
+	nc.MirNode.Process()
 }
 
-func (ncd *NodeControlData) SwitchProcessing(event *vugu.DOMEvent) {
+func (nc *NodeControl) SwitchProcessing(event *vugu.DOMEvent) {
 	interval := event.JSEvent().Get("target").Get("value").String()
 	if interval == "manual" {
-		ncd.MirNode.DisableAutoProcess()
+		nc.MirNode.DisableAutoProcess()
 	} else {
 		interval, _ := time.ParseDuration(interval)
-		ncd.MirNode.ProcessEvery(interval)
+		nc.MirNode.ProcessEvery(interval)
 	}
 }
 
-func (ncd *NodeControlData) SwitchTicking(event *vugu.DOMEvent) {
+func (nc *NodeControl) SwitchTicking(event *vugu.DOMEvent) {
 	interval := event.JSEvent().Get("target").Get("value").String()
 	if interval == "manual" {
-		ncd.MirNode.DisableAutoTick()
+		nc.MirNode.DisableAutoTick()
 	} else {
 		interval, _ := time.ParseDuration(interval)
-		ncd.MirNode.TickEvery(interval)
+		nc.MirNode.TickEvery(interval)
 	}
 }

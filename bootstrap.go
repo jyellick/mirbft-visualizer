@@ -4,94 +4,71 @@ package main
 
 import "fmt"
 import "reflect"
+import "github.com/vugu/vjson"
 import "github.com/vugu/vugu"
+import js "github.com/vugu/vugu/js"
 
-var _ vugu.ComponentType = (*Bootstrap)(nil)
+func (c *Bootstrap) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 
-func (comp *Bootstrap) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
-	data := dataI.(*BootstrapData)
-	_ = data
-	_ = fmt.Sprint
-	_ = reflect.Value{}
-	event := vugu.DOMEventStub
-	_ = event
-	var n *vugu.VGNode
-	n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "form", DataAtom: vugu.VGAtom(159236), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "bootstraper"}}}
-	vdom = n
-	// @submit = { data.Bootstrap(event) }
+	vgout = &vugu.BuildOut{}
+
+	var vgiterkey interface{}
+	_ = vgiterkey
+	var vgn *vugu.VGNode
+	vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "form", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "bootstraper"}}}
+	vgout.Out = append(vgout.Out, vgn)	// root for output
+	vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+		EventType:	"submit",
+		Func:		func(event *vugu.DOMEvent) { c.Submit(event) },
+		// TODO: implement capture, etc. mostly need to decide syntax
+	})
 	{
-		var i_ interface{} = data
-		idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-		var i2_ interface{} = data.Bootstrap
-		i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
-		n.SetDOMEventHandler("submit", vugu.DOMEventHandler{
-			ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-			Method:                reflect.ValueOf(data).MethodByName("Bootstrap"),
-			Args:                  []interface{}{event},
-		})
-	}
-	if false {
-		// force compiler to check arguments for type safety
-		data.Bootstrap(event)
-	}
-	{
-		parent := n
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
-		parent.AppendChild(n)
+		vgparent := vgn
+		_ = vgparent
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
+		vgparent.AppendChild(vgn)
 		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", DataAtom: vugu.VGAtom(22789), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
-			parent.AppendChild(n)
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
+			vgparent.AppendChild(vgn)
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Node Count", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
+				vghtml := fmt.Sprint("Node Count")
+				vgn.InnerHTML = &vghtml
 			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", DataAtom: vugu.VGAtom(281349), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}, vugu.VGAttribute{Namespace: "", Key: "id", Val: "node-count"}}}
-			parent.AppendChild(n)
-			n.Props = vugu.Props{
-				"value": data.NodeCount,
-			}
-			// @change = { data.SetNodeCount(event) }
-			{
-				var i_ interface{} = data
-				idat_ := reflect.ValueOf(&i_).Elem().InterfaceData()
-				var i2_ interface{} = data.SetNodeCount
-				i2dat_ := reflect.ValueOf(&i2_).Elem().InterfaceData()
-				n.SetDOMEventHandler("change", vugu.DOMEventHandler{
-					ReceiverAndMethodHash: uint64(idat_[0]) ^ uint64(idat_[1]) ^ uint64(i2dat_[0]) ^ uint64(i2dat_[1]),
-					Method:                reflect.ValueOf(data).MethodByName("SetNodeCount"),
-					Args:                  []interface{}{event},
-				})
-			}
-			if false {
-				// force compiler to check arguments for type safety
-				data.SetNodeCount(event)
-			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
+			vgparent.AppendChild(vgn)
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.NodeCount)})
+			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+				EventType:	"change",
+				Func:		func(event *vugu.DOMEvent) { c.SetNodeCount(event) },
+				// TODO: implement capture, etc. mostly need to decide syntax
+			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+			vgparent.AppendChild(vgn)
 		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", DataAtom: vugu.VGAtom(102662), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "submit"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
-		parent.AppendChild(n)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "submit"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
+		vgparent.AppendChild(vgn)
 		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Bootstrap!", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
+			vghtml := fmt.Sprint("Bootstrap!")
+			vgn.InnerHTML = &vghtml
 		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n"}
+		vgparent.AppendChild(vgn)
 	}
-	return
+	return vgout
 }
 
-type Bootstrap struct {}
-
-func init() { vugu.RegisterComponentType("bootstrap", &Bootstrap{}) }
+// 'fix' unused imports
+var _ fmt.Stringer
+var _ reflect.Type
+var _ vjson.RawMessage
+var _ js.Value

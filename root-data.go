@@ -1,17 +1,18 @@
 package main
 
 import (
-	"github.com/vugu/vugu"
+	"fmt"
+
+	_ "github.com/vugu/vugu"
 )
 
-func (r *Root) NewData(props vugu.Props) (interface{}, error) {
-	return &RootData{
-		BootstrapData: &BootstrapData{
-			NodeCount: 4,
-		},
-	}, nil
+type Root struct {
+	Bootstrapped        bool `vugu:"data"`
+	BootstrapParameters *BootstrapParameters
 }
 
-type RootData struct {
-	BootstrapData *BootstrapData
+func (r *Root) Bootstrap(parameters *BootstrapParameters) {
+	fmt.Println("Bootstrapped", parameters.NodeCount)
+	r.Bootstrapped = true
+	r.BootstrapParameters = parameters
 }

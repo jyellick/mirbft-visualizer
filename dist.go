@@ -55,16 +55,6 @@ func main() {
 	distutil.Must(err)
 	defer outf.Close()
 
-	simplehttp.DefaultStaticData["Title"] = "MirBFT Visualizer"
-
-	simplehttp.DefaultStaticData["CSSFiles"] = []string{
-		"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
-	}
-
-	simplehttp.DefaultStaticData["MetaTags"] = map[string]string{
-		"viewport": "width=device-width, initial-scale=1, shrink-to-fit=no",
-	}
-
 	template.Must(template.New("_page_").Parse(simplehttp.DefaultPageTemplateSource)).Execute(outf, map[string]interface{}{"Request": req})
 
 	// BUILD GO SERVER:

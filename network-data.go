@@ -17,27 +17,19 @@ type lockingWriterSync struct {
 }
 
 func (lws *lockingWriterSync) Write(p []byte) (int, error) {
-	/*
-		lws.EventEnv.Lock()
-		fmt.Printf("MIRBFT LOGGER: %s\n", string(p))
-		lws.EventEnv.UnlockRender()
-	*/
+	lws.EventEnv.Lock()
+	fmt.Printf("MirBFT Logger: %s\n", string(p))
+	lws.EventEnv.UnlockOnly()
 	return len(p), nil
 }
 
 func (lws *lockingWriterSync) Sync() {}
 
-func (n *Network) NewData(props vugu.Props) (interface{}, error) {
-	for prop, value := range props {
-		fmt.Printf("props has key %s value %v\n", prop, value)
-	}
-
-	bootstrapData := props["bootstrap-data"].(*BootstrapData)
-
+func wasmZap(eventEnv vugu.EventEnv) *zap.Logger {
 	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 
 	lockingWriteSyncer := zapcore.AddSync(&lockingWriterSync{
-		EventEnv: bootstrapData.EventEnv,
+		EventEnv: eventEnv,
 	})
 
 	allPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
@@ -46,14 +38,27 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 
 	core := zapcore.NewCore(consoleEncoder, lockingWriteSyncer, allPriority)
 
-	logger := zap.New(core)
+	return zap.New(core)
+}
 
-	replicas := make([]mirbft.Replica, bootstrapData.NodeCount)
+type Network struct {
+	Parameters *BootstrapParameters
+	MirNodes   []*MirNode
+}
+
+func (n *Network) BeforeBuild() {
+	if n.MirNodes != nil {
+		return
+	}
+
+	logger := wasmZap(n.Parameters.EventEnv)
+
+	replicas := make([]mirbft.Replica, n.Parameters.NodeCount)
 	for i := range replicas {
 		replicas[i] = mirbft.Replica{ID: uint64(i)}
 	}
 
-	nodes := make([]*mirbft.Node, bootstrapData.NodeCount)
+	nodes := make([]*mirbft.Node, n.Parameters.NodeCount)
 
 	for i := range nodes {
 		fmt.Println("Creating node", i)
@@ -70,49 +75,40 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 
 		node, err := mirbft.StartNewNode(config, nil, replicas)
 		if err != nil {
-			return nil, errors.WithMessagef(err, "could not create node %d", i)
+			panic(errors.WithMessagef(err, "could not create node %d", i))
 		}
 
 		nodes[i] = node
 	}
 
-	nodeDatas := make([]*NodeData, bootstrapData.NodeCount)
+	mirNodes := make([]*MirNode, n.Parameters.NodeCount)
 
 	for i, node := range nodes {
 		fmt.Println("Creating mir node", i)
 		fakeLink := sample.NewFakeLink(node.Config.ID, nodes, nil)
+		_ = fakeLink
 
 		mirNode, err := NewMirNode(node, fakeLink)
 		if err != nil {
-			return nil, errors.WithMessagef(err, "could get create mir node for %d", i)
+			panic(errors.WithMessagef(err, "could get create mir node for %d", i))
 		}
 
-		nodeDatas[i] = &NodeData{
-			ID:      i,
-			MirNode: mirNode,
-			Status:  mirNode.Status,
-		}
+		go mirNode.Maintain(n.Parameters.EventEnv)
 
-		go mirNode.Maintain(bootstrapData.EventEnv)
+		mirNodes[i] = mirNode
 	}
 
 	go func() {
 		for {
 			time.Sleep(500 * time.Millisecond)
 
-			bootstrapData.EventEnv.Lock()
-			for _, node := range nodeDatas {
-				node.MirNode.Sync()
+			n.Parameters.EventEnv.Lock()
+			for _, node := range mirNodes {
+				node.Sync()
 			}
-			bootstrapData.EventEnv.UnlockRender()
+			n.Parameters.EventEnv.UnlockRender()
 		}
 	}()
 
-	return &NetworkData{
-		Nodes: nodeDatas,
-	}, nil
-}
-
-type NetworkData struct {
-	Nodes []*NodeData
+	n.MirNodes = mirNodes
 }

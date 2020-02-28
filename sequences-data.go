@@ -2,8 +2,16 @@ package main
 
 import (
 	"github.com/IBM/mirbft"
-	"github.com/vugu/vugu"
 )
+
+type Sequences struct {
+	MirNode *MirNode
+	Status  *mirbft.Status `vugu:"data"`
+}
+
+func (s *Sequences) BeforeBuild() {
+	s.Status = s.MirNode.Status
+}
 
 func SeqStateToChar(seqState mirbft.SequenceState) string {
 
@@ -25,14 +33,4 @@ func SeqStateToChar(seqState mirbft.SequenceState) string {
 	default:
 		return "?"
 	}
-}
-
-func (sh *SequenceHeaders) NewData(props vugu.Props) (interface{}, error) {
-	return &SequenceHeadersData{
-		Status: props["status"].(*mirbft.Status),
-	}, nil
-}
-
-type SequenceHeadersData struct {
-	Status *mirbft.Status
 }

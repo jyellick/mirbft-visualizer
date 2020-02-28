@@ -3,14 +3,14 @@
     <thead>
       <tr>
         <th rowspan=2>Buckets</th>
-        <th :colspan="data.Status.HighWatermark-data.Status.LowWatermark"> Sequences </th>
+        <th :colspan="c.Status.HighWatermark-c.Status.LowWatermark"> Sequences </th>
       </tr>
       <tr>
-        <th vg-for="i := data.Status.LowWatermark; i < data.Status.HighWatermark; i++" vg-html="i"></th>
+        <th vg-for="i := c.Status.LowWatermark; i < c.Status.HighWatermark; i++" vg-html="i"></th>
       </tr>
     </thead>
     <tbody>
-      <tr vg-for="i, bucketStatus := range data.Status.Buckets">
+      <tr vg-for="i, bucketStatus := range c.Status.Buckets">
         <td vg-html='fmt.Sprintf("Bucket %d", i)'></td>
         <td vg-for="_, seqState := range bucketStatus.Sequences" vg-html='SeqStateToChar(seqState)'> </td>
       </tr>

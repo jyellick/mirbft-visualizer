@@ -4,99 +4,120 @@ package main
 
 import "fmt"
 import "reflect"
+import "github.com/vugu/vjson"
 import "github.com/vugu/vugu"
+import js "github.com/vugu/vugu/js"
 
-var _ vugu.ComponentType = (*Node)(nil)
+func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 
-func (comp *Node) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
-	data := dataI.(*NodeData)
-	_ = data
-	_ = fmt.Sprint
-	_ = reflect.Value{}
-	event := vugu.DOMEventStub
-	_ = event
-	var n *vugu.VGNode
-	n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row border rounded mb-2"}, vugu.VGAttribute{Namespace: "", Key: "style", Val: "border-width:3px"}}}
-	vdom = n
+	vgout = &vugu.BuildOut{}
+
+	var vgiterkey interface{}
+	_ = vgiterkey
+	var vgn *vugu.VGNode
+	vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row border rounded mb-2"}, vugu.VGAttribute{Namespace: "", Key: "style", Val: "border-width:3px"}}}
+	vgout.Out = append(vgout.Out, vgn)	// root for output
 	{
-		parent := n
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-3"}}}
-		parent.AppendChild(n)
+		vgparent := vgn
+		_ = vgparent
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-3"}}}
+		vgparent.AppendChild(vgn)
 		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", DataAtom: vugu.VGAtom(449798), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n.InnerHTML = fmt.Sprint("Node", data.ID)
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
+			vgparent.AppendChild(vgn)
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "node-control", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n.Props = vugu.Props{
-				"mir-node": data.MirNode,
-			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-3 border-right border-left"}}}
-		parent.AppendChild(n)
-		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "actions", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n.Props = vugu.Props{
-				"pending": data.MirNode.Actions,
+				vghtml := fmt.Sprint("Node", c.ID)
+				vgn.InnerHTML = &vghtml
 			}
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
+				vgparent := vgn
+				_ = vgparent
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: " "}
+				vgparent.AppendChild(vgn)
 			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-6"}}}
-		parent.AppendChild(n)
-		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "sequence-headers", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n.Props = vugu.Props{
-				"status": data.MirNode.Status,
-			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+			vgparent.AppendChild(vgn)
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "sequence-headers", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+				vgcompKey := vugu.MakeCompKey(0x5E595103AE497DCD, vgiterkey)
+				// ask BuildEnv for prior instance of this specific component
+				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*NodeControl)
+				if vgcomp == nil {
+					// create new one if needed
+					vgcomp = new(NodeControl)
 				}
+				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+				vgcomp.MirNode = c.MirNode
+				vgout.Components = append(vgout.Components, vgcomp)
+				vgn = &vugu.VGNode{Component: vgcomp}
+				vgparent.AppendChild(vgn)
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-3 border-right border-left"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+			vgparent.AppendChild(vgn)
+			{
+				vgcompKey := vugu.MakeCompKey(0x5E595103D30D1691, vgiterkey)
+				// ask BuildEnv for prior instance of this specific component
+				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Actions)
+				if vgcomp == nil {
+					// create new one if needed
+					vgcomp = new(Actions)
+				}
+				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+				vgcomp.MirNode = c.MirNode
+				vgout.Components = append(vgout.Components, vgcomp)
+				vgn = &vugu.VGNode{Component: vgcomp}
+				vgparent.AppendChild(vgn)
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-6"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+			vgparent.AppendChild(vgn)
+			{
+				vgcompKey := vugu.MakeCompKey(0x5E595103F02FA2AA, vgiterkey)
+				// ask BuildEnv for prior instance of this specific component
+				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Sequences)
+				if vgcomp == nil {
+					// create new one if needed
+					vgcomp = new(Sequences)
+				}
+				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+				vgcomp.MirNode = c.MirNode
+				vgout.Components = append(vgout.Components, vgcomp)
+				vgn = &vugu.VGNode{Component: vgcomp}
+				vgparent.AppendChild(vgn)
 			}
 		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n"}
+		vgparent.AppendChild(vgn)
 	}
-	return
+	return vgout
 }
 
-type Node struct {}
-
-func init() { vugu.RegisterComponentType("node", &Node{}) }
+// 'fix' unused imports
+var _ fmt.Stringer
+var _ reflect.Type
+var _ vjson.RawMessage
+var _ js.Value

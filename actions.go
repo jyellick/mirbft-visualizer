@@ -4,208 +4,218 @@ package main
 
 import "fmt"
 import "reflect"
+import "github.com/vugu/vjson"
 import "github.com/vugu/vugu"
+import js "github.com/vugu/vugu/js"
 
-var _ vugu.ComponentType = (*Actions)(nil)
+func (c *Actions) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 
-func (comp *Actions) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
-	data := dataI.(*ActionsData)
-	_ = data
-	_ = fmt.Sprint
-	_ = reflect.Value{}
-	event := vugu.DOMEventStub
-	_ = event
-	var n *vugu.VGNode
-	n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-	vdom = n
+	vgout = &vugu.BuildOut{}
+
+	var vgiterkey interface{}
+	_ = vgiterkey
+	var vgn *vugu.VGNode
+	vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
+	vgout.Out = append(vgout.Out, vgn)	// root for output
 	{
-		parent := n
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "table", DataAtom: vugu.VGAtom(365829), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "table table-sm"}}}
-		parent.AppendChild(n)
+		vgparent := vgn
+		_ = vgparent
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "table", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "table table-sm"}}}
+		vgparent.AppendChild(vgn)
 		{
-			parent := n
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "thead", DataAtom: vugu.VGAtom(208901), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "thead", Attr: []vugu.VGAttribute(nil)}
+			vgparent.AppendChild(vgn)
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "th", DataAtom: vugu.VGAtom(87554), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Action", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
-					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "th", DataAtom: vugu.VGAtom(87554), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Outstanding", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
-					}
-				}
+				vghtml := fmt.Sprint("\x3Ctr\x3E\x3Cth\x3EAction\x3C/th\x3E\x3Cth\x3EOutstanding\x3C/th\x3E\x3C/tr\x3E")
+				vgn.InnerHTML = &vghtml
 			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tbody", DataAtom: vugu.VGAtom(9989), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tbody", Attr: []vugu.VGAttribute(nil)}
+			vgparent.AppendChild(vgn)
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgparent := vgn
+				_ = vgparent
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Broadcasts", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Broadcasts")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.Broadcast))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.Broadcast))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Unicasts", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Unicasts")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.Unicast))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.Unicast))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Preprocess", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Preprocess")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.Preprocess))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.Preprocess))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Process", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Process")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.Process))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.Process))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "QEntries", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("QEntries")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.QEntries))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.QEntries))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "PEntries", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("PEntries")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.PEntries))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.PEntries))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Commits", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Commits")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(len(data.Actions.Commits))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(len(c.Actions.Commits))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
-				n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", DataAtom: vugu.VGAtom(52226), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}, vugu.VGAttribute{Namespace: "", Key: "style", Val: "fontWeight:\"bold\""}}}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+				vgparent.AppendChild(vgn)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}, vugu.VGAttribute{Namespace: "", Key: "style", Val: "fontWeight:\"bold\""}}}
+				vgparent.AppendChild(vgn)
 				{
-					parent := n
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
 					{
-						parent := n
-						n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Total", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-						parent.AppendChild(n)
+						vghtml := fmt.Sprint("Total")
+						vgn.InnerHTML = &vghtml
 					}
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", DataAtom: vugu.VGAtom(37378), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-					parent.AppendChild(n)
-					n.InnerHTML = fmt.Sprint(ActionsLength(data.Actions))
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vghtml := fmt.Sprint(ActionsLength(c.Actions))
+						vgn.InnerHTML = &vghtml
+					}
 				}
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+				vgparent.AppendChild(vgn)
 			}
-			n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
+			vgparent.AppendChild(vgn)
 		}
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n"}
+		vgparent.AppendChild(vgn)
 	}
-	return
+	return vgout
 }
 
-type Actions struct {}
-
-func init() { vugu.RegisterComponentType("actions", &Actions{}) }
+// 'fix' unused imports
+var _ fmt.Stringer
+var _ reflect.Type
+var _ vjson.RawMessage
+var _ js.Value

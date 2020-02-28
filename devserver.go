@@ -16,12 +16,6 @@ func main() {
 	log.Printf("Starting HTTP Server at %q", l)
 	h := simplehttp.New(wd, true)
 
-	simplehttp.DefaultStaticData["Title"] = "MirBFT Visualizer"
-
-	simplehttp.DefaultStaticData["CSSFiles"] = []string{
-		"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
-	}
-
 	simplehttp.DefaultStaticData["MetaTags"] = map[string]string{
 		"viewport": "width=device-width, initial-scale=1, shrink-to-fit=no",
 	}

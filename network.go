@@ -4,40 +4,52 @@ package main
 
 import "fmt"
 import "reflect"
+import "github.com/vugu/vjson"
 import "github.com/vugu/vugu"
+import js "github.com/vugu/vugu/js"
 
-var _ vugu.ComponentType = (*Network)(nil)
+func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 
-func (comp *Network) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *vugu.VGNode, reterr error) {
-	data := dataI.(*NetworkData)
-	_ = data
-	_ = fmt.Sprint
-	_ = reflect.Value{}
-	event := vugu.DOMEventStub
-	_ = event
-	var n *vugu.VGNode
-	n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", DataAtom: vugu.VGAtom(92931), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-12"}}}
-	vdom = n
+	vgout = &vugu.BuildOut{}
+
+	var vgiterkey interface{}
+	_ = vgiterkey
+	var vgn *vugu.VGNode
+	vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-12"}}}
+	vgout.Out = append(vgout.Out, vgn)	// root for output
 	{
-		parent := n
-		n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-		parent.AppendChild(n)
-		for _, node := range data.Nodes {
-			n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "node", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-			parent.AppendChild(n)
-			n.Props = vugu.Props{
-				"node": node,
-			}
+		vgparent := vgn
+		_ = vgparent
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		for vgiterkeyt, mirNode := range c.MirNodes {
+			var vgiterkey interface{} = vgiterkeyt
+			_ = vgiterkey
+			mirNode := mirNode
+			_ = mirNode
 			{
-				parent := n
-				n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
-				parent.AppendChild(n)
+				vgcompKey := vugu.MakeCompKey(0x5E595103D113EAA3, vgiterkey)
+				// ask BuildEnv for prior instance of this specific component
+				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Node)
+				if vgcomp == nil {
+					// create new one if needed
+					vgcomp = new(Node)
+				}
+				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+				vgcomp.MirNode = mirNode
+				vgout.Components = append(vgout.Components, vgcomp)
+				vgn = &vugu.VGNode{Component: vgcomp}
+				vgparent.AppendChild(vgn)
 			}
 		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n"}
+		vgparent.AppendChild(vgn)
 	}
-	return
+	return vgout
 }
 
-type Network struct {}
-
-func init() { vugu.RegisterComponentType("network", &Network{}) }
+// 'fix' unused imports
+var _ fmt.Stringer
+var _ reflect.Type
+var _ vjson.RawMessage
+var _ js.Value
