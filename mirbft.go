@@ -32,6 +32,7 @@ type MirNode struct {
 	AutoProcessTicker *time.Ticker
 	AutoProcessC      <-chan time.Time
 	ManualProcessC    chan struct{}
+	SyncC             chan struct{}
 }
 
 func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
@@ -55,18 +56,19 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Link: link,
 	}
 
-	closedC := make(chan time.Time)
-	close(closedC)
+	autoProcessTicker := time.NewTicker(500 * time.Millisecond)
 
 	return &MirNode{
-		Node:           node,
-		Actions:        &mirbft.Actions{},
-		Status:         nodeStatus,
-		Processor:      processor,
-		Log:            sampleLog,
-		AutoProcessC:   closedC,
-		ManualTickC:    make(chan struct{}),
-		ManualProcessC: make(chan struct{}),
+		Node:              node,
+		Actions:           &mirbft.Actions{},
+		Status:            nodeStatus,
+		Processor:         processor,
+		Log:               sampleLog,
+		AutoProcessTicker: autoProcessTicker,
+		AutoProcessC:      autoProcessTicker.C,
+		ManualTickC:       make(chan struct{}),
+		ManualProcessC:    make(chan struct{}),
+		SyncC:             make(chan struct{}),
 	}, nil
 }
 
@@ -120,21 +122,17 @@ func (mn *MirNode) ProcessEvery(interval time.Duration) {
 	mn.Process()
 }
 
+func (mn *MirNode) Sync() {
+	mn.SyncC <- struct{}{}
+}
+
 func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 	closedC := make(chan struct{})
 	close(closedC)
 
-	logf := func(format string, args ...interface{}) {
-		eventEnv.Lock()
-		fmt.Printf(fmt.Sprintf("Node %d %s\n", mn.Node.Config.ID, format), args...)
-		eventEnv.UnlockRender()
-	}
-
-	var timerC <-chan time.Time
+	localActions := &mirbft.Actions{}
 
 	for {
-		logf("looping autotick channel is %v", mn.AutoTickC == nil)
-
 		var autoProcessC <-chan time.Time
 
 		if ActionsLength(mn.Actions) > 0 {
@@ -143,37 +141,24 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 
 		select {
 		case newActions := <-mn.Node.Ready():
-			logf("read new actions")
-			mn.Actions.Append(&newActions)
+			localActions.Append(&newActions)
 		case <-autoProcessC:
-			logf("automatic processing")
-			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-			mn.Actions.Clear()
+			mn.Node.AddResults(*mn.Processor.Process(localActions))
+			localActions.Clear()
 		case <-mn.ManualProcessC:
-			logf("manual processing")
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-			mn.Actions.Clear()
+			localActions.Clear()
 		case <-mn.AutoTickC:
-			logf("auto ticking")
 			mn.Node.Tick()
 		case <-mn.ManualTickC:
-			logf("manual ticking")
 			mn.Node.Tick()
-		case <-timerC:
-			// We try to avoid constantly polling for status if there's still work to be done
+		case <-mn.SyncC:
+			// syncC should only read whil the render lock is held
 			status, _ := mn.Node.Status(context.Background())
-			logf("set status:\n%s", mn.Status.Pretty())
-			eventEnv.Lock()
+			// fmt.Printf("set status:\n%s", mn.Status.Pretty())
 			*mn.Status = *status
-			eventEnv.UnlockRender()
-			timerC = nil
-			continue
+			*mn.Actions = *localActions
 		}
-
-		if timerC == nil {
-			timerC = time.After(10 * time.Millisecond)
-		}
-
 	}
 }
 

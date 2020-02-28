@@ -65,7 +65,11 @@ func (comp *NodeControl) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *v
 					parent := n
 					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 					parent.AppendChild(n)
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", DataAtom: vugu.VGAtom(451334), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "0"}}}
+					n = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <option selected value=\"0\">Automatic (immediate)</option> ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					parent.AppendChild(n)
+					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
+					parent.AppendChild(n)
+					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", DataAtom: vugu.VGAtom(451334), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "0"}}}
 					parent.AppendChild(n)
 					{
 						parent := n
@@ -74,7 +78,7 @@ func (comp *NodeControl) BuildVDOM(dataI interface{}) (vdom *vugu.VGNode, css *v
 					}
 					n = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    ", DataAtom: vugu.VGAtom(0), Namespace: "", Attr: []vugu.VGAttribute(nil)}
 					parent.AppendChild(n)
-					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", DataAtom: vugu.VGAtom(451334), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "500ms"}}}
+					n = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", DataAtom: vugu.VGAtom(451334), Namespace: "", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "500ms"}}}
 					parent.AppendChild(n)
 					{
 						parent := n

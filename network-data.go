@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/IBM/mirbft"
 	"github.com/IBM/mirbft/sample"
@@ -16,9 +17,11 @@ type lockingWriterSync struct {
 }
 
 func (lws *lockingWriterSync) Write(p []byte) (int, error) {
-	lws.EventEnv.Lock()
-	fmt.Printf("MIRBFT LOGGER: %s\n", string(p))
-	lws.EventEnv.UnlockRender()
+	/*
+		lws.EventEnv.Lock()
+		fmt.Printf("MIRBFT LOGGER: %s\n", string(p))
+		lws.EventEnv.UnlockRender()
+	*/
 	return len(p), nil
 }
 
@@ -92,6 +95,18 @@ func (n *Network) NewData(props vugu.Props) (interface{}, error) {
 
 		go mirNode.Maintain(bootstrapData.EventEnv)
 	}
+
+	go func() {
+		for {
+			time.Sleep(500 * time.Millisecond)
+
+			bootstrapData.EventEnv.Lock()
+			for _, node := range nodeDatas {
+				node.MirNode.Sync()
+			}
+			bootstrapData.EventEnv.UnlockRender()
+		}
+	}()
 
 	return &NetworkData{
 		Nodes: nodeDatas,

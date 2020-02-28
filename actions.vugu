@@ -1,0 +1,15 @@
+<div>
+  <table class="table table-sm">
+    <thead><tr><th>Action</th><th>Outstanding</th></tr></thead>
+    <tbody>
+      <tr class="sm"><td>Broadcasts</td><td vg-html='len(data.Actions.Broadcast)'></td></tr>
+      <tr class="sm"><td>Unicasts</td><td vg-html='len(data.Actions.Unicast)'></td></tr>
+      <tr class="sm"><td>Preprocess</td><td vg-html='len(data.Actions.Preprocess)'></td></tr>
+      <tr class="sm"><td>Process</td><td vg-html='len(data.Actions.Process)'></td></tr>
+      <tr class="sm"><td>QEntries</td><td vg-html='len(data.Actions.QEntries)'></td></tr>
+      <tr class="sm"><td>PEntries</td><td vg-html='len(data.Actions.PEntries)'></td></tr>
+      <tr class="sm"><td>Commits</td><td vg-html='len(data.Actions.Commits)'></td></tr>
+      <tr class="sm" style='fontWeight:"bold"'><td>Total</td><td vg-html='ActionsLength(data.Actions)'></td></tr>
+    </tbody>
+  </table>
+</div>

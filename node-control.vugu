@@ -3,8 +3,9 @@
   <div class="form-group">
   <label>Processing </label>
   <select class="form-control" selected="manual" @click='data.SwitchProcessing(event)'>
-    <option selected value="0">Automatic (immediate)</option>
-    <option value="500ms">Automatic (500ms delay)</option>
+    <!-- <option selected value="0">Automatic (immediate)</option> -->
+    <option value="0">Automatic (immediate)</option>
+    <option selected value="500ms">Automatic (500ms delay)</option>
     <option value="1000ms">Automatic (1000ms delay)</option>
     <option value="2000ms">Automatic (2000ms delay)</option>
     <option value="manual">Manual</option>
