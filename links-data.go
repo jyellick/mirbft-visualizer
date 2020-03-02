@@ -11,6 +11,58 @@ import (
 
 type Links struct {
 	LinksBuffer *LinksBuffer
+	FromFilter  map[uint64]struct{}
+	ToFilter    map[uint64]struct{}
+}
+
+func (l *Links) SwitchDelay(event *vugu.DOMEvent) {
+	delay := event.JSEvent().Get("target").Get("value").String()
+	if delay == "manual" {
+		panic("implement-me")
+	} else {
+		delay, err := time.ParseDuration(delay)
+		if err != nil {
+			panic(err)
+		}
+		l.LinksBuffer.Delay = delay
+	}
+
+}
+
+func (l *Links) SwitchFromFilter(event *vugu.DOMEvent) {
+	fromFilter := map[uint64]struct{}{}
+
+	options := event.JSEventCurrentTarget().Get("options")
+	for i := 0; i < options.Length(); i++ {
+		if options.Index(i).Get("selected").Truthy() {
+			fromFilter[uint64(i)] = struct{}{}
+		}
+	}
+
+	l.FromFilter = fromFilter
+}
+
+func (l *Links) SwitchToFilter(event *vugu.DOMEvent) {
+	toFilter := map[uint64]struct{}{}
+
+	options := event.JSEventCurrentTarget().Get("options")
+	for i := 0; i < options.Length(); i++ {
+		if options.Index(i).Get("selected").Truthy() {
+			toFilter[uint64(i)] = struct{}{}
+		}
+	}
+
+	l.ToFilter = toFilter
+}
+
+func (l *Links) SatisfiesFilter(msg *Msg) string {
+	_, from := l.FromFilter[msg.Source]
+	_, to := l.ToFilter[msg.Dest]
+	if from && to {
+		return ""
+	}
+
+	return "d-none"
 }
 
 type LinksBuffer struct {

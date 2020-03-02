@@ -1,18 +1,53 @@
-<div class="row border rounded mb-2" style="border-width:3px;display:block;position:relative;height:200px;overflow:auto;">
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th scope="col">Source</th>
-        <th scope="col">Destination</th>
-        <th scope="col">Msg</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr vg-for='_, msg := range c.LinksBuffer.Queue'>
-        <td vg-html='msg.Source'></td>
-        <td vg-html='msg.Dest'></td>
-        <td vg-html='PrettyMsg(msg.Payload)'></td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row border rounded mb-2" style="border-width:3px">
+  <div class="col">
+    <div class="row">
+      <h4>Networking Links</h4>
+    </div>
+    <div class="row" style="display:block;position:relative;height:200px;overflow:auto;">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Msg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr vg-for='_, msg := range c.LinksBuffer.Queue' :class='c.SatisfiesFilter(msg)'>
+            <td vg-html='msg.Source'></td>
+            <td vg-html='msg.Dest'></td>
+            <td vg-html='PrettyMsg(msg.Payload)'></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <form class="container-fluid">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Delay</label>
+              <select class="form-control" @click='c.SwitchDelay(event)'>
+                <!-- <option selected value="0">Automatic (immediate)</option> -->
+                <option value="500ms">Automatic (500ms delay)</option>
+                <option selected value="1000ms">Automatic (1000ms delay)</option>
+                <option value="2000ms">Automatic (2000ms delay)</option>
+                <option value="manual">Manual</option>
+              </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label>From</label>
+            <select multiple class="form-control" @click='c.SwitchFromFilter(event)'>
+              <option vg-for='i := range c.LinksBuffer.MirNodes' vg-html='i'></option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label>To</label>
+            <select multiple class="form-control" @click='c.SwitchToFilter(event)'>
+              <option vg-for='i := range c.LinksBuffer.MirNodes' vg-html='i'></option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
