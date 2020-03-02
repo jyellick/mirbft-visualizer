@@ -17,10 +17,10 @@
   <div class="form-group">
   <label>Ticking </label>
   <select class="form-control" @click='c.SwitchTicking(event)'>
-    <option value="1s">Automatic (1s delay)</option>
+    <option selected value="1s">Automatic (1s delay)</option>
     <option value="5s">Automatic (5s delay)</option>
     <option value="15s">Automatic (15s delay)</option>
-    <option selected value="manual">Manual</option>
+    <option value="manual">Manual</option>
   </select>
   <div class="btn-group w-100" role="group">
      <button type="submit" class="btn btn-primary" @click="c.Tick(event)">Tick</button>

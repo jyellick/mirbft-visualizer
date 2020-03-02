@@ -17,9 +17,12 @@ type lockingWriterSync struct {
 }
 
 func (lws *lockingWriterSync) Write(p []byte) (int, error) {
-	lws.EventEnv.Lock()
-	fmt.Printf("MirBFT Logger: %s\n", string(p))
-	lws.EventEnv.UnlockOnly()
+	// XXX if we try to acquire the lock here, but another
+	// go routine is waiting on the state machine, then
+	// we will deadlock.
+	// lws.EventEnv.Lock()
+	// fmt.Printf("MirBFT Logger: %s\n", string(p))
+	// lws.EventEnv.UnlockOnly()
 	return len(p), nil
 }
 
@@ -103,9 +106,6 @@ func (n *Network) BeforeBuild() {
 			time.Sleep(500 * time.Millisecond)
 
 			n.Parameters.EventEnv.Lock()
-			for _, node := range mirNodes {
-				node.Sync()
-			}
 			n.Parameters.EventEnv.UnlockRender()
 		}
 	}()

@@ -32,7 +32,6 @@ type MirNode struct {
 	AutoProcessTicker *time.Ticker
 	AutoProcessC      <-chan time.Time
 	ManualProcessC    chan struct{}
-	SyncC             chan struct{}
 }
 
 func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
@@ -57,6 +56,7 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 	}
 
 	autoProcessTicker := time.NewTicker(500 * time.Millisecond)
+	autoTickTicker := time.NewTicker(1000 * time.Millisecond)
 
 	return &MirNode{
 		Node:              node,
@@ -66,9 +66,10 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Log:               sampleLog,
 		AutoProcessTicker: autoProcessTicker,
 		AutoProcessC:      autoProcessTicker.C,
+		AutoTickTicker:    autoTickTicker,
+		AutoTickC:         autoTickTicker.C,
 		ManualTickC:       make(chan struct{}),
 		ManualProcessC:    make(chan struct{}),
-		SyncC:             make(chan struct{}),
 	}, nil
 }
 
@@ -118,41 +119,51 @@ func (mn *MirNode) ProcessEvery(interval time.Duration) {
 	mn.Process()
 }
 
-func (mn *MirNode) Sync() {
-	mn.SyncC <- struct{}{}
-}
-
 func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
-	localActions := &mirbft.Actions{}
+	// Only call under lock
+	log := func(format string, args ...interface{}) {
+		fmt.Printf(fmt.Sprintf("%v Node %d %s\n", time.Now(), mn.Node.Config.ID, format), args...)
+	}
 
 	for {
 		var autoProcessC <-chan time.Time
 
-		if ActionsLength(localActions) > 0 {
+		if ActionsLength(mn.Actions) > 0 {
+			eventEnv.Lock()
+			log("enabling autoprocess")
 			autoProcessC = mn.AutoProcessC
+			eventEnv.UnlockOnly()
 		}
 
 		select {
 		case newActions := <-mn.Node.Ready():
-			localActions.Append(&newActions)
+			eventEnv.Lock()
+			mn.Actions.Append(&newActions)
+			log("add actions")
+			eventEnv.UnlockOnly()
+			continue
 		case <-autoProcessC:
-			mn.Node.AddResults(*mn.Processor.Process(localActions))
-			localActions.Clear()
-		case <-mn.ManualProcessC:
+			eventEnv.Lock()
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-			localActions.Clear()
+			mn.Actions.Clear()
+			log("auto clear process")
+			eventEnv.UnlockOnly()
+		case <-mn.ManualProcessC:
+			eventEnv.Lock()
+			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+			mn.Actions.Clear()
+			log("manual clear process")
+			eventEnv.UnlockOnly()
 		case <-mn.AutoTickC:
 			mn.Node.Tick()
 		case <-mn.ManualTickC:
 			mn.Node.Tick()
-		case <-mn.SyncC:
-			// syncC should only read while the render lock is held
-			status, _ := mn.Node.Status(context.Background())
-			_ = fmt.Printf
-			// fmt.Printf("set status:\n%s", mn.Status.Pretty())
-			*mn.Status = *status
-			*mn.Actions = *localActions
 		}
+
+		status, _ := mn.Node.Status(context.Background())
+		eventEnv.Lock()
+		*mn.Status = *status
+		eventEnv.UnlockOnly()
 	}
 }
 
