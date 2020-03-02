@@ -68,7 +68,7 @@ func (c *NodeControl) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 					vgparent.AppendChild(vgn)
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "500ms"}}}
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "500ms"}}}
 					vgparent.AppendChild(vgn)
 					{
 						vghtml := fmt.Sprint("Automatic (500ms delay)")
@@ -76,7 +76,7 @@ func (c *NodeControl) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 					vgparent.AppendChild(vgn)
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "1000ms"}}}
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "1000ms"}}}
 					vgparent.AppendChild(vgn)
 					{
 						vghtml := fmt.Sprint("Automatic (1000ms delay)")
@@ -158,7 +158,7 @@ func (c *NodeControl) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					_ = vgparent
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 					vgparent.AppendChild(vgn)
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "1s"}}}
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "1s"}}}
 					vgparent.AppendChild(vgn)
 					{
 						vgparent := vgn
@@ -168,7 +168,7 @@ func (c *NodeControl) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 					vgparent.AppendChild(vgn)
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "value", Val: "5s"}}}
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "option", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "selected", Val: ""}, vugu.VGAttribute{Namespace: "", Key: "value", Val: "5s"}}}
 					vgparent.AppendChild(vgn)
 					{
 						vgparent := vgn

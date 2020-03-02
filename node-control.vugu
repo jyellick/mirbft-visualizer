@@ -5,8 +5,8 @@
   <select class="form-control" selected="manual" @click='c.SwitchProcessing(event)'>
     <!-- <option selected value="0">Automatic (immediate)</option> -->
     <option value="0">Automatic (immediate)</option>
-    <option selected value="500ms">Automatic (500ms delay)</option>
-    <option value="1000ms">Automatic (1000ms delay)</option>
+    <option value="500ms">Automatic (500ms delay)</option>
+    <option selected value="1000ms">Automatic (1000ms delay)</option>
     <option value="2000ms">Automatic (2000ms delay)</option>
     <option value="manual">Manual</option>
   </select>
@@ -17,8 +17,8 @@
   <div class="form-group">
   <label>Ticking </label>
   <select class="form-control" @click='c.SwitchTicking(event)'>
-    <option selected value="1s">Automatic (1s delay)</option>
-    <option value="5s">Automatic (5s delay)</option>
+    <option value="1s">Automatic (1s delay)</option>
+    <option selected value="5s">Automatic (5s delay)</option>
     <option value="15s">Automatic (15s delay)</option>
     <option value="manual">Manual</option>
   </select>

@@ -55,8 +55,8 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Link: link,
 	}
 
-	autoProcessTicker := time.NewTicker(500 * time.Millisecond)
-	autoTickTicker := time.NewTicker(1000 * time.Millisecond)
+	autoProcessTicker := time.NewTicker(1000 * time.Millisecond)
+	autoTickTicker := time.NewTicker(5000 * time.Millisecond)
 
 	return &MirNode{
 		Node:              node,
@@ -143,14 +143,14 @@ func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
 			eventEnv.UnlockOnly()
 			continue
 		case <-autoProcessC:
-			eventEnv.Lock()
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+			eventEnv.Lock()
 			mn.Actions.Clear()
 			log("auto clear process")
 			eventEnv.UnlockOnly()
 		case <-mn.ManualProcessC:
-			eventEnv.Lock()
 			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+			eventEnv.Lock()
 			mn.Actions.Clear()
 			log("manual clear process")
 			eventEnv.UnlockOnly()

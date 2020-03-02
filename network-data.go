@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/IBM/mirbft"
-	"github.com/IBM/mirbft/sample"
 	"github.com/pkg/errors"
 	"github.com/vugu/vugu"
 	"go.uber.org/zap"
@@ -45,8 +44,9 @@ func wasmZap(eventEnv vugu.EventEnv) *zap.Logger {
 }
 
 type Network struct {
-	Parameters *BootstrapParameters
-	MirNodes   []*MirNode
+	Parameters  *BootstrapParameters
+	MirNodes    []*MirNode
+	LinksBuffer *LinksBuffer
 }
 
 func (n *Network) BeforeBuild() {
@@ -86,12 +86,16 @@ func (n *Network) BeforeBuild() {
 
 	mirNodes := make([]*MirNode, n.Parameters.NodeCount)
 
+	linksBuffer := &LinksBuffer{
+		Enqueue:  make(chan *Msg),
+		MirNodes: mirNodes,
+		Delay:    1 * time.Second,
+	}
+
 	for i, node := range nodes {
 		fmt.Println("Creating mir node", i)
-		fakeLink := sample.NewFakeLink(node.Config.ID, nodes, nil)
-		_ = fakeLink
 
-		mirNode, err := NewMirNode(node, fakeLink)
+		mirNode, err := NewMirNode(node, linksBuffer.LinkForNode(uint64(i)))
 		if err != nil {
 			panic(errors.WithMessagef(err, "could get create mir node for %d", i))
 		}
@@ -100,6 +104,8 @@ func (n *Network) BeforeBuild() {
 
 		mirNodes[i] = mirNode
 	}
+
+	go linksBuffer.Maintain(n.Parameters.EventEnv)
 
 	go func() {
 		for {
@@ -111,4 +117,5 @@ func (n *Network) BeforeBuild() {
 	}()
 
 	n.MirNodes = mirNodes
+	n.LinksBuffer = linksBuffer
 }

@@ -1,3 +1,4 @@
 <div class="col-12">
-   <main:Node vg-for='_, mirNode := range c.MirNodes' :MirNode="mirNode"></main:Node>
+  <main:Links :LinksBuffer='c.LinksBuffer'></main:Links>
+  <main:Node vg-for='_, mirNode := range c.MirNodes' :MirNode="mirNode"></main:Node>
 </div>
