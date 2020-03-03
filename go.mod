@@ -7,7 +7,8 @@ replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-2020022804580
 // replace github.com/IBM/mirbft => /home/yellickj/oss/mirbft
 
 // replace github.com/vugu/vugu => github.com/jyellick/vugu v0.1.0-fork
-// replace github.com/vugu/vugu => /home/yellickj/oss/vugu
+replace github.com/vugu/vugu => /home/yellickj/oss/vugu
+
 require github.com/vugu/vugu v0.1.1-0.20191230174203-fe17e20eb6ce
 
 require (

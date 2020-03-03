@@ -55,6 +55,7 @@ github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289 h1:w3hfLuU5tKlcf+hhfmx6U
 github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289/go.mod h1:Y3pLGz8dZUSrB9SARXqFmtW8RNs4HIGAr0+JaWL31Vg=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb h1:svqBUd2ETVrsM31o/toxvK1WeVMan3vCgrpecE5vMlA=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb/go.mod h1:z7mAqSUjRDMQ09NIO18jG2llXMHLnUHlZ3/8MEMyBPA=
+github.com/vugu/vugu v0.1.0 h1:gJtz7jza90ZUKgLb1mu0Ql5x/wDV5pJxiqW7CPV+BJU=
 github.com/vugu/vugu v0.1.0/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/vugu/vugu v0.1.1-0.20191230174203-fe17e20eb6ce h1:ssFPqxftmkxpodUIOzjXmFv373/GjK5OisrCVLM7tZ0=
 github.com/vugu/vugu v0.1.1-0.20191230174203-fe17e20eb6ce/go.mod h1:ZKTep3ABw5XlGBkT+RIw00ds49bsWPvbTaZiLUe07Ys=
