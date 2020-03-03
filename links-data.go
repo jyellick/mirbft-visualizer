@@ -59,7 +59,7 @@ func (l *Links) SwitchToFilter(event *vugu.DOMEvent) {
 func (l *Links) FilterClass(msg *Msg) string {
 	_, from := l.FromFilter[msg.Source]
 	_, to := l.ToFilter[msg.Dest]
-	if from && to && !msg.Done {
+	if from && to {
 		return ""
 	}
 
@@ -78,7 +78,6 @@ type Msg struct {
 	Source  uint64  `vugu:"data"`
 	Dest    uint64  `vugu:"data"`
 	Payload *pb.Msg `vugu:"data"`
-	Done    bool    `vugu:"data"` // XXX hack around vugu bug
 }
 
 type NodeLink struct {
@@ -110,14 +109,6 @@ func (lb *LinksBuffer) Maintain(eventEnv vugu.EventEnv) {
 			eventEnv.Lock()
 			fmt.Println("enqueuing message")
 			inserted := false
-			for i, oldMsg := range lb.Queue {
-				if oldMsg.Done {
-					fmt.Println("reusing existing slot ", i)
-					lb.Queue[i] = msg
-					inserted = true
-					break
-				}
-			}
 			if !inserted {
 				fmt.Println("allocating new slot ", len(lb.Queue))
 				lb.Queue = append(lb.Queue, msg)
@@ -131,22 +122,16 @@ func (lb *LinksBuffer) Maintain(eventEnv vugu.EventEnv) {
 			eventEnv.Lock()
 			unsent := 0
 			for i, msg := range lb.Queue {
-				if msg.Done {
-					fmt.Println("skipping slot ", i)
-					continue
-				}
 				if time.Since(msg.Time) > lb.Delay {
 					fmt.Println("sending slot ", i)
 					lb.MirNodes[int(msg.Dest)].Node.Step(context.Background(), msg.Source, msg.Payload)
-					lb.Queue[i] = &Msg{Done: true}
 				} else {
-					lb.Queue[i] = &Msg{Done: true}
 					fmt.Println("moving collecting slot ", i)
 					lb.Queue[unsent] = msg
 					unsent++
 				}
 			}
-			// lb.Queue = lb.Queue[:unsent]
+			lb.Queue = lb.Queue[:unsent]
 			eventEnv.UnlockOnly()
 			timer.Reset(lb.Delay)
 		}
