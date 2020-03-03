@@ -1,4 +1,4 @@
 <div class="col-12">
-  <main:Links :LinksBuffer='c.LinksBuffer'></main:Links>
+  <main:Events :EventQueue='c.EventQueue'></main:Events>
   <main:Node vg-for='_, mirNode := range c.MirNodes' :MirNode="mirNode"></main:Node>
 </div>

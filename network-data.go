@@ -44,9 +44,9 @@ func wasmZap(eventEnv vugu.EventEnv) *zap.Logger {
 }
 
 type Network struct {
-	Parameters  *BootstrapParameters
-	MirNodes    []*MirNode
-	LinksBuffer *LinksBuffer
+	Parameters *BootstrapParameters
+	MirNodes   []*MirNode
+	EventQueue *EventQueue
 }
 
 func (n *Network) BeforeBuild() {
@@ -86,36 +86,24 @@ func (n *Network) BeforeBuild() {
 
 	mirNodes := make([]*MirNode, n.Parameters.NodeCount)
 
-	linksBuffer := &LinksBuffer{
-		Enqueue:  make(chan *Msg),
+	eventQueue := &EventQueue{
+		FakeTime: time.Unix(0, 0),
 		MirNodes: mirNodes,
-		Delay:    1 * time.Second,
 	}
 
 	for i, node := range nodes {
 		fmt.Println("Creating mir node", i)
 
-		mirNode, err := NewMirNode(node, linksBuffer.LinkForNode(uint64(i)))
+		mirNode, err := NewMirNode(node, eventQueue.LinkForNode(uint64(i), 100*time.Millisecond))
 		if err != nil {
 			panic(errors.WithMessagef(err, "could get create mir node for %d", i))
 		}
 
-		go mirNode.Maintain(n.Parameters.EventEnv)
-
 		mirNodes[i] = mirNode
+
+		eventQueue.AddTick(i, mirNode.TickInterval)
 	}
 
-	go linksBuffer.Maintain(n.Parameters.EventEnv)
-
-	go func() {
-		for {
-			time.Sleep(500 * time.Millisecond)
-
-			n.Parameters.EventEnv.Lock()
-			n.Parameters.EventEnv.UnlockRender()
-		}
-	}()
-
 	n.MirNodes = mirNodes
-	n.LinksBuffer = linksBuffer
+	n.EventQueue = eventQueue
 }

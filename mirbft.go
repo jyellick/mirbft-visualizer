@@ -17,21 +17,17 @@ import (
 	"github.com/IBM/mirbft/sample"
 
 	"github.com/pkg/errors"
-	"github.com/vugu/vugu"
 )
 
 type MirNode struct {
-	Node              *mirbft.Node
-	Actions           *mirbft.Actions
-	Status            *mirbft.Status
-	Processor         *sample.SerialProcessor
-	Log               *SampleLog
-	AutoTickTicker    *time.Ticker
-	AutoTickC         <-chan time.Time
-	ManualTickC       chan struct{}
-	AutoProcessTicker *time.Ticker
-	AutoProcessC      <-chan time.Time
-	ManualProcessC    chan struct{}
+	Node            *mirbft.Node
+	Actions         *mirbft.Actions
+	Status          *mirbft.Status
+	Processor       *sample.SerialProcessor
+	Log             *SampleLog
+	ProcessInterval time.Duration
+	TickInterval    time.Duration
+	Processing      bool
 }
 
 func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
@@ -55,116 +51,65 @@ func NewMirNode(node *mirbft.Node, link sample.Link) (*MirNode, error) {
 		Link: link,
 	}
 
-	autoProcessTicker := time.NewTicker(1000 * time.Millisecond)
-	autoTickTicker := time.NewTicker(5000 * time.Millisecond)
-
 	return &MirNode{
-		Node:              node,
-		Actions:           &mirbft.Actions{},
-		Status:            nodeStatus,
-		Processor:         processor,
-		Log:               sampleLog,
-		AutoProcessTicker: autoProcessTicker,
-		AutoProcessC:      autoProcessTicker.C,
-		AutoTickTicker:    autoTickTicker,
-		AutoTickC:         autoTickTicker.C,
-		ManualTickC:       make(chan struct{}),
-		ManualProcessC:    make(chan struct{}),
+		Node:            node,
+		Actions:         &mirbft.Actions{},
+		Status:          nodeStatus,
+		Processor:       processor,
+		Log:             sampleLog,
+		TickInterval:    500 * time.Millisecond,
+		ProcessInterval: 100 * time.Millisecond,
 	}, nil
 }
 
-func (mn *MirNode) Tick() {
-	mn.ManualTickC <- struct{}{}
+func (mn *MirNode) Tick(eventQueue *EventQueue) {
+	mn.Node.Tick()
+	eventQueue.AddTick(int(mn.Node.Config.ID), mn.TickInterval)
+	mn.DrainActions(eventQueue)
 }
 
-func (mn *MirNode) Process() {
-	mn.ManualProcessC <- struct{}{}
+func (mn *MirNode) Process(eventQueue *EventQueue) {
+	mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+	fmt.Println("Processed actions for node ", mn.Node.Config.ID)
+	mn.Actions.Clear()
+	mn.Processing = false
+	mn.DrainActions(eventQueue)
 }
 
-func (mn *MirNode) DisableAutoTick() {
-	if mn.AutoTickTicker != nil {
-		mn.AutoTickTicker.Stop()
-	}
-	mn.AutoTickTicker = nil
-	mn.AutoTickC = nil
+func (mn *MirNode) Step(source uint64, msg *pb.Msg, eventQueue *EventQueue) {
+	mn.Node.Step(context.Background(), source, msg)
+	mn.DrainActions(eventQueue)
 }
 
-func (mn *MirNode) TickEvery(interval time.Duration) {
-	mn.DisableAutoTick()
-	mn.AutoTickTicker = time.NewTicker(interval)
-	mn.AutoTickC = mn.AutoTickTicker.C
-	mn.Tick()
-}
-
-func (mn *MirNode) DisableAutoProcess() {
-	if mn.AutoProcessTicker != nil {
-		mn.AutoProcessTicker.Stop()
-	}
-	mn.AutoProcessTicker = nil
-	mn.AutoProcessC = nil
-}
-
-func (mn *MirNode) ProcessEvery(interval time.Duration) {
-	mn.DisableAutoProcess()
-
-	if interval > 0 {
-		mn.AutoProcessTicker = time.NewTicker(interval)
-		mn.AutoProcessC = mn.AutoProcessTicker.C
-	} else {
-		closedC := make(chan time.Time)
-		close(closedC)
-		mn.AutoProcessC = closedC
+func (mn *MirNode) DrainActions(eventQueue *EventQueue) {
+	fmt.Println("Draining actions for node ", mn.Node.Config.ID)
+	if mn.Processing {
+		return
 	}
 
-	mn.Process()
+	select {
+	case newActions := <-mn.Node.Ready():
+		mn.Actions.Append(&newActions)
+		fmt.Println("Got actions for node ", mn.Node.Config.ID)
+	default:
+	}
+
+	if ActionsLength(mn.Actions) > 0 {
+		fmt.Println("Processing actions for node ", mn.Node.Config.ID)
+		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.ProcessInterval)
+		mn.Processing = true
+	}
 }
 
-func (mn *MirNode) Maintain(eventEnv vugu.EventEnv) {
-	// Only call under lock
-	log := func(format string, args ...interface{}) {
-		fmt.Printf(fmt.Sprintf("%v Node %d %s\n", time.Now(), mn.Node.Config.ID, format), args...)
+func (mn *MirNode) UpdateStatus(eventQueue *EventQueue) {
+	mn.DrainActions(eventQueue)
+
+	status, err := mn.Node.Status(context.Background())
+	if err != nil {
+		panic(err)
 	}
-
-	for {
-		var autoProcessC <-chan time.Time
-
-		if ActionsLength(mn.Actions) > 0 {
-			eventEnv.Lock()
-			log("enabling autoprocess")
-			autoProcessC = mn.AutoProcessC
-			eventEnv.UnlockOnly()
-		}
-
-		select {
-		case newActions := <-mn.Node.Ready():
-			eventEnv.Lock()
-			mn.Actions.Append(&newActions)
-			log("add actions")
-			eventEnv.UnlockOnly()
-			continue
-		case <-autoProcessC:
-			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-			eventEnv.Lock()
-			mn.Actions.Clear()
-			log("auto clear process")
-			eventEnv.UnlockOnly()
-		case <-mn.ManualProcessC:
-			mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-			eventEnv.Lock()
-			mn.Actions.Clear()
-			log("manual clear process")
-			eventEnv.UnlockOnly()
-		case <-mn.AutoTickC:
-			mn.Node.Tick()
-		case <-mn.ManualTickC:
-			mn.Node.Tick()
-		}
-
-		status, _ := mn.Node.Status(context.Background())
-		eventEnv.Lock()
-		*mn.Status = *status
-		eventEnv.UnlockOnly()
-	}
+	fmt.Println("Setting status for node ", mn.Node.Config.ID)
+	*mn.Status = *status
 }
 
 func ActionsLength(a *mirbft.Actions) int {
