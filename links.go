@@ -44,7 +44,7 @@ func (c *Links) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				_ = vgparent
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
 				vgparent.AppendChild(vgn)
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "table", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "table table-striped table-sm"}}}
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "table", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "table table-sm"}}}
 				vgparent.AppendChild(vgn)
 				{
 					vgparent := vgn
@@ -54,7 +54,7 @@ func (c *Links) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "thead", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint("\n          \x3Ctr\x3E\n            \x3Cth scope=\"col\"\x3ESource\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EDestination\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EMsg\x3C/th\x3E\n          \x3C/tr\x3E\n        ")
+						vghtml := fmt.Sprint("\n          \x3Ctr\x3E\n            \x3Cth scope=\"col\"\x3ESlot\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3ESource\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EDestination\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EMsg\x3C/th\x3E\n          \x3C/tr\x3E\n        ")
 						vgn.InnerHTML = &vghtml
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
@@ -66,17 +66,33 @@ func (c *Links) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						_ = vgparent
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)
-						for vgiterkeyt, msg := range c.LinksBuffer.Queue {
-							var vgiterkey interface{} = vgiterkeyt
+						for i, msg := range c.LinksBuffer.Queue {
+							var vgiterkey interface{} = i
 							_ = vgiterkey
+							i := i
+							_ = i
 							msg := msg
 							_ = msg
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute(nil)}
 							vgparent.AppendChild(vgn)
-							vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "class", Val: fmt.Sprint(c.SatisfiesFilter(msg))})
+							vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "class", Val: fmt.Sprint(c.FilterClass(msg))})
 							{
 								vgparent := vgn
 								_ = vgparent
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+								vgparent.AppendChild(vgn)
+								{
+									vghtml := fmt.Sprint(i)
+									vgn.InnerHTML = &vghtml
+								}
+								{
+									vgparent := vgn
+									_ = vgparent
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "/"}
+									vgparent.AppendChild(vgn)
+								}
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}

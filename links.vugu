@@ -4,16 +4,18 @@
       <h4>Networking Links</h4>
     </div>
     <div class="row" style="display:block;position:relative;height:200px;overflow:auto;">
-      <table class="table table-striped table-sm">
+      <table class="table table-sm">
         <thead>
           <tr>
+            <th scope="col">Slot</th>
             <th scope="col">Source</th>
             <th scope="col">Destination</th>
             <th scope="col">Msg</th>
           </tr>
         </thead>
         <tbody>
-          <tr vg-for='_, msg := range c.LinksBuffer.Queue' :class='c.SatisfiesFilter(msg)'>
+          <tr vg-for='i, msg := range c.LinksBuffer.Queue' :class='c.FilterClass(msg)'>
+            <td vg-html='i'>/</td>
             <td vg-html='msg.Source'></td>
             <td vg-html='msg.Dest'></td>
             <td vg-html='PrettyMsg(msg.Payload)'></td>
