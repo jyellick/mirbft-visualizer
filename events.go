@@ -146,7 +146,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5E5FFE61803D0242, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5E600062B6F7070A, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {
@@ -186,7 +186,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			}
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 			vgparent.AppendChild(vgn)
-			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row p-2"}}}
 			vgparent.AppendChild(vgn)
 			{
 				vgparent := vgn

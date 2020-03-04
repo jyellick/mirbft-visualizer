@@ -1,13 +1,22 @@
 <div class="w-100 card">
    <div class="card-header w-100 p-0" role="group">
-      <button class="btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p", c.Actions)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p", c.Actions)' vg-html='c.ActionsSummary'></button>
+      <button class="text-left btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p", c.Actions)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p", c.Actions)' vg-html='c.ActionsSummary'></button>
     <!--<div class="btg-group w-100">
     </div>-->
   </div>
   <div :id='fmt.Sprintf("%p", c.Actions)' class="mp-0 collapse">
      <div class="card-body">
-        <div class="row" vg-for='_, msg := range c.Actions.Broadcast'>
-          <main:MessageViewer :Msg='msg'></main:MessageViewer>
+        <div vg-if='len(c.Actions.Broadcast) > 0'>
+        <strong>Broadcasts</strong>
+          <div class="row" vg-for='_, msg := range c.Actions.Broadcast'>
+            <main:MessageViewer :Msg='msg'></main:MessageViewer>
+          </div>
+        </div>
+        <div vg-if='len(c.Actions.Unicast) > 0'>
+          <strong>Unicasts</strong>
+          <div class="row" vg-for='_, msg := range c.Actions.Broadcast'>
+            <main:MessageViewer :Msg='msg'></main:MessageViewer>
+          </div>
         </div>
      </div>
   </div>

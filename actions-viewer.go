@@ -29,7 +29,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			_ = vgparent
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
 			vgparent.AppendChild(vgn)
-			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-outline-primary w-100"}, vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "data-toggle", Val: "collapse"}, vugu.VGAttribute{Namespace: "", Key: "aria-expanded", Val: "false"}}}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "text-left btn btn-outline-primary w-100"}, vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "data-toggle", Val: "collapse"}, vugu.VGAttribute{Namespace: "", Key: "aria-expanded", Val: "false"}}}
 			vgparent.AppendChild(vgn)
 			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "aria-controls", Val: fmt.Sprint(fmt.Sprintf("%p", c.Actions))})
 			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "data-target", Val: fmt.Sprint(fmt.Sprintf("#%p", c.Actions))})
@@ -61,31 +61,103 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				_ = vgparent
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 				vgparent.AppendChild(vgn)
-				for vgiterkeyt, msg := range c.Actions.Broadcast {
-					var vgiterkey interface{} = vgiterkeyt
-					_ = vgiterkey
-					msg := msg
-					_ = msg
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+				if len(c.Actions.Broadcast) > 0 {
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vgparent := vgn
+						_ = vgparent
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+						vgparent.AppendChild(vgn)
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
+						vgparent.AppendChild(vgn)
+						{
+							vghtml := fmt.Sprint("Broadcasts")
+							vgn.InnerHTML = &vghtml
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+						vgparent.AppendChild(vgn)
+						for vgiterkeyt, msg := range c.Actions.Broadcast {
+							var vgiterkey interface{} = vgiterkeyt
+							_ = vgiterkey
+							msg := msg
+							_ = msg
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+							vgparent.AppendChild(vgn)
+							{
+								vgparent := vgn
+								_ = vgparent
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								{
+									vgcompKey := vugu.MakeCompKey(0x5E600062B9A90867, vgiterkey)
+									// ask BuildEnv for prior instance of this specific component
+									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
+									if vgcomp == nil {
+										// create new one if needed
+										vgcomp = new(MessageViewer)
+									}
+									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+									vgcomp.Msg = msg
+									vgout.Components = append(vgout.Components, vgcomp)
+									vgn = &vugu.VGNode{Component: vgcomp}
+									vgparent.AppendChild(vgn)
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+								vgparent.AppendChild(vgn)
+							}
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+						vgparent.AppendChild(vgn)
+					}
+				}
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+				vgparent.AppendChild(vgn)
+				if len(c.Actions.Unicast) > 0 {
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
 						vgparent := vgn
 						_ = vgparent
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
+						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E5FFE614FEA5B1C, vgiterkey)
-							// ask BuildEnv for prior instance of this specific component
-							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
-							if vgcomp == nil {
-								// create new one if needed
-								vgcomp = new(MessageViewer)
-							}
-							vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-							vgcomp.Msg = msg
-							vgout.Components = append(vgout.Components, vgcomp)
-							vgn = &vugu.VGNode{Component: vgcomp}
+							vghtml := fmt.Sprint("Unicasts")
+							vgn.InnerHTML = &vghtml
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+						vgparent.AppendChild(vgn)
+						for vgiterkeyt, msg := range c.Actions.Broadcast {
+							var vgiterkey interface{} = vgiterkeyt
+							_ = vgiterkey
+							msg := msg
+							_ = msg
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 							vgparent.AppendChild(vgn)
+							{
+								vgparent := vgn
+								_ = vgparent
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								{
+									vgcompKey := vugu.MakeCompKey(0x5E6000624F16CCE0, vgiterkey)
+									// ask BuildEnv for prior instance of this specific component
+									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
+									if vgcomp == nil {
+										// create new one if needed
+										vgcomp = new(MessageViewer)
+									}
+									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+									vgcomp.Msg = msg
+									vgout.Components = append(vgout.Components, vgcomp)
+									vgn = &vugu.VGNode{Component: vgcomp}
+									vgparent.AppendChild(vgn)
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+								vgparent.AppendChild(vgn)
+							}
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 						vgparent.AppendChild(vgn)

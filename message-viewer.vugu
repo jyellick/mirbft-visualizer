@@ -1,6 +1,6 @@
 <div class="w-100 card">
    <div class="card-header w-100 p-0" role="group">
-      <button class="btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p-%p", c, c.Msg)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p-%p", c, c.Msg)' vg-html='c.MsgSummary'></button>
+      <button class="text-left btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p-%p", c, c.Msg)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p-%p", c, c.Msg)' vg-html='c.MsgSummary'></button>
     <!--<div class="btg-group w-100">
     </div>-->
   </div>
