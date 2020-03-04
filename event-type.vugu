@@ -1,0 +1,8 @@
+<div class="p-0">
+  <div class="p-0 row" vg-if='c.Event.Tick'>Tick: Inform the state machine that time has elapsed</div>
+  <div class="p-0 row" vg-if='c.Event.Step != nil'>
+    <div class="col-md-2 "vg-html='fmt.Sprintf("Receive from %d", c.Event.Step.Source)'></div>
+    <div class="col-md-10"><main:MessageViewer :Msg='c.Event.Step.Payload'></main:MessageViewer></div>
+  </div>
+  <div class="p-0 row" vg-if='c.Event.Process' vg-html='"Process"'></div>
+</div>

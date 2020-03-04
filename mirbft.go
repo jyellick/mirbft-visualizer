@@ -9,7 +9,7 @@ package main
 import (
 	"context"
 	"crypto/sha256"
-	"fmt"
+	_ "fmt"
 	"time"
 
 	"github.com/IBM/mirbft"
@@ -70,7 +70,7 @@ func (mn *MirNode) Tick(eventQueue *EventQueue) {
 
 func (mn *MirNode) Process(eventQueue *EventQueue) {
 	mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
-	fmt.Println("Processed actions for node ", mn.Node.Config.ID)
+	// fmt.Println("Processed actions for node ", mn.Node.Config.ID)
 	mn.Actions.Clear()
 	mn.Processing = false
 	mn.DrainActions(eventQueue)
@@ -82,7 +82,7 @@ func (mn *MirNode) Step(source uint64, msg *pb.Msg, eventQueue *EventQueue) {
 }
 
 func (mn *MirNode) DrainActions(eventQueue *EventQueue) {
-	fmt.Println("Draining actions for node ", mn.Node.Config.ID)
+	// fmt.Println("Draining actions for node ", mn.Node.Config.ID)
 	if mn.Processing {
 		return
 	}
@@ -90,12 +90,12 @@ func (mn *MirNode) DrainActions(eventQueue *EventQueue) {
 	select {
 	case newActions := <-mn.Node.Ready():
 		mn.Actions.Append(&newActions)
-		fmt.Println("Got actions for node ", mn.Node.Config.ID)
+		// fmt.Println("Got actions for node ", mn.Node.Config.ID)
 	default:
 	}
 
 	if ActionsLength(mn.Actions) > 0 {
-		fmt.Println("Processing actions for node ", mn.Node.Config.ID)
+		// fmt.Println("Processing actions for node ", mn.Node.Config.ID)
 		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.ProcessInterval)
 		mn.Processing = true
 	}
@@ -108,7 +108,7 @@ func (mn *MirNode) UpdateStatus(eventQueue *EventQueue) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Setting status for node ", mn.Node.Config.ID)
+	// fmt.Println("Setting status for node ", mn.Node.Config.ID)
 	*mn.Status = *status
 }
 

@@ -100,8 +100,22 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 								vgparent.AppendChild(vgn)
 								{
-									vghtml := fmt.Sprint(event.Type())
-									vgn.InnerHTML = &vghtml
+									vgparent := vgn
+									_ = vgparent
+									{
+										vgcompKey := vugu.MakeCompKey(0x5E5FE8521A54207C, vgiterkey)
+										// ask BuildEnv for prior instance of this specific component
+										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventType)
+										if vgcomp == nil {
+											// create new one if needed
+											vgcomp = new(EventType)
+										}
+										vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+										vgcomp.Event = event
+										vgout.Components = append(vgout.Components, vgcomp)
+										vgn = &vugu.VGNode{Component: vgcomp}
+										vgparent.AppendChild(vgn)
+									}
 								}
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
@@ -303,7 +317,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								_ = vgparent
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 								vgparent.AppendChild(vgn)
-								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "id", Val: "step-window"}, vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
 								vgparent.AppendChild(vgn)
 								vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
 									EventType:	"click",

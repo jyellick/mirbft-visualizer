@@ -15,7 +15,7 @@
         <tbody>
           <tr :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
             <td vg-html='event.Target'></td>
-            <td vg-html='event.Type()'></td>
+            <td><main:EventType :Event='event'></td>
             <td vg-html='event.OccursAt.UnixNano()/1000/1000'></td>
           </tr>
         </tbody>
@@ -44,7 +44,7 @@
               <option value="2000ms">2000ms</option>
             </select>
             <div class="btn-group w-100" role="group">
-              <button type="button" class="btn btn-primary" @click='c.StepStepWindow(event)'> Step Window</button>
+              <button id="step-window" type="button" class="btn btn-primary" @click='c.StepStepWindow(event)'> Step Window</button>
             </div>
           </div>
         </div>

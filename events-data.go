@@ -5,7 +5,6 @@ import (
 	"time"
 
 	pb "github.com/IBM/mirbft/mirbftpb"
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/vugu/vugu"
 )
 
@@ -83,11 +82,15 @@ func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
 }
 
 func (e *Events) StepNext(event *vugu.DOMEvent) {
+	fmt.Println("Stepping next")
+	event.PreventDefault()
 	e.EventQueue.ApplyNextEvent()
 	e.Update(event)
 }
 
 func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
+	fmt.Println("Stepping step window")
+	event.PreventDefault()
 	e.EventQueue.Elapse(e.StepWindow)
 	e.Update(event)
 }
@@ -227,35 +230,6 @@ type Event struct {
 	Step    *Msg
 	Tick    bool
 	Process bool
-}
-
-var marshaler = &jsonpb.Marshaler{
-	EmitDefaults: true,
-	OrigName:     true,
-}
-
-func PrettyMsg(msg *pb.Msg) string {
-	if msg == nil {
-		return ""
-	}
-	res, err := marshaler.MarshalToString(msg)
-	if err != nil {
-		panic(err)
-	}
-	return res
-}
-
-func (e *Event) Type() string {
-	switch {
-	case e.Step != nil:
-		return fmt.Sprintf("Message from %d - %s", e.Step.Source, PrettyMsg(e.Step.Payload))
-	case e.Tick:
-		return "Tick"
-	case e.Process:
-		return fmt.Sprintf("Process outstanding actions")
-	default:
-		panic("some action must be set for the event")
-	}
 }
 
 type EventLink func(uint64, *pb.Msg)
