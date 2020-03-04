@@ -50,6 +50,16 @@ func (c *Bootstrap) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				Func:		func(event *vugu.DOMEvent) { c.SetNodeCount(event) },
 				// TODO: implement capture, etc. mostly need to decide syntax
 			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
 			vgparent.AppendChild(vgn)
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
@@ -66,6 +76,90 @@ func (c *Bootstrap) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
 				EventType:	"change",
 				Func:		func(event *vugu.DOMEvent) { c.SetBucketCount(event) },
+				// TODO: implement capture, etc. mostly need to decide syntax
+			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
+			vgparent.AppendChild(vgn)
+			{
+				vghtml := fmt.Sprint("Heartbeat Ticks")
+				vgn.InnerHTML = &vghtml
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
+			vgparent.AppendChild(vgn)
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.Parameters.HeartbeatTicks)})
+			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+				EventType:	"change",
+				Func:		func(event *vugu.DOMEvent) { c.SetHeartbeatTicks(event) },
+				// TODO: implement capture, etc. mostly need to decide syntax
+			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
+			vgparent.AppendChild(vgn)
+			{
+				vghtml := fmt.Sprint("Suspect Ticks")
+				vgn.InnerHTML = &vghtml
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
+			vgparent.AppendChild(vgn)
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.Parameters.SuspectTicks)})
+			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+				EventType:	"change",
+				Func:		func(event *vugu.DOMEvent) { c.SetSuspectTicks(event) },
+				// TODO: implement capture, etc. mostly need to decide syntax
+			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+			vgparent.AppendChild(vgn)
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}
+		vgparent.AppendChild(vgn)
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group"}}}
+		vgparent.AppendChild(vgn)
+		{
+			vgparent := vgn
+			_ = vgparent
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
+			vgparent.AppendChild(vgn)
+			{
+				vghtml := fmt.Sprint("NewEpochTimeout Ticks")
+				vgn.InnerHTML = &vghtml
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
+			vgparent.AppendChild(vgn)
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.Parameters.NewEpochTimeoutTicks)})
+			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+				EventType:	"change",
+				Func:		func(event *vugu.DOMEvent) { c.SetNewEpochTimeoutTicks(event) },
 				// TODO: implement capture, etc. mostly need to decide syntax
 			})
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}

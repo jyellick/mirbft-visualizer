@@ -120,10 +120,8 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
 										vgparent.AppendChild(vgn)
 										{
-											vgparent := vgn
-											_ = vgparent
-											vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Receive"}
-											vgparent.AppendChild(vgn)
+											vghtml := fmt.Sprint(fmt.Sprintf("Receive %d", event.Step.Source))
+											vgn.InnerHTML = &vghtml
 										}
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
@@ -146,7 +144,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5E60152CF2739AD1, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5E601CD55ACD57B1, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {

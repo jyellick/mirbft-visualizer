@@ -2,8 +2,22 @@
    <div class="form-group">
        <label for="node-count">Node Count</label>
        <input type="text" @change="c.SetNodeCount(event)" class="form-control" :value='c.Parameters.NodeCount'/>
+   </div>
+   <div class="form-group">
        <label for="node-count">Bucket Count</label>
        <input type="text" @change="c.SetBucketCount(event)" class="form-control" :value='c.Parameters.BucketCount'/>
+   </div>
+   <div class="form-group">
+       <label for="node-count">Heartbeat Ticks</label>
+       <input type="text" @change="c.SetHeartbeatTicks(event)" class="form-control" :value='c.Parameters.HeartbeatTicks'/>
+   </div>
+   <div class="form-group">
+       <label for="node-count">Suspect Ticks</label>
+       <input type="text" @change="c.SetSuspectTicks(event)" class="form-control" :value='c.Parameters.SuspectTicks'/>
+   </div>
+   <div class="form-group">
+       <label for="node-count">NewEpochTimeout Ticks</label>
+       <input type="text" @change="c.SetNewEpochTimeoutTicks(event)" class="form-control" :value='c.Parameters.NewEpochTimeoutTicks'/>
    </div>
    <button type="submit" class="btn btn-primary">Bootstrap!</button>
 </form>

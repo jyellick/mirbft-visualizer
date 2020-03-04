@@ -16,7 +16,7 @@
           <div class="row border rounded" :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
             <div class="col-1 my-auto" vg-html='event.Target'></div>
             <div class="col-1 my-auto" vg-if='event.Tick'>Tick</div>
-            <div class="col-1 my-auto" vg-if='event.Step != nil'>Receive</div>
+            <div class="col-1 my-auto" vg-if='event.Step != nil' vg-html='fmt.Sprintf("Receive %d", event.Step.Source)'></div>
             <div class="col-1 my-auto" vg-if='event.Process != nil'>Process</div>
             <div class="col-8 my-auto"><main:EventDetails :Event='event'></main:EventDetails></div>
             <div class="col-2 my-auto" vg-html='event.OccursAt.UnixNano()/1000/1000'></div>

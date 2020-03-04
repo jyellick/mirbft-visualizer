@@ -69,9 +69,9 @@ func (n *Network) BeforeBuild() {
 			BatchParameters: mirbft.BatchParameters{
 				CutSizeBytes: 1,
 			},
-			SuspectTicks:         4,
-			NewEpochTimeoutTicks: 8,
-			HeartbeatTicks:       2,
+			SuspectTicks:         n.Parameters.SuspectTicks,
+			NewEpochTimeoutTicks: n.Parameters.NewEpochTimeoutTicks,
+			HeartbeatTicks:       n.Parameters.HeartbeatTicks,
 		}
 
 		node, err := mirbft.StartNewNode(config, nil, networkConfig)
