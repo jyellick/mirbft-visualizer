@@ -8,14 +8,18 @@
         <thead>
           <tr>
             <th scope="col">Target</th>
-            <th scope="col">EventType</th>
+            <th scope="col">Type</th>
+            <th scope="col">Details</th>
             <th scope="col">OccursAt</th>
           </tr>
         </thead>
         <tbody>
           <tr :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
             <td vg-html='event.Target'></td>
-            <td><main:EventType :Event='event'></td>
+            <td vg-if='event.Tick'>Tick</td>
+            <td vg-if='event.Step != nil'>Receive</td>
+            <td vg-if='event.Process != nil'>Process</td>
+            <td><main:EventDetails :Event='event'></main:EventDetails></td>
             <td vg-html='event.OccursAt.UnixNano()/1000/1000'></td>
           </tr>
         </tbody>

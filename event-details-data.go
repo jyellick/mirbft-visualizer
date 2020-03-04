@@ -1,5 +1,5 @@
 package main
 
-type EventType struct {
+type EventDetails struct {
 	Event *Event
 }

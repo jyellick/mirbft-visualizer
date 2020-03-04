@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/IBM/mirbft"
 	pb "github.com/IBM/mirbft/mirbftpb"
 	"github.com/vugu/vugu"
 )
@@ -141,11 +142,11 @@ func (eq *EventQueue) AddTick(target int, fromNow time.Duration) {
 	eq.Insert(newEvent)
 }
 
-func (eq *EventQueue) AddProcess(target int, fromNow time.Duration) {
+func (eq *EventQueue) AddProcess(target int, actions *mirbft.Actions, fromNow time.Duration) {
 	newEvent := &Event{
 		OccursAt: eq.FakeTime.Add(fromNow),
 		Target:   target,
-		Process:  true,
+		Process:  actions,
 		ID:       eq.Counter,
 	}
 
@@ -202,7 +203,7 @@ func (eq *EventQueue) ApplyNextEvent() {
 		node.Step(e.Step.Source, e.Step.Payload, eq)
 	case e.Tick:
 		node.Tick(eq)
-	case e.Process:
+	case e.Process != nil:
 		node.Process(eq)
 	default:
 		panic("some action must be set for the event")
@@ -229,7 +230,7 @@ type Event struct {
 	// Only one of Step, Tick, or Process should be non-zero
 	Step    *Msg
 	Tick    bool
-	Process bool
+	Process *mirbft.Actions
 }
 
 type EventLink func(uint64, *pb.Msg)

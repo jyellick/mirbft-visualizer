@@ -64,7 +64,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "thead", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint("\n          \x3Ctr\x3E\n            \x3Cth scope=\"col\"\x3ETarget\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EEventType\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EOccursAt\x3C/th\x3E\n          \x3C/tr\x3E\n        ")
+						vghtml := fmt.Sprint("\n          \x3Ctr\x3E\n            \x3Cth scope=\"col\"\x3ETarget\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EType\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EDetails\x3C/th\x3E\n            \x3Cth scope=\"col\"\x3EOccursAt\x3C/th\x3E\n          \x3C/tr\x3E\n        ")
 						vgn.InnerHTML = &vghtml
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
@@ -97,18 +97,54 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								}
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
+								if event.Tick {
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+									vgparent.AppendChild(vgn)
+									{
+										vgparent := vgn
+										_ = vgparent
+										vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Tick"}
+										vgparent.AppendChild(vgn)
+									}
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								if event.Step != nil {
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+									vgparent.AppendChild(vgn)
+									{
+										vgparent := vgn
+										_ = vgparent
+										vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Receive"}
+										vgparent.AppendChild(vgn)
+									}
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								if event.Process != nil {
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+									vgparent.AppendChild(vgn)
+									{
+										vgparent := vgn
+										_ = vgparent
+										vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Process"}
+										vgparent.AppendChild(vgn)
+									}
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 								vgparent.AppendChild(vgn)
 								{
 									vgparent := vgn
 									_ = vgparent
 									{
-										vgcompKey := vugu.MakeCompKey(0x5E5FE8521A54207C, vgiterkey)
+										vgcompKey := vugu.MakeCompKey(0x5E5FF1EC5780229B, vgiterkey)
 										// ask BuildEnv for prior instance of this specific component
-										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventType)
+										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 										if vgcomp == nil {
 											// create new one if needed
-											vgcomp = new(EventType)
+											vgcomp = new(EventDetails)
 										}
 										vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 										vgcomp.Event = event

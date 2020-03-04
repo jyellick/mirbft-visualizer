@@ -23,7 +23,7 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
 		{
-			vgcompKey := vugu.MakeCompKey(0x5E5FE85272673DD9, vgiterkey)
+			vgcompKey := vugu.MakeCompKey(0x5E5FF1EC359D6794, vgiterkey)
 			// ask BuildEnv for prior instance of this specific component
 			vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Events)
 			if vgcomp == nil {
@@ -44,7 +44,7 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			mirNode := mirNode
 			_ = mirNode
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E5FE852653049A9, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E5FF1EC17BA1481, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Node)
 				if vgcomp == nil {

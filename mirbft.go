@@ -96,7 +96,7 @@ func (mn *MirNode) DrainActions(eventQueue *EventQueue) {
 
 	if ActionsLength(mn.Actions) > 0 {
 		// fmt.Println("Processing actions for node ", mn.Node.Config.ID)
-		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.ProcessInterval)
+		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.Actions, mn.ProcessInterval)
 		mn.Processing = true
 	}
 }
