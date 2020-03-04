@@ -3,27 +3,27 @@
     <div class="row">
       <h4 vg-html='fmt.Sprintf("Events (time is %d)", c.EventQueue.FakeTime.UnixNano()/1000/1000)'></h4>
     </div>
-    <div class="row" style="display:block;position:relative;height:200px;overflow:auto;">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Target</th>
-            <th scope="col">Type</th>
-            <th scope="col">Details</th>
-            <th scope="col">OccursAt</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
-            <td vg-html='event.Target'></td>
-            <td vg-if='event.Tick'>Tick</td>
-            <td vg-if='event.Step != nil'>Receive</td>
-            <td vg-if='event.Process != nil'>Process</td>
-            <td><main:EventDetails :Event='event'></main:EventDetails></td>
-            <td vg-html='event.OccursAt.UnixNano()/1000/1000'></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="row">
+      <div class="col">
+        <div class="row" style="margin-right: 10px">
+          <div class="col-1"><strong>Target</strong></div>
+          <div class="col-1"><strong>Type</strong></div>
+          <div class="col-8"><strong>Details</strong></div>
+          <div class="col-2"><strong>OccursAt</strong></div>
+        </div>
+        <div class="row mp-0" style="display:block;position:relative;height:200px;overflow-y:scroll;">
+          <div class="col mp-0">
+          <div class="row border rounded" :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
+            <div class="col-1 my-auto" vg-html='event.Target'></div>
+            <div class="col-1 my-auto" vg-if='event.Tick'>Tick</div>
+            <div class="col-1 my-auto" vg-if='event.Step != nil'>Receive</div>
+            <div class="col-1 my-auto" vg-if='event.Process != nil'>Process</div>
+            <div class="col-8 my-auto"><main:EventDetails :Event='event'></main:EventDetails></div>
+            <div class="col-2 my-auto" vg-html='event.OccursAt.UnixNano()/1000/1000'></div>
+          </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <form class="container-fluid">
