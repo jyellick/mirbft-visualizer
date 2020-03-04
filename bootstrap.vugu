@@ -1,7 +1,9 @@
 <form class="bootstraper" @submit='c.Submit(event)'>
    <div class="form-group">
        <label for="node-count">Node Count</label>
-       <input type="text" @change="c.SetNodeCount(event)" class="form-control" :value='c.NodeCount'/>
+       <input type="text" @change="c.SetNodeCount(event)" class="form-control" :value='c.Parameters.NodeCount'/>
+       <label for="node-count">Bucket Count</label>
+       <input type="text" @change="c.SetBucketCount(event)" class="form-control" :value='c.Parameters.BucketCount'/>
    </div>
    <button type="submit" class="btn btn-primary">Bootstrap!</button>
 </form>

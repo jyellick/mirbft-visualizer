@@ -15,8 +15,7 @@
               </div>
           </div>
           <div vg-if='!c.Bootstrapped' class="row m-2">
-              <main:Bootstrap :NodeCountDefault='4' :Bootstrap="c.Bootstrap"></main:Bootstrap>
-          </div>
+              <main:Bootstrap :NodeCountDefault='4' :BucketCountDefault='4' :Bootstrap="c.Bootstrap"></main:Bootstrap> </div>
           <div vg-if='c.Bootstrapped' class="row m-2">
               <main:Network :Parameters="c.BootstrapParameters"></main:Network>
           </div>

@@ -44,10 +44,28 @@ func (c *Bootstrap) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgparent.AppendChild(vgn)
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
 			vgparent.AppendChild(vgn)
-			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.NodeCount)})
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.Parameters.NodeCount)})
 			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
 				EventType:	"change",
 				Func:		func(event *vugu.DOMEvent) { c.SetNodeCount(event) },
+				// TODO: implement capture, etc. mostly need to decide syntax
+			})
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "label", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "for", Val: "node-count"}}}
+			vgparent.AppendChild(vgn)
+			{
+				vghtml := fmt.Sprint("Bucket Count")
+				vgn.InnerHTML = &vghtml
+			}
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       "}
+			vgparent.AppendChild(vgn)
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "input", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "text"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-control"}}}
+			vgparent.AppendChild(vgn)
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "value", Val: fmt.Sprint(c.Parameters.BucketCount)})
+			vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+				EventType:	"change",
+				Func:		func(event *vugu.DOMEvent) { c.SetBucketCount(event) },
 				// TODO: implement capture, etc. mostly need to decide syntax
 			})
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n   "}

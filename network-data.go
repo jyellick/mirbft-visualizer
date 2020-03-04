@@ -56,10 +56,8 @@ func (n *Network) BeforeBuild() {
 
 	logger := wasmZap(n.Parameters.EventEnv)
 
-	replicas := make([]mirbft.Replica, n.Parameters.NodeCount)
-	for i := range replicas {
-		replicas[i] = mirbft.Replica{ID: uint64(i)}
-	}
+	networkConfig := mirbft.StandardInitialNetworkConfig(n.Parameters.NodeCount)
+	networkConfig.NumberOfBuckets = int32(n.Parameters.BucketCount)
 
 	nodes := make([]*mirbft.Node, n.Parameters.NodeCount)
 
@@ -76,7 +74,7 @@ func (n *Network) BeforeBuild() {
 			HeartbeatTicks:       2,
 		}
 
-		node, err := mirbft.StartNewNode(config, nil, replicas)
+		node, err := mirbft.StartNewNode(config, nil, networkConfig)
 		if err != nil {
 			panic(errors.WithMessagef(err, "could not create node %d", i))
 		}

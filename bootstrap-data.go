@@ -7,31 +7,41 @@ import (
 )
 
 type Bootstrap struct {
-	NodeCountDefault int
-	NodeCount        int `vugu:"data"`
-	Bootstrap        func(parameters *BootstrapParameters)
+	NodeCountDefault   int
+	BucketCountDefault int
+	Parameters         *BootstrapParameters
+	Bootstrap          func(parameters *BootstrapParameters)
 }
 
 type BootstrapParameters struct {
-	NodeCount int
-	EventEnv  vugu.EventEnv
+	NodeCount   int
+	BucketCount int
+	EventEnv    vugu.EventEnv
 }
 
 func (b *Bootstrap) BeforeBuild() {
-	if b.NodeCount <= 0 {
-		b.NodeCount = b.NodeCountDefault
+	if b.Parameters == nil {
+		b.Parameters = &BootstrapParameters{}
+	}
+	if b.Parameters.NodeCount <= 0 {
+		b.Parameters.NodeCount = b.NodeCountDefault
+	}
+	if b.Parameters.BucketCount <= 0 {
+		b.Parameters.BucketCount = b.BucketCountDefault
 	}
 }
 
 func (b *Bootstrap) SetNodeCount(event *vugu.DOMEvent) {
-	fmt.Sscanf(event.PropString("target", "value"), "%d", &b.NodeCount)
+	fmt.Sscanf(event.PropString("target", "value"), "%d", &b.Parameters.NodeCount)
+}
+
+func (b *Bootstrap) SetBucketCount(event *vugu.DOMEvent) {
+	fmt.Sscanf(event.PropString("target", "value"), "%d", &b.Parameters.BucketCount)
 }
 
 func (b *Bootstrap) Submit(event *vugu.DOMEvent) {
 	event.PreventDefault()
-	fmt.Printf("Submitting bootstrap with value %d\n", b.NodeCount)
-	b.Bootstrap(&BootstrapParameters{
-		NodeCount: b.NodeCount,
-		EventEnv:  event.EventEnv(),
-	})
+	fmt.Printf("Submitting bootstrap with value %+v\n", b.Parameters)
+	b.Parameters.EventEnv = event.EventEnv()
+	b.Bootstrap(b.Parameters)
 }
