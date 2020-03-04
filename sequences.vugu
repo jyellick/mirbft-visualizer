@@ -12,7 +12,7 @@
     <tbody>
       <tr vg-for="i, bucketStatus := range c.Status.Buckets">
         <td vg-html='fmt.Sprintf("Bucket %d", i)'></td>
-        <td vg-for="_, seqState := range bucketStatus.Sequences" vg-html='SeqStateToChar(seqState)'> </td>
+        <td vg-for="_, seqState := range bucketStatus.Sequences" vg-html='SeqStateToChar(seqState)' :class='SeqBGClass(seqState)'> </td>
       </tr>
     <tbody>
   </table>

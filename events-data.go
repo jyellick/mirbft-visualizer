@@ -231,6 +231,7 @@ type Event struct {
 
 var marshaler = &jsonpb.Marshaler{
 	EmitDefaults: true,
+	OrigName:     true,
 }
 
 func PrettyMsg(msg *pb.Msg) string {

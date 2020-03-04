@@ -128,6 +128,7 @@ func (c *Sequences) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 							_ = seqState
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 							vgparent.AppendChild(vgn)
+							vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "class", Val: fmt.Sprint(SeqBGClass(seqState))})
 							{
 								vghtml := fmt.Sprint(SeqStateToChar(seqState))
 								vgn.InnerHTML = &vghtml
