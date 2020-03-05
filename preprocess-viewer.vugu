@@ -1,0 +1,10 @@
+<div class="w-100 card">
+   <div class="card-header w-100 p-0" role="group">
+      <button class="text-left btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p", c.Request)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p", c.Request)' vg-html='c.Summary'></button>
+  </div>
+  <div :id='fmt.Sprintf("%p", c.Request)' class="mp-0 collapse">
+     <div class="p-0 card-body">
+       Placeholder
+     </div>
+  </div>
+</div>

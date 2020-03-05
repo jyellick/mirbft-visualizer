@@ -1,0 +1,22 @@
+<div class="row border rounded mb-2" style="border-width:3px">
+  <h5>Client</h5>
+      <form class="container-fluid">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <!-- <label class="col-form-label col-form-label-sm" >Target</label> -->
+            <select class="form-control" @change='c.SetTargetNode(event)'>
+              <option vg-for='i := 0; i < len(c.MirNodes); i++' :value='i' vg-html='fmt.Sprintf("Target Node %d", i)'></option>
+              <!-- <option selected value="all">All</option> -->
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+          </div>
+          <div class="form-group col-md-4">
+            <div class="btn-group w-100" role="group">
+              <button id="send-request" type="button" class="btn btn-primary" @click='c.SendRequest(event)'> Send request </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+</div>
