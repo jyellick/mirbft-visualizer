@@ -22,6 +22,7 @@ import (
 type MirNode struct {
 	Node            *mirbft.Node
 	Actions         *mirbft.Actions
+	Results         *mirbft.ActionResults
 	Status          *mirbft.Status
 	Processor       *sample.SerialProcessor
 	Log             *SampleLog
@@ -69,9 +70,11 @@ func (mn *MirNode) Tick(eventQueue *EventQueue) {
 }
 
 func (mn *MirNode) Process(eventQueue *EventQueue) {
-	mn.Node.AddResults(*mn.Processor.Process(mn.Actions))
+	mn.Processor.Transmit(mn.Actions)
+	mn.Node.AddResults(*mn.Results)
 	// fmt.Println("Processed actions for node ", mn.Node.Config.ID)
 	mn.Actions.Clear()
+	mn.Results = nil
 	mn.Processing = false
 	mn.DrainActions(eventQueue)
 }
@@ -87,27 +90,32 @@ func (mn *MirNode) DrainActions(eventQueue *EventQueue) {
 		return
 	}
 
-	select {
-	case newActions := <-mn.Node.Ready():
-		mn.Actions.Append(&newActions)
-		// fmt.Println("Got actions for node ", mn.Node.Config.ID)
-	default:
-	}
+	// Note, due to a recent change, this now always returns
+	// so long as some other action just occurred (ie, step, status, or addresults)
+	newActions := <-mn.Node.Ready()
+	mn.Actions.Append(&newActions)
+	// fmt.Println("Got actions for node ", mn.Node.Config.ID)
 
 	if ActionsLength(mn.Actions) > 0 {
+		// Note, ordinarilly we persist, transmit, then apply,
+		// But, so that we can preview the results of the apply to the user,
+		// we apply here.  Note, we are applying the results to the 'application'
+		// not to the state machine.
+		mn.Results = mn.Processor.Apply(mn.Actions)
 		// fmt.Println("Processing actions for node ", mn.Node.Config.ID)
-		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.Actions, mn.ProcessInterval)
+		eventQueue.AddProcess(int(mn.Node.Config.ID), mn.Actions, mn.Results, mn.ProcessInterval)
 		mn.Processing = true
 	}
 }
 
 func (mn *MirNode) UpdateStatus(eventQueue *EventQueue) {
-	mn.DrainActions(eventQueue)
-
 	status, err := mn.Node.Status(context.Background())
 	if err != nil {
 		panic(err)
 	}
+
+	mn.DrainActions(eventQueue)
+
 	// fmt.Println("Setting status for node ", mn.Node.Config.ID)
 	*mn.Status = *status
 }

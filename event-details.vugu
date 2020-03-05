@@ -4,6 +4,6 @@
     <main:MessageViewer :Msg='c.Event.Step.Payload'></main:MessageViewer>
   </div>
   <div class="row" vg-if='c.Event.Process != nil'>
-    <main:ActionsViewer :Actions='c.Event.Process'></main:ActionsViewer>
+    <main:ActionsViewer :Actions='c.Event.Process' :Results='c.Event.ProcessResults'></main:ActionsViewer>
   </div>
 </div>

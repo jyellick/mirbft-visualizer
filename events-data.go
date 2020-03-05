@@ -142,12 +142,13 @@ func (eq *EventQueue) AddTick(target int, fromNow time.Duration) {
 	eq.Insert(newEvent)
 }
 
-func (eq *EventQueue) AddProcess(target int, actions *mirbft.Actions, fromNow time.Duration) {
+func (eq *EventQueue) AddProcess(target int, actions *mirbft.Actions, results *mirbft.ActionResults, fromNow time.Duration) {
 	newEvent := &Event{
-		OccursAt: eq.FakeTime.Add(fromNow),
-		Target:   target,
-		Process:  actions,
-		ID:       eq.Counter,
+		OccursAt:       eq.FakeTime.Add(fromNow),
+		Target:         target,
+		Process:        actions,
+		ProcessResults: results,
+		ID:             eq.Counter,
 	}
 
 	eq.Counter++
@@ -228,9 +229,10 @@ type Event struct {
 	ID       uint64
 
 	// Only one of Step, Tick, or Process should be non-zero
-	Step    *Msg
-	Tick    bool
-	Process *mirbft.Actions
+	Step           *Msg
+	Tick           bool
+	Process        *mirbft.Actions
+	ProcessResults *mirbft.ActionResults
 }
 
 type EventLink func(uint64, *pb.Msg)

@@ -9,6 +9,7 @@ import (
 
 type ActionsViewer struct {
 	Actions        *mirbft.Actions
+	Results        *mirbft.ActionResults
 	ActionsSummary string
 }
 
