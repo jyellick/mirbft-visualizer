@@ -1,5 +1,5 @@
 <div class="col-12">
-  <main:Client :MirNodes='c.MirNodes'></main:Client>
+  <main:Client :MirNodes='c.MirNodes' :EventQueue='c.EventQueue'></main:Client>
   <main:Events :EventQueue='c.EventQueue'></main:Events>
   <main:Node vg-for='_, mirNode := range c.MirNodes' :MirNode="mirNode"></main:Node>
 </div>

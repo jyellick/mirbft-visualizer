@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"time"
 
@@ -10,6 +9,7 @@ import (
 
 type Client struct {
 	MirNodes   []*MirNode
+	EventQueue *EventQueue
 	TargetNode int
 }
 
@@ -23,5 +23,5 @@ func (c *Client) SetTargetNode(event *vugu.DOMEvent) {
 
 func (c *Client) SendRequest(event *vugu.DOMEvent) {
 	fmt.Println("Submitting request")
-	c.MirNodes[c.TargetNode].Node.Propose(context.Background(), []byte(time.Now().String()))
+	c.MirNodes[c.TargetNode].Propose(c.EventQueue, []byte(time.Now().String()))
 }

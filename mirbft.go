@@ -120,6 +120,11 @@ func (mn *MirNode) UpdateStatus(eventQueue *EventQueue) {
 	*mn.Status = *status
 }
 
+func (mn *MirNode) Propose(eventQueue *EventQueue, msg []byte) {
+	mn.Node.Propose(context.Background(), msg)
+	mn.DrainActions(eventQueue)
+}
+
 func ActionsLength(a *mirbft.Actions) int {
 	if a == nil {
 		return 0

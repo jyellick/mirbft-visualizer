@@ -21,6 +21,39 @@ func (e *Events) BeforeBuild() {
 	}
 }
 
+// ModCheck is given 'nil' for old on first invocation.
+// The return value is whether things were modified, and a modCheck struct declared inside here.
+// On the next invocation, old will be the previously returned modCheck.
+func (e *Events) ModCheck(_ *vugu.ModTracker, old interface{}) (bool, interface{}) {
+	type modCheck struct {
+		FilterNode int
+		StepWindow time.Duration
+		NextEvent  *Event
+		Counter    uint64
+	}
+
+	newData := modCheck{
+		StepWindow: e.StepWindow,
+		NextEvent:  e.EventQueue.NextEvent,
+		Counter:    e.EventQueue.Counter,
+	}
+
+	if e.FilterNode == nil {
+		newData.FilterNode = -1
+	} else {
+		newData.FilterNode = *e.FilterNode
+	}
+
+	if old == nil {
+		return true, newData
+	}
+
+	oldData := old.(modCheck)
+
+	return newData != oldData, newData
+
+}
+
 func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
 	group := event.JSEvent().Get("target").Get("value").String()
 	if group == "all" {
@@ -143,6 +176,7 @@ func (eq *EventQueue) AddTick(target int, fromNow time.Duration) {
 }
 
 func (eq *EventQueue) AddProcess(target int, actions *mirbft.Actions, results *mirbft.ActionResults, fromNow time.Duration) {
+	fmt.Println("AddProcess with ", ActionsLength(actions), " actions")
 	newEvent := &Event{
 		OccursAt:       eq.FakeTime.Add(fromNow),
 		Target:         target,
