@@ -24,6 +24,8 @@ github.com/jyellick/mirbft v0.0.0-20200225211558-28f622ff11e5 h1:keafnXF40i6TSsp
 github.com/jyellick/mirbft v0.0.0-20200225211558-28f622ff11e5/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688 h1:HaWoRfEQGeAgIuaHtXcI9xGrJ/2uWhoimGPTJLm8ARQ=
 github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200305031313-7137df2c0a6c h1:iy1ahRqdOUyQ/0nHjOLjAdAFaluMv96NZvNvxzf3B0k=
+github.com/jyellick/mirbft v0.0.0-20200305031313-7137df2c0a6c/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/vugu v0.1.0-fork h1:IOfceUosFvHdq3KzQaXRFsNqCUjgax8uIeWRbvYp9W4=
 github.com/jyellick/vugu v0.1.0-fork/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=

@@ -14,12 +14,8 @@ type MessageViewer struct {
 }
 
 func (mv *MessageViewer) BeforeBuild() {
-	if mv.MsgSummary == "" {
-		mv.MsgSummary = MsgToSummary(mv.Msg)
-	}
-	if mv.MsgAsJSON == "" {
-		mv.MsgAsJSON = MsgToJSON(mv.Msg)
-	}
+	mv.MsgSummary = MsgToSummary(mv.Msg)
+	mv.MsgAsJSON = MsgToJSON(mv.Msg)
 }
 
 var marshaler = &jsonpb.Marshaler{
