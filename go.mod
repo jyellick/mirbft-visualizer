@@ -2,12 +2,12 @@ module github.com/jyellick/mirbft-visualizer
 
 go 1.13
 
-replace github.com/IBM/mirbft => /home/yellickj/oss/mirbft
+// replace github.com/IBM/mirbft => /home/yellickj/oss/mirbft
+replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-20200313203515-1e074c88c08f
 
-// replace github.com/vugu/vugu => github.com/jyellick/vugu v0.1.0-fork
-replace github.com/vugu/vugu => /home/yellickj/oss/vugu
+// replace github.com/vugu/vugu => /home/yellickj/oss/vugu
 
-require github.com/vugu/vugu v0.1.1-0.20191230174203-fe17e20eb6ce
+require github.com/vugu/vugu v0.0.0-20191230174203-fe17e20eb6ce
 
 require (
 	github.com/IBM/mirbft v0.0.0-20190415184034-d1829758e6fc

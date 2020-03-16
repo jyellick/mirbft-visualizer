@@ -24,6 +24,8 @@ github.com/jyellick/mirbft v0.0.0-20200225211558-28f622ff11e5 h1:keafnXF40i6TSsp
 github.com/jyellick/mirbft v0.0.0-20200225211558-28f622ff11e5/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688 h1:HaWoRfEQGeAgIuaHtXcI9xGrJ/2uWhoimGPTJLm8ARQ=
 github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200313203515-1e074c88c08f h1:bA5BFPZ8R5TkctP/MYHlE4Z9Se8wIrO833jmEUZh4Mo=
+github.com/jyellick/mirbft v0.0.0-20200313203515-1e074c88c08f/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/vugu v0.1.0-fork h1:IOfceUosFvHdq3KzQaXRFsNqCUjgax8uIeWRbvYp9W4=
 github.com/jyellick/vugu v0.1.0-fork/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
@@ -55,6 +57,8 @@ github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289 h1:w3hfLuU5tKlcf+hhfmx6U
 github.com/vugu/html v0.0.0-20190914200101-c62dc20b8289/go.mod h1:Y3pLGz8dZUSrB9SARXqFmtW8RNs4HIGAr0+JaWL31Vg=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb h1:svqBUd2ETVrsM31o/toxvK1WeVMan3vCgrpecE5vMlA=
 github.com/vugu/vjson v0.0.0-20191111004939-722507e863cb/go.mod h1:z7mAqSUjRDMQ09NIO18jG2llXMHLnUHlZ3/8MEMyBPA=
+github.com/vugu/vugu v0.0.0-20191230174203-fe17e20eb6ce h1:bJF982eX+a6B62thad9N7NwYjYRZNiNQpuULidUSHCc=
+github.com/vugu/vugu v0.0.0-20191230174203-fe17e20eb6ce/go.mod h1:ZKTep3ABw5XlGBkT+RIw00ds49bsWPvbTaZiLUe07Ys=
 github.com/vugu/vugu v0.1.0 h1:gJtz7jza90ZUKgLb1mu0Ql5x/wDV5pJxiqW7CPV+BJU=
 github.com/vugu/vugu v0.1.0/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/vugu/vugu v0.1.1-0.20191230174203-fe17e20eb6ce h1:ssFPqxftmkxpodUIOzjXmFv373/GjK5OisrCVLM7tZ0=
