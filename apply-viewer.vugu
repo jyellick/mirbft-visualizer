@@ -7,7 +7,7 @@
         <div vg-if='len(c.Actions.Preprocess) > 0'>
           <strong>Preprocess</strong>
           <div class="row" vg-for='i, preprocess := range c.Actions.Preprocess'>
-            <main:PreprocessViewer :Request='preprocess'></main:PreprocessViewer>
+            <main:PreprocessViewer :Result='c.Apply.Preprocessed[i]' :Request='preprocess'></main:PreprocessViewer>
           </div>
         </div>
      </div>

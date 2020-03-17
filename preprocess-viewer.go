@@ -53,10 +53,8 @@ func (c *PreprocessViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "p-0 card-body"}}}
 			vgparent.AppendChild(vgn)
 			{
-				vgparent := vgn
-				_ = vgparent
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n       Placeholder\n     "}
-				vgparent.AppendChild(vgn)
+				vghtml := fmt.Sprint(fmt.Sprintf("%x", c.Request.ClientRequest.Data))
+				vgn.InnerHTML = &vghtml
 			}
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 			vgparent.AppendChild(vgn)
