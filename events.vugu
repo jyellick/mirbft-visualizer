@@ -1,7 +1,7 @@
 <div class="row border rounded mb-2" style="border-width:3px">
   <div class="col">
     <div class="row">
-      <h4 vg-html='fmt.Sprintf("Events (time is %d)", c.EventQueue.FakeTime.UnixNano()/1000/1000)'></h4>
+      <h4 vg-html='fmt.Sprintf("Events (time is %d)", c.EventLog.FakeTime)'></h4>
     </div>
     <div class="row">
       <div class="col">
@@ -13,13 +13,11 @@
         </div>
         <div class="row mp-0" style="display:block;position:relative;height:200px;overflow-y:scroll;">
           <div class="col mp-0">
-          <div class="row border rounded" :id='event.ID' vg-for='event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next)'>
-            <div class="col-1 my-auto" vg-html='event.Target'></div>
-            <div class="col-1 my-auto" vg-if='event.Tick'>Tick</div>
-            <div class="col-1 my-auto" vg-if='event.Step != nil' vg-html='fmt.Sprintf("Receive %d", event.Step.Source)'></div>
-            <div class="col-1 my-auto" vg-if='event.Process != nil'>Process</div>
-            <div class="col-8 my-auto"><main:EventDetails :Event='event'></main:EventDetails></div>
-            <div class="col-2 my-auto" vg-html='event.OccursAt.UnixNano()/1000/1000'></div>
+          <div class="row border rounded" vg-for='event := c.Filter(c.EventLog.NextEventLogEntry); event != nil; event = c.Filter(event.Next)'>
+            <div class="col-1 my-auto" vg-html='event.Event.Target'></div>
+            <div class="col-1 my-auto" vg-html='EventType(event.Event)'></div>
+            <div class="col-8 my-auto"><main:EventDetails :PlaybackNode='c.EventNode(event)' :Event='event'></main:EventDetails></div>
+            <div class="col-2 my-auto" vg-html='event.Event.Time'></div>
           </div>
           </div>
         </div>
@@ -31,7 +29,7 @@
           <div class="form-group col-md-4">
             <label>Target</label>
             <select class="form-control" @change='c.SetNodeFilter(event)'>
-              <option vg-for='i := 0; i < len(c.EventQueue.MirNodes); i++' :value='i' vg-html='fmt.Sprintf("Node %d", i)'></option>
+              <option vg-for='i := 0; i < len(c.Recording.Nodes); i++' :value='i' vg-html='fmt.Sprintf("Node %d", i)'></option>
               <option selected value="all">All</option>
             </select>
             <div class="btn-group w-100" role="group">

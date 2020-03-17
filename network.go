@@ -22,25 +22,12 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		_ = vgparent
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		{
-			vgcompKey := vugu.MakeCompKey(0x5E6086859D70CEFE, vgiterkey)
-			// ask BuildEnv for prior instance of this specific component
-			vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Client)
-			if vgcomp == nil {
-				// create new one if needed
-				vgcomp = new(Client)
-			}
-			vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-			vgcomp.EventQueue = c.EventQueue
-			vgcomp.MirNodes = c.MirNodes
-			vgout.Components = append(vgout.Components, vgcomp)
-			vgn = &vugu.VGNode{Component: vgcomp}
-			vgparent.AppendChild(vgn)
-		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(4), Data: " <main:Client :MirNodes='c.MirNodes' :EventQueue='c.EventQueue'></main:Client> "}
+		vgparent.AppendChild(vgn)
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
 		{
-			vgcompKey := vugu.MakeCompKey(0x5E608685C7EAAB0B, vgiterkey)
+			vgcompKey := vugu.MakeCompKey(0x5E70E065BCB6D23A, vgiterkey)
 			// ask BuildEnv for prior instance of this specific component
 			vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Events)
 			if vgcomp == nil {
@@ -48,20 +35,20 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgcomp = new(Events)
 			}
 			vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-			vgcomp.EventQueue = c.EventQueue
+			vgcomp.Recording = c.Recording
 			vgout.Components = append(vgout.Components, vgcomp)
 			vgn = &vugu.VGNode{Component: vgcomp}
 			vgparent.AppendChild(vgn)
 		}
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		for vgiterkeyt, mirNode := range c.MirNodes {
+		for vgiterkeyt, mirNode := range c.Recording.Nodes {
 			var vgiterkey interface{} = vgiterkeyt
 			_ = vgiterkey
 			mirNode := mirNode
 			_ = mirNode
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E608685E47411A5, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E70E06551233A01, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Node)
 				if vgcomp == nil {

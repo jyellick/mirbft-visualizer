@@ -1,14 +1,16 @@
 package main
 
+/*
 import (
 	"fmt"
 	"time"
 
+	"github.com/IBM/mirbft/testengine"
 	"github.com/vugu/vugu"
 )
 
 type Client struct {
-	MirNodes   []*MirNode
+	MirNodes   []*testengine.RecorderNode
 	EventQueue *EventQueue
 	TargetNode int
 }
@@ -25,3 +27,4 @@ func (c *Client) SendRequest(event *vugu.DOMEvent) {
 	fmt.Println("Submitting request")
 	c.MirNodes[c.TargetNode].Propose(c.EventQueue, []byte(time.Now().String()))
 }
+*/

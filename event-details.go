@@ -22,13 +22,13 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		_ = vgparent
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		if c.Event.Tick {
+		if c.IsTick() {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 			vgparent.AppendChild(vgn)
 		}
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		if c.Event.Step != nil {
+		if c.IsRecv() {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 			vgparent.AppendChild(vgn)
 			{
@@ -37,7 +37,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E60868598801A0F, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E70E065B017C87E, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 					if vgcomp == nil {
@@ -45,7 +45,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgcomp = new(MessageViewer)
 					}
 					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-					vgcomp.Msg = c.Event.Step.Payload
+					vgcomp.Msg = c.RecvMsg()
 					vgout.Components = append(vgout.Components, vgcomp)
 					vgn = &vugu.VGNode{Component: vgcomp}
 					vgparent.AppendChild(vgn)
@@ -56,7 +56,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		}
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		if c.Event.Process != nil {
+		if c.IsProcess() {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 			vgparent.AppendChild(vgn)
 			{
@@ -65,7 +65,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E6086853A5B0BF6, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E70E06573C50C00, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ActionsViewer)
 					if vgcomp == nil {
@@ -73,14 +73,40 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgcomp = new(ActionsViewer)
 					}
 					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-					vgcomp.Actions = c.Event.Process
-					vgcomp.Results = c.Event.ProcessResults
+					vgcomp.Actions = c.PlaybackNode.Actions
 					vgout.Components = append(vgout.Components, vgcomp)
 					vgn = &vugu.VGNode{Component: vgcomp}
 					vgparent.AppendChild(vgn)
 				}
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 				vgparent.AppendChild(vgn)
+			}
+		}
+		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
+		vgparent.AppendChild(vgn)
+		if c.IsApply() {
+			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+			vgparent.AppendChild(vgn)
+			{
+				vgparent := vgn
+				_ = vgparent
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+				vgparent.AppendChild(vgn)
+				{
+					vgcompKey := vugu.MakeCompKey(0x5E70E065ED6880FE, vgiterkey)
+					// ask BuildEnv for prior instance of this specific component
+					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ApplyViewer)
+					if vgcomp == nil {
+						// create new one if needed
+						vgcomp = new(ApplyViewer)
+					}
+					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+					vgcomp.Actions = c.PlaybackNode.Processing
+					vgcomp.Apply = c.ApplyResults()
+					vgout.Components = append(vgout.Components, vgcomp)
+					vgn = &vugu.VGNode{Component: vgcomp}
+					vgparent.AppendChild(vgn)
+				}
 			}
 		}
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n"}

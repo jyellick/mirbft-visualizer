@@ -2,15 +2,16 @@ package main
 
 import (
 	"github.com/IBM/mirbft"
+	"github.com/IBM/mirbft/testengine"
 )
 
 type Sequences struct {
-	MirNode *MirNode
+	MirNode *testengine.RecorderNode
 	Status  *mirbft.Status `vugu:"data"`
 }
 
 func (s *Sequences) BeforeBuild() {
-	s.Status = s.MirNode.Status
+	s.Status = s.MirNode.PlaybackNode.Status
 }
 
 func SeqBGClass(seqState mirbft.SequenceState) string {

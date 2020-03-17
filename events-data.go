@@ -2,22 +2,28 @@ package main
 
 import (
 	"fmt"
-	"time"
 
-	"github.com/IBM/mirbft"
-	pb "github.com/IBM/mirbft/mirbftpb"
+	// "github.com/IBM/mirbft"
+	// pb "github.com/IBM/mirbft/mirbftpb"
+	"github.com/IBM/mirbft/testengine"
+	tpb "github.com/IBM/mirbft/testengine/testenginepb"
 	"github.com/vugu/vugu"
 )
 
 type Events struct {
-	EventQueue *EventQueue
-	FilterNode *int
-	StepWindow time.Duration
+	Recording  *testengine.Recording
+	EventLog   *testengine.EventLog
+	FilterNode *uint64
+	StepWindow uint64
 }
 
 func (e *Events) BeforeBuild() {
+	if e.EventLog == nil {
+		e.EventLog = e.Recording.Player.EventLog
+	}
+
 	if e.StepWindow == 0 {
-		e.StepWindow = 500 * time.Millisecond
+		e.StepWindow = 500
 	}
 }
 
@@ -26,23 +32,25 @@ func (e *Events) BeforeBuild() {
 // On the next invocation, old will be the previously returned modCheck.
 func (e *Events) ModCheck(_ *vugu.ModTracker, old interface{}) (bool, interface{}) {
 	type modCheck struct {
-		FilterNode int
-		StepWindow time.Duration
-		NextEvent  *Event
-		Counter    uint64
+		FilterNode *uint64
+		StepWindow uint64
+		NextEvent  *testengine.EventLogEntry
+		// Counter    uint64
 	}
 
 	newData := modCheck{
+		FilterNode: e.FilterNode,
 		StepWindow: e.StepWindow,
-		NextEvent:  e.EventQueue.NextEvent,
-		Counter:    e.EventQueue.Counter,
+		NextEvent:  e.EventLog.NextEventLogEntry,
+		// Counter:    e.EventQueue.Counter,
 	}
-
-	if e.FilterNode == nil {
-		newData.FilterNode = -1
-	} else {
-		newData.FilterNode = *e.FilterNode
-	}
+	/*
+		if e.FilterNode == nil {
+			newData.FilterNode = -1
+		} else {
+			newData.FilterNode = *e.FilterNode
+		}
+	*/
 
 	if old == nil {
 		return true, newData
@@ -59,7 +67,7 @@ func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
 	if group == "all" {
 		e.FilterNode = nil
 	} else {
-		var filterNode int
+		var filterNode uint64
 		res, err := fmt.Sscanf(group, "%d", &filterNode)
 		if err != nil {
 			panic(err)
@@ -72,28 +80,38 @@ func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
 	e.Update(event)
 }
 
-func (e *Events) Filter(event *Event) *Event {
-	return e.FilterTime(e.FilterTarget(event))
-}
-
-func (e *Events) FilterTime(event *Event) *Event {
+func (e *Events) Filter(event *testengine.EventLogEntry) *testengine.EventLogEntry {
 	if event == nil {
 		return nil
 	}
 
-	if event.OccursAt.After(e.EventQueue.FakeTime.Add(e.StepWindow)) {
+	if apply, ok := event.Event.Type.(*tpb.Event_Apply_); ok {
+		if ApplyLength(apply.Apply) == 0 {
+			event = event.Next
+		}
+	}
+
+	return e.FilterTime(e.FilterTarget(event))
+}
+
+func (e *Events) FilterTime(event *testengine.EventLogEntry) *testengine.EventLogEntry {
+	if event == nil {
+		return nil
+	}
+
+	if event.Event.Time > e.EventLog.FakeTime+e.StepWindow {
 		return nil
 	}
 
 	return event
 }
 
-func (e *Events) FilterTarget(event *Event) *Event {
+func (e *Events) FilterTarget(event *testengine.EventLogEntry) *testengine.EventLogEntry {
 	if e.FilterNode == nil || event == nil {
 		return event
 	}
 
-	for event.Target != *e.FilterNode {
+	for event.Event.Target != *e.FilterNode {
 		if event.Next == nil {
 			return nil
 		}
@@ -107,175 +125,74 @@ func (e *Events) FilterTarget(event *Event) *Event {
 func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
 	stepWindow := event.JSEvent().Get("target").Get("value").String()
 
-	stepWindowDuration, err := time.ParseDuration(stepWindow)
+	n, err := fmt.Sscanf(stepWindow, "%d", &e.StepWindow)
 	if err != nil {
 		panic(err)
 	}
 
-	e.StepWindow = stepWindowDuration
+	if n != 1 {
+		panic("expected to parse a number")
+	}
 }
 
 func (e *Events) StepNext(event *vugu.DOMEvent) {
 	fmt.Println("Stepping next")
 	event.PreventDefault()
-	e.EventQueue.ApplyNextEvent()
+	err := e.Recording.Step()
+	if err != nil {
+		panic(err)
+	}
 	e.Update(event)
 }
 
 func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
 	fmt.Println("Stepping step window")
 	event.PreventDefault()
-	e.EventQueue.Elapse(e.StepWindow)
+	endTime := e.EventLog.FakeTime + e.StepWindow
+	for e.EventLog.NextEventLogEntry != nil && e.EventLog.NextEventLogEntry.Event.Time <= endTime {
+		err := e.Recording.Step()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	e.EventLog.FakeTime = endTime
 	e.Update(event)
 }
 
 func (e *Events) Update(event *vugu.DOMEvent) {
 	for {
-		if e.EventQueue.NextEvent == nil ||
+		if e.EventLog.NextEventLogEntry == nil ||
 			e.FilterNode == nil ||
-			*e.FilterNode == e.EventQueue.NextEvent.Target {
+			*e.FilterNode == e.EventLog.NextEventLogEntry.Event.Target {
 			break
 		}
 
-		e.EventQueue.ApplyNextEvent()
-	}
-	for _, node := range e.EventQueue.MirNodes {
-		node.UpdateStatus(e.EventQueue)
-	}
-}
-
-type EventQueue struct {
-	FakeTime  time.Time
-	NextEvent *Event
-	MirNodes  []*MirNode
-	Counter   uint64
-}
-
-func (eq *EventQueue) AddStep(target int, msg *Msg, fromNow time.Duration) {
-	newEvent := &Event{
-		OccursAt: eq.FakeTime.Add(fromNow),
-		Target:   target,
-		Step:     msg,
-		ID:       eq.Counter,
-	}
-
-	eq.Counter++
-	eq.Insert(newEvent)
-}
-
-func (eq *EventQueue) AddTick(target int, fromNow time.Duration) {
-	newEvent := &Event{
-		OccursAt: eq.FakeTime.Add(fromNow),
-		Target:   target,
-		Tick:     true,
-		ID:       eq.Counter,
-	}
-
-	eq.Counter++
-	eq.Insert(newEvent)
-}
-
-func (eq *EventQueue) AddProcess(target int, actions *mirbft.Actions, results *mirbft.ActionResults, fromNow time.Duration) {
-	fmt.Println("AddProcess with ", ActionsLength(actions), " actions")
-	newEvent := &Event{
-		OccursAt:       eq.FakeTime.Add(fromNow),
-		Target:         target,
-		Process:        actions,
-		ProcessResults: results,
-		ID:             eq.Counter,
-	}
-
-	eq.Counter++
-	eq.Insert(newEvent)
-}
-
-func (eq *EventQueue) Insert(newEvent *Event) {
-	if eq.NextEvent == nil {
-		eq.NextEvent = newEvent
-		return
-	}
-
-	event := eq.NextEvent
-	for {
-		if event.Next == nil {
-			event.Next = newEvent
-			return
+		err := e.Recording.Step()
+		if err != nil {
+			panic(err)
 		}
-
-		if event.Next.OccursAt.After(newEvent.OccursAt) {
-			newEvent.Next = event.Next
-			event.Next = newEvent
-			return
-		}
-
-		event = event.Next
 	}
 }
 
-func (eq *EventQueue) Elapse(amount time.Duration) {
-	endTime := eq.FakeTime.Add(amount)
-	for eq.NextEvent != nil {
-		if endTime.Before(eq.NextEvent.OccursAt) {
-			break
-		}
-		eq.ApplyNextEvent()
-	}
-	eq.FakeTime = endTime
+func (e *Events) EventNode(event *testengine.EventLogEntry) *testengine.PlaybackNode {
+	return e.Recording.Player.Nodes[int(event.Event.Target)]
 }
 
-func (eq *EventQueue) ApplyNextEvent() {
-	if eq.NextEvent == nil {
-		panic("tried to apply an event which doesn't exists")
-	}
-
-	e := eq.NextEvent
-
-	eq.FakeTime = e.OccursAt
-
-	node := eq.MirNodes[e.Target]
-	switch {
-	case e.Step != nil:
-		node.Step(e.Step.Source, e.Step.Payload, eq)
-	case e.Tick:
-		node.Tick(eq)
-	case e.Process != nil:
-		node.Process(eq)
+func EventType(event *tpb.Event) string {
+	switch et := event.Type.(type) {
+	case *tpb.Event_Tick_:
+		return "Tick"
+	case *tpb.Event_Receive_:
+		return fmt.Sprintf("Receive from %d", et.Receive.Source)
+	case *tpb.Event_Process_:
+		return "Process"
+	case *tpb.Event_Apply_:
+		return "Apply"
+	case *tpb.Event_Propose_:
+		return "Propose"
 	default:
-		panic("some action must be set for the event")
+		return "Unknown"
 	}
 
-	eq.NextEvent = e.Next
-}
-
-func (eq *EventQueue) LinkForNode(source uint64, latency time.Duration) EventLink {
-	return func(dest uint64, msg *pb.Msg) {
-		eq.AddStep(int(dest), &Msg{
-			Source:  source,
-			Payload: msg,
-		}, latency)
-	}
-}
-
-type Event struct {
-	OccursAt time.Time
-	Target   int
-	Next     *Event
-	ID       uint64
-
-	// Only one of Step, Tick, or Process should be non-zero
-	Step           *Msg
-	Tick           bool
-	Process        *mirbft.Actions
-	ProcessResults *mirbft.ActionResults
-}
-
-type EventLink func(uint64, *pb.Msg)
-
-func (el EventLink) Send(dest uint64, msg *pb.Msg) {
-	el(dest, msg)
-}
-
-type Msg struct {
-	Source  uint64
-	Payload *pb.Msg
 }

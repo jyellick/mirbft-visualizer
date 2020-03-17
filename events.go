@@ -39,7 +39,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "h4", Attr: []vugu.VGAttribute(nil)}
 				vgparent.AppendChild(vgn)
 				{
-					vghtml := fmt.Sprint(fmt.Sprintf("Events (time is %d)", c.EventQueue.FakeTime.UnixNano()/1000/1000))
+					vghtml := fmt.Sprint(fmt.Sprintf("Events (time is %d)", c.EventLog.FakeTime))
 					vgn.InnerHTML = &vghtml
 				}
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
@@ -83,14 +83,13 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 							_ = vgparent
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 							vgparent.AppendChild(vgn)
-							for event := c.Filter(c.EventQueue.NextEvent); event != nil; event = c.Filter(event.Next) {
+							for event := c.Filter(c.EventLog.NextEventLogEntry); event != nil; event = c.Filter(event.Next) {
 								var vgiterkey interface{} = event
 								_ = vgiterkey
 								event := event
 								_ = event
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row border rounded"}}}
 								vgparent.AppendChild(vgn)
-								vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "id", Val: fmt.Sprint(event.ID)})
 								{
 									vgparent := vgn
 									_ = vgparent
@@ -99,42 +98,16 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
 									vgparent.AppendChild(vgn)
 									{
-										vghtml := fmt.Sprint(event.Target)
+										vghtml := fmt.Sprint(event.Event.Target)
 										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 									vgparent.AppendChild(vgn)
-									if event.Tick {
-										vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
-										vgparent.AppendChild(vgn)
-										{
-											vgparent := vgn
-											_ = vgparent
-											vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Tick"}
-											vgparent.AppendChild(vgn)
-										}
-									}
-									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
 									vgparent.AppendChild(vgn)
-									if event.Step != nil {
-										vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
-										vgparent.AppendChild(vgn)
-										{
-											vghtml := fmt.Sprint(fmt.Sprintf("Receive %d", event.Step.Source))
-											vgn.InnerHTML = &vghtml
-										}
-									}
-									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
-									vgparent.AppendChild(vgn)
-									if event.Process != nil {
-										vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
-										vgparent.AppendChild(vgn)
-										{
-											vgparent := vgn
-											_ = vgparent
-											vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Process"}
-											vgparent.AppendChild(vgn)
-										}
+									{
+										vghtml := fmt.Sprint(EventType(event.Event))
+										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 									vgparent.AppendChild(vgn)
@@ -144,7 +117,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5E6086850CFFC356, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5E70E0650669B537, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {
@@ -153,6 +126,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 											}
 											vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 											vgcomp.Event = event
+											vgcomp.PlaybackNode = c.EventNode(event)
 											vgout.Components = append(vgout.Components, vgcomp)
 											vgn = &vugu.VGNode{Component: vgcomp}
 											vgparent.AppendChild(vgn)
@@ -163,7 +137,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-2 my-auto"}}}
 									vgparent.AppendChild(vgn)
 									{
-										vghtml := fmt.Sprint(event.OccursAt.UnixNano() / 1000 / 1000)
+										vghtml := fmt.Sprint(event.Event.Time)
 										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
@@ -232,7 +206,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								_ = vgparent
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 								vgparent.AppendChild(vgn)
-								for i := 0; i < len(c.EventQueue.MirNodes); i++ {
+								for i := 0; i < len(c.Recording.Nodes); i++ {
 									var vgiterkey interface{} = i
 									_ = vgiterkey
 									i := i

@@ -1,10 +1,4 @@
 <div class="row border rounded mb-2" style="border-width:3px">
-<!--
-    <div class="col-3">
-        <strong vg-html='"Node", c.ID'> </strong>
-        <main:NodeControl :MirNode="c.MirNode"></main:NodeControl>
-    </div>
--->
     <div class="col-3 border-right border-left">
         <main:Actions :MirNode="c.MirNode"></main:Actions>
     </div>

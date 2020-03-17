@@ -1,11 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
-	"github.com/IBM/mirbft"
-	"github.com/pkg/errors"
+	"github.com/IBM/mirbft/testengine"
 	"github.com/vugu/vugu"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -45,63 +41,27 @@ func wasmZap(eventEnv vugu.EventEnv) *zap.Logger {
 
 type Network struct {
 	Parameters *BootstrapParameters
-	MirNodes   []*MirNode
-	EventQueue *EventQueue
+	Recording  *testengine.Recording
 }
 
 func (n *Network) BeforeBuild() {
-	if n.MirNodes != nil {
+	if n.Recording != nil {
 		return
 	}
 
 	logger := wasmZap(n.Parameters.EventEnv)
 
-	networkConfig := mirbft.StandardInitialNetworkConfig(n.Parameters.NodeCount)
-	networkConfig.NumberOfBuckets = int32(n.Parameters.BucketCount)
-
-	nodes := make([]*mirbft.Node, n.Parameters.NodeCount)
-
-	for i := range nodes {
-		fmt.Println("Creating node", i)
-		config := &mirbft.Config{
-			ID:     uint64(i),
-			Logger: logger.Named(fmt.Sprintf("node%d", i)),
-			BatchParameters: mirbft.BatchParameters{
-				CutSizeBytes: 1,
-			},
-			SuspectTicks:         n.Parameters.SuspectTicks,
-			NewEpochTimeoutTicks: n.Parameters.NewEpochTimeoutTicks,
-			HeartbeatTicks:       n.Parameters.HeartbeatTicks,
-		}
-
-		node, err := mirbft.StartNewNode(config, nil, networkConfig)
-		if err != nil {
-			panic(errors.WithMessagef(err, "could not create node %d", i))
-		}
-
-		nodes[i] = node
+	recorder := testengine.BasicRecorder(n.Parameters.NodeCount, 0, 100)
+	recorder.NetworkConfig.NumberOfBuckets = int32(n.Parameters.BucketCount)
+	recorder.Logger = logger
+	for _, clientConfig := range recorder.ClientConfigs {
+		clientConfig.MaxInFlight = 1
 	}
 
-	mirNodes := make([]*MirNode, n.Parameters.NodeCount)
-
-	eventQueue := &EventQueue{
-		FakeTime: time.Unix(0, 0),
-		MirNodes: mirNodes,
+	recording, err := recorder.Recording()
+	if err != nil {
+		panic(err)
 	}
 
-	for i, node := range nodes {
-		fmt.Println("Creating mir node", i)
-
-		mirNode, err := NewMirNode(node, eventQueue.LinkForNode(uint64(i), 100*time.Millisecond))
-		if err != nil {
-			panic(errors.WithMessagef(err, "could get create mir node for %d", i))
-		}
-
-		mirNodes[i] = mirNode
-
-		eventQueue.AddTick(i, mirNode.TickInterval)
-	}
-
-	n.MirNodes = mirNodes
-	n.EventQueue = eventQueue
+	n.Recording = recording
 }
