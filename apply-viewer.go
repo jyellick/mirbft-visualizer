@@ -88,7 +88,7 @@ func (c *ApplyViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E74BA28DBAB29CE, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E74BD9B8C2C4834, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*PreprocessViewer)
 									if vgcomp == nil {

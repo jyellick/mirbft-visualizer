@@ -10,18 +10,19 @@ import (
 	"github.com/vugu/vugu"
 )
 
+type EventStepper interface {
+	Step() error
+}
+
 type Events struct {
-	Recording  *testengine.Recording
+	Stepper    EventStepper
 	EventLog   *testengine.EventLog
+	Nodes      []*testengine.PlaybackNode
 	FilterNode *uint64
 	StepWindow uint64
 }
 
 func (e *Events) BeforeBuild() {
-	if e.EventLog == nil {
-		e.EventLog = e.Recording.Player.EventLog
-	}
-
 	if e.StepWindow == 0 {
 		e.StepWindow = 500
 	}
@@ -138,7 +139,7 @@ func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
 func (e *Events) StepNext(event *vugu.DOMEvent) {
 	fmt.Println("Stepping next")
 	event.PreventDefault()
-	err := e.Recording.Step()
+	err := e.Stepper.Step()
 	if err != nil {
 		panic(err)
 	}
@@ -150,7 +151,7 @@ func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
 	event.PreventDefault()
 	endTime := e.EventLog.FakeTime + e.StepWindow
 	for e.EventLog.NextEventLogEntry != nil && e.EventLog.NextEventLogEntry.Event.Time <= endTime {
-		err := e.Recording.Step()
+		err := e.Stepper.Step()
 		if err != nil {
 			panic(err)
 		}
@@ -168,7 +169,7 @@ func (e *Events) Update(event *vugu.DOMEvent) {
 			break
 		}
 
-		err := e.Recording.Step()
+		err := e.Stepper.Step()
 		if err != nil {
 			panic(err)
 		}
@@ -176,7 +177,7 @@ func (e *Events) Update(event *vugu.DOMEvent) {
 }
 
 func (e *Events) EventNode(event *testengine.EventLogEntry) *testengine.PlaybackNode {
-	return e.Recording.Player.Nodes[int(event.Event.Target)]
+	return e.Nodes[int(event.Event.Target)]
 }
 
 func EventType(event *tpb.Event) string {

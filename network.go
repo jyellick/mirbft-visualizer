@@ -27,7 +27,7 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
 		{
-			vgcompKey := vugu.MakeCompKey(0x5E74BA28F04DFD49, vgiterkey)
+			vgcompKey := vugu.MakeCompKey(0x5E74BD9B773220F0, vgiterkey)
 			// ask BuildEnv for prior instance of this specific component
 			vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Events)
 			if vgcomp == nil {
@@ -35,20 +35,22 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgcomp = new(Events)
 			}
 			vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-			vgcomp.Recording = c.Recording
+			vgcomp.EventLog = c.EventLog
+			vgcomp.Nodes = c.Nodes
+			vgcomp.Stepper = c.Stepper
 			vgout.Components = append(vgout.Components, vgcomp)
 			vgn = &vugu.VGNode{Component: vgcomp}
 			vgparent.AppendChild(vgn)
 		}
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
-		for vgiterkeyt, mirNode := range c.Recording.Player.Nodes {
+		for vgiterkeyt, mirNode := range c.Nodes {
 			var vgiterkey interface{} = vgiterkeyt
 			_ = vgiterkey
 			mirNode := mirNode
 			_ = mirNode
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E74BA284D60764B, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E74BD9BBF4BAB8F, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Node)
 				if vgcomp == nil {

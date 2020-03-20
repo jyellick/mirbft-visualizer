@@ -37,7 +37,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E74BA280F6B338D, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E74BD9B8D8754DD, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 					if vgcomp == nil {
@@ -65,7 +65,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E74BA284B9BF4F3, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E74BD9B36F93B4D, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ActionsViewer)
 					if vgcomp == nil {
@@ -93,7 +93,7 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E74BA281505C8A9, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E74BD9B2EC1B58F, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ApplyViewer)
 					if vgcomp == nil {

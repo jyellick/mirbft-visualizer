@@ -87,7 +87,7 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E74BA28BDFE94BA, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E74BD9B3A4AB3F5, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Bootstrap)
 							if vgcomp == nil {
@@ -107,7 +107,7 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				}
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 				vgparent.AppendChild(vgn)
-				if c.Initialized && c.BootstrapParameters != nil {
+				if c.Initialized && c.Recording != nil {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row m-2"}}}
 					vgparent.AppendChild(vgn)
 					{
@@ -116,7 +116,7 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E74BA28F28965B8, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E74BD9BAACE39E9, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Network)
 							if vgcomp == nil {
@@ -124,7 +124,9 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgcomp = new(Network)
 							}
 							vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-							vgcomp.Parameters = c.BootstrapParameters
+							vgcomp.EventLog = c.EventLog
+							vgcomp.Nodes = c.Nodes
+							vgcomp.Stepper = c.Recording
 							vgout.Components = append(vgout.Components, vgcomp)
 							vgn = &vugu.VGNode{Component: vgcomp}
 							vgparent.AppendChild(vgn)

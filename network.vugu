@@ -1,5 +1,5 @@
 <div class="col-12">
   <!-- <main:Client :MirNodes='c.MirNodes' :EventQueue='c.EventQueue'></main:Client> -->
-  <main:Events :Recording='c.Recording'></main:Events>
-  <main:Node vg-for='_, mirNode := range c.Recording.Player.Nodes' :MirNode="mirNode"></main:Node>
+  <main:Events :Stepper='c.Stepper' :Nodes='c.Nodes' :EventLog='c.EventLog'></main:Events>
+  <main:Node vg-for='_, mirNode := range c.Nodes' :MirNode="mirNode"></main:Node>
 </div>

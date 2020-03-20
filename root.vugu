@@ -16,8 +16,8 @@
           </div>
           <div vg-if='!c.Initialized' class="row m-2">
               <main:Bootstrap :Bootstrap="c.Bootstrap" :Load='c.Load'></main:Bootstrap> </div>
-          <div vg-if='c.Initialized && c.BootstrapParameters != nil' class="row m-2">
-              <main:Network :Parameters="c.BootstrapParameters"></main:Network>
+          <div vg-if='c.Initialized && c.Recording != nil' class="row m-2">
+              <main:Network :Nodes="c.Nodes" :Stepper="c.Recording" :EventLog='c.EventLog'></main:Network>
           </div>
           <div vg-if='c.Initialized && c.EventLog != nil' class="row m-2">
               Placeholder

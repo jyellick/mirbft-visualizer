@@ -29,7 +29,7 @@
           <div class="form-group col-md-4">
             <label>Target</label>
             <select class="form-control" @change='c.SetNodeFilter(event)'>
-              <option vg-for='i := 0; i < len(c.Recording.Nodes); i++' :value='i' vg-html='fmt.Sprintf("Node %d", i)'></option>
+              <option vg-for='i := 0; i < len(c.Nodes); i++' :value='i' vg-html='fmt.Sprintf("Node %d", i)'></option>
               <option selected value="all">All</option>
             </select>
             <div class="btn-group w-100" role="group">
