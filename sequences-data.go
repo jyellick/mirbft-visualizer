@@ -6,12 +6,12 @@ import (
 )
 
 type Sequences struct {
-	MirNode *testengine.RecorderNode
+	MirNode *testengine.PlaybackNode
 	Status  *mirbft.Status `vugu:"data"`
 }
 
 func (s *Sequences) BeforeBuild() {
-	s.Status = s.MirNode.PlaybackNode.Status
+	s.Status = s.MirNode.Status
 }
 
 func SeqBGClass(seqState mirbft.SequenceState) string {

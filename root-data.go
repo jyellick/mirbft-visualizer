@@ -3,16 +3,23 @@ package main
 import (
 	"fmt"
 
-	_ "github.com/vugu/vugu"
+	"github.com/IBM/mirbft/testengine"
 )
 
 type Root struct {
-	Bootstrapped        bool `vugu:"data"`
+	Initialized         bool `vugu:"data"`
 	BootstrapParameters *BootstrapParameters
+	EventLog            *testengine.EventLog
 }
 
 func (r *Root) Bootstrap(parameters *BootstrapParameters) {
 	fmt.Println("Bootstrapped", parameters.NodeCount)
-	r.Bootstrapped = true
 	r.BootstrapParameters = parameters
+	r.Initialized = true
+}
+
+func (r *Root) Load(el *testengine.EventLog) {
+	fmt.Println("Loaded")
+	r.EventLog = el
+	r.Initialized = true
 }

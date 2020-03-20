@@ -1,14 +1,18 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 
+	"github.com/IBM/mirbft/testengine"
 	"github.com/vugu/vugu"
+	"github.com/vugu/vugu/js"
 )
 
 type Bootstrap struct {
 	Parameters *BootstrapParameters
 	Bootstrap  func(parameters *BootstrapParameters)
+	Load       func(el *testengine.EventLog)
 }
 
 type BootstrapParameters struct {
@@ -63,4 +67,29 @@ func (b *Bootstrap) Submit(event *vugu.DOMEvent) {
 	fmt.Printf("Submitting bootstrap with value %+v\n", b.Parameters)
 	b.Parameters.EventEnv = event.EventEnv()
 	b.Bootstrap(b.Parameters)
+}
+
+func (b *Bootstrap) SelectFile(event *vugu.DOMEvent) {
+	event.PreventDefault()
+	fmt.Printf("About to submit load\n")
+	file := event.JSEvent().Get("target").Get("files").Index(0)
+	fileSize := file.Get("size").Int()
+	callback := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		data := make([]byte, fileSize)
+
+		event.EventEnv().Lock()
+		defer event.EventEnv().UnlockRender()
+		js.CopyBytesToGo(data, js.Global().Get("Uint8Array").New(args[0]))
+		buffer := bytes.NewBuffer(data)
+		el, err := testengine.ReadEventLog(buffer)
+		if err != nil {
+			js.Global().Call("alert", fmt.Sprintf("error reading log: %s", err))
+			return nil
+		}
+
+		fmt.Printf("About load\n")
+		b.Load(el)
+		return nil
+	})
+	file.Call("arrayBuffer").Call("then", callback)
 }

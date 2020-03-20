@@ -1,23 +1,41 @@
-<form class="bootstraper" @submit='c.Submit(event)'>
-   <div class="form-group">
-       <label for="node-count">Node Count</label>
-       <input type="text" @change="c.SetNodeCount(event)" class="form-control" :value='c.Parameters.NodeCount'/>
-   </div>
-   <div class="form-group">
-       <label for="node-count">Bucket Count</label>
-       <input type="text" @change="c.SetBucketCount(event)" class="form-control" :value='c.Parameters.BucketCount'/>
-   </div>
-   <div class="form-group">
-       <label for="node-count">Heartbeat Ticks</label>
-       <input type="text" @change="c.SetHeartbeatTicks(event)" class="form-control" :value='c.Parameters.HeartbeatTicks'/>
-   </div>
-   <div class="form-group">
-       <label for="node-count">Suspect Ticks</label>
-       <input type="text" @change="c.SetSuspectTicks(event)" class="form-control" :value='c.Parameters.SuspectTicks'/>
-   </div>
-   <div class="form-group">
-       <label for="node-count">NewEpochTimeout Ticks</label>
-       <input type="text" @change="c.SetNewEpochTimeoutTicks(event)" class="form-control" :value='c.Parameters.NewEpochTimeoutTicks'/>
-   </div>
-   <button type="submit" class="btn btn-primary">Bootstrap!</button>
-</form>
+<div class="col-12">
+  <div class="row">
+  <div class="col-5 border rounded p-2 m-2">
+    <h4> New network </h4>
+    <form @submit='c.Submit(event)'>
+      <div class="form-group">
+          <label for="node-count">Node Count</label>
+          <input type="text" @change="c.SetNodeCount(event)" class="form-control" :value='c.Parameters.NodeCount'/>
+      </div>
+      <div class="form-group">
+          <label for="node-count">Bucket Count</label>
+          <input type="text" @change="c.SetBucketCount(event)" class="form-control" :value='c.Parameters.BucketCount'/>
+      </div>
+      <div class="form-group">
+          <label for="node-count">Heartbeat Ticks</label>
+          <input type="text" @change="c.SetHeartbeatTicks(event)" class="form-control" :value='c.Parameters.HeartbeatTicks'/>
+      </div>
+      <div class="form-group">
+          <label for="node-count">Suspect Ticks</label>
+          <input type="text" @change="c.SetSuspectTicks(event)" class="form-control" :value='c.Parameters.SuspectTicks'/>
+      </div>
+      <div class="form-group">
+          <label for="node-count">NewEpochTimeout Ticks</label>
+          <input type="text" @change="c.SetNewEpochTimeoutTicks(event)" class="form-control" :value='c.Parameters.NewEpochTimeoutTicks'/>
+      </div>
+      <button type="submit" class="btn btn-primary">Bootstrap!</button>
+    </form>
+  </div>
+  <div class="col-5 border rounded p-2 m-2">
+    <h4> Predefined network </h4>
+    <form>
+      <div class="form-group">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="customFile" @change='c.SelectFile(event)'>
+          <label class="custom-file-label" for="customFile">Choose existing eventlog file</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>

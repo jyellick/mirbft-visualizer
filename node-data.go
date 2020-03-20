@@ -6,12 +6,12 @@ import (
 )
 
 type Node struct {
-	MirNode *testengine.RecorderNode
+	MirNode *testengine.PlaybackNode
 	ID      uint64         `vugu:"data"`
 	Status  *mirbft.Status `vugu:"data"`
 }
 
 func (n *Node) BeforeBuild() {
-	n.Status = n.MirNode.PlaybackNode.Status
-	n.ID = n.MirNode.PlaybackNode.Node.Config.ID
+	n.Status = n.MirNode.Status
+	n.ID = n.MirNode.Node.Config.ID
 }

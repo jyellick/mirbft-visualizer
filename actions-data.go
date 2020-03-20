@@ -6,10 +6,10 @@ import (
 )
 
 type Actions struct {
-	MirNode *testengine.RecorderNode
+	MirNode *testengine.PlaybackNode
 	Actions *mirbft.Actions `vugu:"data"`
 }
 
 func (a *Actions) BeforeBuild() {
-	a.Actions = a.MirNode.PlaybackNode.Actions
+	a.Actions = a.MirNode.Actions
 }

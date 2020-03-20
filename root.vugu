@@ -14,10 +14,13 @@
                   <h1>MirBFT Visualization</h1>
               </div>
           </div>
-          <div vg-if='!c.Bootstrapped' class="row m-2">
-              <main:Bootstrap :Bootstrap="c.Bootstrap"></main:Bootstrap> </div>
-          <div vg-if='c.Bootstrapped' class="row m-2">
+          <div vg-if='!c.Initialized' class="row m-2">
+              <main:Bootstrap :Bootstrap="c.Bootstrap" :Load='c.Load'></main:Bootstrap> </div>
+          <div vg-if='c.Initialized && c.BootstrapParameters != nil' class="row m-2">
               <main:Network :Parameters="c.BootstrapParameters"></main:Network>
+          </div>
+          <div vg-if='c.Initialized && c.EventLog != nil' class="row m-2">
+              Placeholder
           </div>
       </div>
     </body>
