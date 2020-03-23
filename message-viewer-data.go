@@ -14,12 +14,8 @@ type MessageViewer struct {
 }
 
 func (mv *MessageViewer) BeforeBuild() {
-	if mv.MsgSummary == "" {
-		mv.MsgSummary = MsgToSummary(mv.Msg)
-	}
-	if mv.MsgAsJSON == "" {
-		mv.MsgAsJSON = MsgToJSON(mv.Msg)
-	}
+	mv.MsgSummary = MsgToSummary(mv.Msg)
+	mv.MsgAsJSON = MsgToJSON(mv.Msg)
 }
 
 var marshaler = &jsonpb.Marshaler{
@@ -65,7 +61,7 @@ func MsgToSummary(outerMsg *pb.Msg) string {
 		return fmt.Sprintf("Prepare seq_no=%d epoch=%d digest=%x", msg.SeqNo, msg.Epoch, Trunc8(msg.Digest))
 	case *pb.Msg_Commit:
 		msg := innerMsg.Commit
-		return fmt.Sprintf("Prepare seq_no=%d epoch=%d digest=%x", msg.SeqNo, msg.Epoch, Trunc8(msg.Digest))
+		return fmt.Sprintf("Commit seq_no=%d epoch=%d digest=%x", msg.SeqNo, msg.Epoch, Trunc8(msg.Digest))
 	case *pb.Msg_Checkpoint:
 		msg := innerMsg.Checkpoint
 		return fmt.Sprintf("Checkpoint seq_no=%d value=%x", msg.SeqNo, Trunc8(msg.Value))

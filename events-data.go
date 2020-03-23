@@ -78,49 +78,71 @@ func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
 		}
 		e.FilterNode = &filterNode
 	}
-	e.Update(event)
+	e.Update()
 }
 
-func (e *Events) Filter(event *testengine.EventLogEntry) *testengine.EventLogEntry {
-	if event == nil {
-		return nil
-	}
-
-	if apply, ok := event.Event.Type.(*tpb.Event_Apply_); ok {
-		if ApplyLength(apply.Apply) == 0 {
-			event = event.Next
-		}
-	}
-
-	return e.FilterTime(e.FilterTarget(event))
+type EventIterator struct {
+	CurrentEvent   *testengine.EventLogEntry
+	FilterNode     *uint64
+	MaxTime        uint64
+	PendingEvents  map[uint64]struct{}
+	PostProcessing map[uint64]struct{}
 }
 
-func (e *Events) FilterTime(event *testengine.EventLogEntry) *testengine.EventLogEntry {
-	if event == nil {
-		return nil
-	}
+func (ei *EventIterator) Next() *testengine.EventLogEntry {
+	for ; ei.CurrentEvent != nil; ei.CurrentEvent = ei.CurrentEvent.Next {
+		event := ei.CurrentEvent.Event
 
-	if event.Event.Time > e.EventLog.FakeTime+e.StepWindow {
-		return nil
-	}
-
-	return event
-}
-
-func (e *Events) FilterTarget(event *testengine.EventLogEntry) *testengine.EventLogEntry {
-	if e.FilterNode == nil || event == nil {
-		return event
-	}
-
-	for event.Event.Target != *e.FilterNode {
-		if event.Next == nil {
+		if event.Time > ei.MaxTime {
 			return nil
 		}
 
-		event = event.Next
+		if _, ok := event.Type.(*tpb.Event_Process_); ok {
+			ei.PostProcessing[event.Target] = struct{}{}
+
+			if _, ok := ei.PendingEvents[event.Target]; ok {
+				continue
+			}
+		} else {
+			if _, ok := ei.PostProcessing[event.Target]; ok {
+				// Until we have processed all previous events for a node
+				// we can't properly populate the process actions
+				continue
+			}
+		}
+
+		ei.PendingEvents[event.Target] = struct{}{}
+
+		if ei.FilterNode != nil && event.Target != *ei.FilterNode {
+			continue
+		}
+
+		if apply, ok := event.Type.(*tpb.Event_Apply_); ok {
+			if ApplyLength(apply.Apply) == 0 {
+				continue
+			}
+		}
+
+		break
 	}
 
-	return event
+	result := ei.CurrentEvent
+	if result != nil {
+		ei.CurrentEvent = ei.CurrentEvent.Next
+	}
+
+	return result
+}
+
+func (e *Events) Events() (*EventIterator, *testengine.EventLogEntry) {
+	ei := &EventIterator{
+		CurrentEvent:   e.EventLog.NextEventLogEntry,
+		FilterNode:     e.FilterNode,
+		MaxTime:        e.EventLog.FakeTime + e.StepWindow,
+		PendingEvents:  map[uint64]struct{}{},
+		PostProcessing: map[uint64]struct{}{},
+	}
+	return ei, ei.Next()
 }
 
 func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
@@ -141,9 +163,10 @@ func (e *Events) StepNext(event *vugu.DOMEvent) {
 	event.PreventDefault()
 	err := e.Stepper.Step()
 	if err != nil {
+		fmt.Printf("Err was: %+v", err)
 		panic(err)
 	}
-	e.Update(event)
+	e.Update()
 }
 
 func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
@@ -153,16 +176,26 @@ func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
 	for e.EventLog.NextEventLogEntry != nil && e.EventLog.NextEventLogEntry.Event.Time <= endTime {
 		err := e.Stepper.Step()
 		if err != nil {
+			fmt.Printf("Err was: %+v", err)
 			panic(err)
 		}
 	}
 
 	e.EventLog.FakeTime = endTime
-	e.Update(event)
+	e.Update()
 }
 
-func (e *Events) Update(event *vugu.DOMEvent) {
-	for {
+func (e *Events) Update() {
+	for e.EventLog.NextEventLogEntry != nil {
+		if apply, ok := e.EventLog.NextEventLogEntry.Event.Type.(*tpb.Event_Apply_); ok {
+			if ApplyLength(apply.Apply) == 0 {
+				err := e.Stepper.Step()
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+
 		if e.EventLog.NextEventLogEntry == nil ||
 			e.FilterNode == nil ||
 			*e.FilterNode == e.EventLog.NextEventLogEntry.Event.Target {

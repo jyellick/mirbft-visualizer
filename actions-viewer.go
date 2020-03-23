@@ -31,8 +31,8 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgparent.AppendChild(vgn)
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "text-left btn btn-outline-primary w-100"}, vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "data-toggle", Val: "collapse"}, vugu.VGAttribute{Namespace: "", Key: "aria-expanded", Val: "false"}}}
 			vgparent.AppendChild(vgn)
-			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "aria-controls", Val: fmt.Sprint(fmt.Sprintf("%p", c.Actions))})
-			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "data-target", Val: fmt.Sprint(fmt.Sprintf("#%p", c.Actions))})
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "aria-controls", Val: fmt.Sprint(fmt.Sprintf("%p-%p", c, c.Actions))})
+			vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "data-target", Val: fmt.Sprint(fmt.Sprintf("#%p-%p", c, c.Actions))})
 			{
 				vghtml := fmt.Sprint(c.ActionsSummary)
 				vgn.InnerHTML = &vghtml
@@ -44,7 +44,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		vgparent.AppendChild(vgn)
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "mp-0 collapse"}}}
 		vgparent.AppendChild(vgn)
-		vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "id", Val: fmt.Sprint(fmt.Sprintf("%p", c.Actions))})
+		vgn.Attr = append(vgn.Attr, vugu.VGAttribute{Key: "id", Val: fmt.Sprint(fmt.Sprintf("%p-%p", c, c.Actions))})
 		{
 			vgparent := vgn
 			_ = vgparent
@@ -86,7 +86,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E74BD9B10697ACD, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E78BAB65E5C6B6E, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -138,7 +138,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E74BD9B2932D338, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E78BAB6F38C6439, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -192,7 +192,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E74BD9BD76AB770, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E78BAB649DC1D4B, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*PreprocessViewer)
 									if vgcomp == nil {

@@ -12,7 +12,7 @@ import (
 type Bootstrap struct {
 	Parameters *BootstrapParameters
 	Bootstrap  func(parameters *BootstrapParameters)
-	Load       func(el *testengine.EventLog)
+	Load       func(eventEnv vugu.EventEnv, el *testengine.EventLog)
 }
 
 type BootstrapParameters struct {
@@ -71,7 +71,6 @@ func (b *Bootstrap) Submit(event *vugu.DOMEvent) {
 
 func (b *Bootstrap) SelectFile(event *vugu.DOMEvent) {
 	event.PreventDefault()
-	fmt.Printf("About to submit load\n")
 	file := event.JSEvent().Get("target").Get("files").Index(0)
 	fileSize := file.Get("size").Int()
 	callback := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
@@ -87,8 +86,17 @@ func (b *Bootstrap) SelectFile(event *vugu.DOMEvent) {
 			return nil
 		}
 
-		fmt.Printf("About load\n")
-		b.Load(el)
+		length := 0
+		for event := el.NextEventLogEntry; event != nil; event = event.Next {
+			length++
+		}
+
+		if el.NextEventLogEntry != el.FirstEventLogEntry {
+			fmt.Println("Someone forgot to rewind this log")
+		}
+
+		fmt.Printf("Load eventlog of length %d\n", length)
+		b.Load(event.EventEnv(), el)
 		return nil
 	})
 	file.Call("arrayBuffer").Call("then", callback)

@@ -87,7 +87,7 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E74BD9B3A4AB3F5, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E78BAB6B8CD2462, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Bootstrap)
 							if vgcomp == nil {
@@ -116,7 +116,7 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E74BD9BAACE39E9, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E78BAB6DFDBAC9B, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Network)
 							if vgcomp == nil {
@@ -143,7 +143,25 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					{
 						vgparent := vgn
 						_ = vgparent
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              Placeholder\n          "}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
+						vgparent.AppendChild(vgn)
+						{
+							vgcompKey := vugu.MakeCompKey(0x5E78BAB65A12E11B, vgiterkey)
+							// ask BuildEnv for prior instance of this specific component
+							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Network)
+							if vgcomp == nil {
+								// create new one if needed
+								vgcomp = new(Network)
+							}
+							vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+							vgcomp.EventLog = c.EventLog
+							vgcomp.Nodes = c.Nodes
+							vgcomp.Stepper = c.Player
+							vgout.Components = append(vgout.Components, vgcomp)
+							vgn = &vugu.VGNode{Component: vgcomp}
+							vgparent.AppendChild(vgn)
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)
 					}
 				}

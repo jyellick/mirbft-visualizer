@@ -20,7 +20,7 @@
               <main:Network :Nodes="c.Nodes" :Stepper="c.Recording" :EventLog='c.EventLog'></main:Network>
           </div>
           <div vg-if='c.Initialized && c.EventLog != nil' class="row m-2">
-              Placeholder
+              <main:Network :Nodes="c.Nodes" :Stepper="c.Player" :EventLog='c.EventLog'></main:Network>
           </div>
       </div>
     </body>

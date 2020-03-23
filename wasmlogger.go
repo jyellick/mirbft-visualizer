@@ -60,9 +60,10 @@ func (lws *lockingWriterSync) Sync() {}
 func wasmZap(eventEnv vugu.EventEnv) *zap.Logger {
 	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 
-	lockingWriteSyncer := zapcore.AddSync(&lockingWriterSync{
-		eventEnv: eventEnv,
-	})
+	lockingWriteSync := newLockingWriterSync(eventEnv)
+	go lockingWriteSync.drain()
+
+	lockingWriteSyncer := zapcore.AddSync(lockingWriteSync)
 
 	allPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return true

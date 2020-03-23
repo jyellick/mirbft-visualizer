@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/IBM/mirbft/testengine"
-	_ "github.com/vugu/vugu"
+	"github.com/vugu/vugu"
 )
 
 type Root struct {
 	Initialized bool `vugu:"data"`
 	EventLog    *testengine.EventLog
 	Recording   *testengine.Recording
+	Player      *testengine.Player
 	Nodes       []*testengine.PlaybackNode
 }
 
@@ -38,8 +39,18 @@ func (r *Root) Bootstrap(parameters *BootstrapParameters) {
 	r.Initialized = true
 }
 
-func (r *Root) Load(el *testengine.EventLog) {
+func (r *Root) Load(eventEnv vugu.EventEnv, el *testengine.EventLog) {
 	fmt.Println("Loaded")
+
+	logger := wasmZap(eventEnv)
+
+	player, err := testengine.NewPlayer(el, logger)
+	if err != nil {
+		panic(err)
+	}
+
+	r.Player = player
+	r.Nodes = player.Nodes
 	r.EventLog = el
 	r.Initialized = true
 }

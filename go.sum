@@ -26,6 +26,14 @@ github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688 h1:HaWoRfEQGeAgIua
 github.com/jyellick/mirbft v0.0.0-20200228045806-32b2be5b0688/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/mirbft v0.0.0-20200313203515-1e074c88c08f h1:bA5BFPZ8R5TkctP/MYHlE4Z9Se8wIrO833jmEUZh4Mo=
 github.com/jyellick/mirbft v0.0.0-20200313203515-1e074c88c08f/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200320140545-ef8ae693d956 h1:TfOzWB6ywWDN1BLQUxmbonC4th1dNPW9qwrhOgr5FGw=
+github.com/jyellick/mirbft v0.0.0-20200320140545-ef8ae693d956/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200320141150-d791bdbff224 h1:dLdkeJZ/2jJJ8des/1qh8izpbS1UT4EGMXd4OLlBxpE=
+github.com/jyellick/mirbft v0.0.0-20200320141150-d791bdbff224/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200320142314-18227fb396d0 h1:rQuMnBchdJ8X4OTWAp4h+eqbvXGqtbR5Z5O2EIvmmBQ=
+github.com/jyellick/mirbft v0.0.0-20200320142314-18227fb396d0/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0 h1:ERbFnhe+dqjwc+1t2eD8wnjWkHdme3HejQh6yNbyQNE=
+github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/vugu v0.1.0-fork h1:IOfceUosFvHdq3KzQaXRFsNqCUjgax8uIeWRbvYp9W4=
 github.com/jyellick/vugu v0.1.0-fork/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
