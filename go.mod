@@ -5,9 +5,9 @@ go 1.13
 // replace github.com/IBM/mirbft => /home/yellickj/oss/mirbft
 replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0
 
-replace github.com/vugu/vugu => /home/yellickj/oss/vugu
+// replace github.com/vugu/vugu => /home/yellickj/oss/vugu
 
-require github.com/vugu/vugu v0.0.0-20200315225605-e910962296fa
+require github.com/vugu/vugu v0.0.0-20200322002911-7d3a6c0162c2
 
 require (
 	github.com/IBM/mirbft v0.0.0-20190415184034-d1829758e6fc
