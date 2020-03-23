@@ -72,7 +72,7 @@ func (c *Sequences) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					_ = vgparent
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
-					for i := c.Status.LowWatermark; i < c.Status.HighWatermark; i++ {
+					for i := c.Status.LowWatermark; i < c.Status.HighWatermark; i += uint64(len(c.Status.Buckets)) {
 						var vgiterkey interface{} = i
 						_ = vgiterkey
 						i := i

@@ -54,3 +54,14 @@ func (r *Root) Load(eventEnv vugu.EventEnv, el *testengine.EventLog) {
 	r.EventLog = el
 	r.Initialized = true
 }
+
+func (r *Root) Stepper() EventStepper {
+	switch {
+	case r.Recording != nil:
+		return r.Recording
+	case r.Player != nil:
+		return r.Player
+	default:
+		return nil
+	}
+}

@@ -6,7 +6,7 @@
         <th :colspan="c.Status.HighWatermark-c.Status.LowWatermark"> Sequences </th>
       </tr>
       <tr>
-        <th vg-for="i := c.Status.LowWatermark; i < c.Status.HighWatermark; i++" vg-html="i"></th>
+        <th vg-for="i := c.Status.LowWatermark; i < c.Status.HighWatermark; i += uint64(len(c.Status.Buckets))" vg-html="i"></th>
       </tr>
     </thead>
     <tbody>

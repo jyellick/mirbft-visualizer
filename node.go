@@ -30,12 +30,13 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 			vgparent.AppendChild(vgn)
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E78BAB6CEE5867A, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E78DF09F158F4F8, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Actions)
 				if vgcomp == nil {
 					// create new one if needed
 					vgcomp = new(Actions)
+					fmt.Println("JKY Creating new Actions")
 				}
 				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 				vgcomp.MirNode = c.MirNode
@@ -56,12 +57,13 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 			vgparent.AppendChild(vgn)
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E78BAB6E1EFE4D5, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E78DF0987B32C19, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Sequences)
 				if vgcomp == nil {
 					// create new one if needed
 					vgcomp = new(Sequences)
+					fmt.Println("JKY Creating new Sequences")
 				}
 				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 				vgcomp.MirNode = c.MirNode

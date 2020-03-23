@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 
-	// "github.com/IBM/mirbft"
-	// pb "github.com/IBM/mirbft/mirbftpb"
 	"github.com/IBM/mirbft/testengine"
 	tpb "github.com/IBM/mirbft/testengine/testenginepb"
 	"github.com/vugu/vugu"
@@ -97,6 +95,10 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 			return nil
 		}
 
+		if ei.FilterNode != nil && event.Target != *ei.FilterNode {
+			continue
+		}
+
 		if _, ok := event.Type.(*tpb.Event_Process_); ok {
 			ei.PostProcessing[event.Target] = struct{}{}
 
@@ -112,10 +114,6 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 		}
 
 		ei.PendingEvents[event.Target] = struct{}{}
-
-		if ei.FilterNode != nil && event.Target != *ei.FilterNode {
-			continue
-		}
 
 		if apply, ok := event.Type.(*tpb.Event_Apply_); ok {
 			if ApplyLength(apply.Apply) == 0 {

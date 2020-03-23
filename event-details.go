@@ -37,12 +37,13 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E78BAB65603912E, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E78DF0954E55540, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 					if vgcomp == nil {
 						// create new one if needed
 						vgcomp = new(MessageViewer)
+						fmt.Println("JKY Creating new MessageViewer")
 					}
 					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 					vgcomp.Msg = c.RecvMsg()
@@ -65,12 +66,13 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E78BAB68826C1FA, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E78DF094E63BA05, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ActionsViewer)
 					if vgcomp == nil {
 						// create new one if needed
 						vgcomp = new(ActionsViewer)
+						fmt.Println("JKY Creating new ActionsViewer")
 					}
 					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 					vgcomp.Actions = c.PlaybackNode.Actions
@@ -93,12 +95,13 @@ func (c *EventDetails) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 				vgparent.AppendChild(vgn)
 				{
-					vgcompKey := vugu.MakeCompKey(0x5E78BAB6D9D23684, vgiterkey)
+					vgcompKey := vugu.MakeCompKey(0x5E78DF095C9DB8FF, vgiterkey)
 					// ask BuildEnv for prior instance of this specific component
 					vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*ApplyViewer)
 					if vgcomp == nil {
 						// create new one if needed
 						vgcomp = new(ApplyViewer)
+						fmt.Println("JKY Creating new ApplyViewer")
 					}
 					vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 					vgcomp.Actions = c.PlaybackNode.Processing
