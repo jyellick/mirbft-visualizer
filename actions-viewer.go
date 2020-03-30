@@ -86,13 +86,13 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E78DF09BFD664FA, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E81FF684899FD83, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
 										// create new one if needed
 										vgcomp = new(MessageViewer)
-										fmt.Println("JKY Creating new MessageViewer")
+										vgin.BuildEnv.WireComponent(vgcomp)
 									}
 									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 									vgcomp.Msg = msg
@@ -139,13 +139,13 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E78DF09A94FFABC, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E81FF68A4A725A5, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
 										// create new one if needed
 										vgcomp = new(MessageViewer)
-										fmt.Println("JKY Creating new MessageViewer")
+										vgin.BuildEnv.WireComponent(vgcomp)
 									}
 									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 									vgcomp.Msg = msg
@@ -194,13 +194,13 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E78DF099CE0E22E, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E81FF6885ECB608, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*PreprocessViewer)
 									if vgcomp == nil {
 										// create new one if needed
 										vgcomp = new(PreprocessViewer)
-										fmt.Println("JKY Creating new PreprocessViewer")
+										vgin.BuildEnv.WireComponent(vgcomp)
 									}
 									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 									vgcomp.Request = preprocess

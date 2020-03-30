@@ -6,13 +6,13 @@
         <th :colspan="c.Status.HighWatermark-c.Status.LowWatermark"> Sequences </th>
       </tr>
       <tr>
-        <th vg-for="i := c.Status.LowWatermark; i < c.Status.HighWatermark; i += uint64(len(c.Status.Buckets))" vg-html="i"></th>
+        <th vg-for="i := c.Status.LowWatermark; i < c.Status.HighWatermark; i += uint64(len(c.Status.Buckets))" vg-key="i" vg-html="i"></th>
       </tr>
     </thead>
     <tbody>
-      <tr vg-for="i, bucketStatus := range c.Status.Buckets">
+      <tr vg-for="i, bucketStatus := range c.Status.Buckets" vg-key='i'>
         <td vg-html='fmt.Sprintf("Bucket %d", i)'></td>
-        <td vg-for="_, seqState := range bucketStatus.Sequences" vg-html='SeqStateToChar(seqState)' :class='SeqBGClass(seqState)'> </td>
+        <td vg-for="j, seqState := range bucketStatus.Sequences" vg-key='fmt.Sprintf("seq-%d-%d", uint64(j)+c.Status.LowWatermark, i)' vg-html='SeqStateToChar(seqState)' :class='SeqBGClass(seqState)'> </td>
       </tr>
     <tbody>
   </table>

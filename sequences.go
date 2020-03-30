@@ -121,9 +121,11 @@ func (c *Sequences) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 						vgparent.AppendChild(vgn)
-						for vgiterkeyt, seqState := range bucketStatus.Sequences {
-							var vgiterkey interface{} = vgiterkeyt
+						for j, seqState := range bucketStatus.Sequences {
+							var vgiterkey interface{} = fmt.Sprintf("seq-%d-%d", uint64(j)+c.Status.LowWatermark, i)
 							_ = vgiterkey
+							j := j
+							_ = j
 							seqState := seqState
 							_ = seqState
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}

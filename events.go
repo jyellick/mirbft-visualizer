@@ -119,13 +119,13 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5E78DF0971EDF7C1, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5E81FF688699B6A9, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {
 												// create new one if needed
 												vgcomp = new(EventDetails)
-												fmt.Println("JKY Creating new EventDetails")
+												vgin.BuildEnv.WireComponent(vgcomp)
 											}
 											vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 											vgcomp.Event = event

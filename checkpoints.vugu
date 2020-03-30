@@ -1,0 +1,18 @@
+<div>
+  <table class="table table-sm">
+    <thead><tr>
+      <th>SeqNo</th>
+      <th>Max Agreements</th>
+      <th>Local Decision</th>
+      <th>Network Decision</th>
+    </tr></thead>
+    <tbody>
+      <tr class="sm" vg-for='_, cp := range c.MirNode.Status.Checkpoints' vg-key='fmt.Sprintf("checkpoint-%d", cp.SeqNo)'>
+        <td vg-html='cp.SeqNo'></td>
+        <td vg-html='cp.MaxAgreements'></td>
+        <td vg-html='cp.LocalDecision'></td>
+        <td vg-html='cp.NetQuorum'></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

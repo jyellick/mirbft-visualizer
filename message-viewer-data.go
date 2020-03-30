@@ -78,5 +78,6 @@ func MsgToJSON(msg *pb.Msg) string {
 	if err != nil {
 		panic(err)
 	}
+
 	return res
 }

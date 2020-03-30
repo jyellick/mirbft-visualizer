@@ -27,13 +27,13 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 		vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 		vgparent.AppendChild(vgn)
 		{
-			vgcompKey := vugu.MakeCompKey(0x5E78DF09289C7D6A, vgiterkey)
+			vgcompKey := vugu.MakeCompKey(0x5E81FF68024BEF38, vgiterkey)
 			// ask BuildEnv for prior instance of this specific component
 			vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Events)
 			if vgcomp == nil {
 				// create new one if needed
 				vgcomp = new(Events)
-				fmt.Println("JKY Creating new Events")
+				vgin.BuildEnv.WireComponent(vgcomp)
 			}
 			vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 			vgcomp.EventLog = c.EventLog
@@ -51,13 +51,13 @@ func (c *Network) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			mirNode := mirNode
 			_ = mirNode
 			{
-				vgcompKey := vugu.MakeCompKey(0x5E78DF0970DCC2FB, vgiterkey)
+				vgcompKey := vugu.MakeCompKey(0x5E81FF683390EB14, vgiterkey)
 				// ask BuildEnv for prior instance of this specific component
 				vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Node)
 				if vgcomp == nil {
 					// create new one if needed
 					vgcomp = new(Node)
-					fmt.Println("JKY Creating new Node")
+					vgin.BuildEnv.WireComponent(vgcomp)
 				}
 				vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 				vgcomp.MirNode = mirNode

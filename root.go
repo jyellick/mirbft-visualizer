@@ -87,13 +87,13 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E78DF09C3EE0146, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E81FF685B0709CD, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Bootstrap)
 							if vgcomp == nil {
 								// create new one if needed
 								vgcomp = new(Bootstrap)
-								fmt.Println("JKY Creating new Bootstrap")
+								vgin.BuildEnv.WireComponent(vgcomp)
 							}
 							vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 							vgcomp.Bootstrap = c.Bootstrap
@@ -117,13 +117,13 @@ func (c *Root) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
 						vgparent.AppendChild(vgn)
 						{
-							vgcompKey := vugu.MakeCompKey(0x5E78DF09ACD74881, vgiterkey)
+							vgcompKey := vugu.MakeCompKey(0x5E81FF68D30D28C6, vgiterkey)
 							// ask BuildEnv for prior instance of this specific component
 							vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Network)
 							if vgcomp == nil {
 								// create new one if needed
 								vgcomp = new(Network)
-								fmt.Println("JKY Creating new Network")
+								vgin.BuildEnv.WireComponent(vgcomp)
 							}
 							vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
 							vgcomp.EventLog = c.EventLog
