@@ -16,10 +16,10 @@
             <main:MessageViewer :Msg='msg'></main:MessageViewer>
           </div>
         </div>
-        <div vg-if='len(c.Actions.Preprocess) > 0'>
+        <div vg-if='len(c.Actions.Hash) > 0'>
           <strong>Preprocess</strong>
-          <div class="row" vg-for='i, preprocess := range c.Actions.Preprocess'>
-            <main:PreprocessViewer :Request='preprocess'></main:PreprocessViewer>
+          <div class="row" vg-for='i, hashRequest := range c.Actions.Hash'>
+            <main:HashViewer :Request='hashRequest'></main:HashViewer>
           </div>
         </div>
      </div>

@@ -69,18 +69,18 @@ func (c *ApplyViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
 							vgparent.AppendChild(vgn)
 							{
-								vghtml := fmt.Sprint("Preprocess")
+								vghtml := fmt.Sprint("Hash")
 								vgn.InnerHTML = &vghtml
 							}
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 							vgparent.AppendChild(vgn)
-							for i, preprocess := range c.Actions.Preprocess {
+							for i, hashRequest := range c.Actions.Hash {
 								var vgiterkey interface{} = i
 								_ = vgiterkey
 								i := i
 								_ = i
-								preprocess := preprocess
-								_ = preprocess
+								hashRequest := hashRequest
+								_ = hashRequest
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 								vgparent.AppendChild(vgn)
 								{
@@ -89,17 +89,17 @@ func (c *ApplyViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 									vgparent.AppendChild(vgn)
 									{
-										vgcompKey := vugu.MakeCompKey(0x5E81FF6868FF5480, vgiterkey)
+										vgcompKey := vugu.MakeCompKey(0x5E83AE427EC530B0, vgiterkey)
 										// ask BuildEnv for prior instance of this specific component
-										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*PreprocessViewer)
+										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 										if vgcomp == nil {
 											// create new one if needed
-											vgcomp = new(PreprocessViewer)
+											vgcomp = new(HashViewer)
 											vgin.BuildEnv.WireComponent(vgcomp)
 										}
 										vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-										vgcomp.Request = preprocess
-										vgcomp.Result = c.Apply.Preprocessed[i]
+										vgcomp.Request = hashRequest
+										vgcomp.Result = c.Apply.Digests[i]
 										vgout.Components = append(vgout.Components, vgcomp)
 										vgn = &vugu.VGNode{Component: vgcomp}
 										vgparent.AppendChild(vgn)

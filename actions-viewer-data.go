@@ -35,8 +35,7 @@ func ActionsLength(a *mirbft.Actions) int {
 
 	return len(a.Broadcast) +
 		len(a.Unicast) +
-		len(a.Preprocess) +
-		len(a.Process) +
+		len(a.Hash) +
 		len(a.QEntries) +
 		len(a.PEntries) +
 		len(a.Commits)

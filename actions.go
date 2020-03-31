@@ -92,33 +92,13 @@ func (c *Actions) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint("Preprocess")
+						vghtml := fmt.Sprint("Hash")
 						vgn.InnerHTML = &vghtml
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint(len(c.Actions.Preprocess))
-						vgn.InnerHTML = &vghtml
-					}
-				}
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
-				vgparent.AppendChild(vgn)
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				vgparent.AppendChild(vgn)
-				{
-					vgparent := vgn
-					_ = vgparent
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-					vgparent.AppendChild(vgn)
-					{
-						vghtml := fmt.Sprint("Process")
-						vgn.InnerHTML = &vghtml
-					}
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-					vgparent.AppendChild(vgn)
-					{
-						vghtml := fmt.Sprint(len(c.Actions.Process))
+						vghtml := fmt.Sprint(len(c.Actions.Hash))
 						vgn.InnerHTML = &vghtml
 					}
 				}

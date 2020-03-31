@@ -86,7 +86,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E81FF684899FD83, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E83AE42FDF63F6B, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -139,7 +139,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E81FF68A4A725A5, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E83AE4248B9D6BD, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -163,7 +163,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 				}
 				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 				vgparent.AppendChild(vgn)
-				if len(c.Actions.Preprocess) > 0 {
+				if len(c.Actions.Hash) > 0 {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
@@ -179,13 +179,13 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)
-						for i, preprocess := range c.Actions.Preprocess {
+						for i, hashRequest := range c.Actions.Hash {
 							var vgiterkey interface{} = i
 							_ = vgiterkey
 							i := i
 							_ = i
-							preprocess := preprocess
-							_ = preprocess
+							hashRequest := hashRequest
+							_ = hashRequest
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
 							vgparent.AppendChild(vgn)
 							{
@@ -194,16 +194,16 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E81FF6885ECB608, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E83AE421D080263, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
-									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*PreprocessViewer)
+									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 									if vgcomp == nil {
 										// create new one if needed
-										vgcomp = new(PreprocessViewer)
+										vgcomp = new(HashViewer)
 										vgin.BuildEnv.WireComponent(vgcomp)
 									}
 									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
-									vgcomp.Request = preprocess
+									vgcomp.Request = hashRequest
 									vgout.Components = append(vgout.Components, vgcomp)
 									vgn = &vugu.VGNode{Component: vgcomp}
 									vgparent.AppendChild(vgn)

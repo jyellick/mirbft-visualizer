@@ -5,9 +5,9 @@
   <div :id='fmt.Sprintf("%p-%p", c, c.Apply)' class="mp-0 collapse">
      <div vg-if='c.Actions != nil' class="card-body">
         <div vg-if='len(c.Actions.Preprocess) > 0'>
-          <strong>Preprocess</strong>
-          <div class="row" vg-for='i, preprocess := range c.Actions.Preprocess'>
-            <main:PreprocessViewer :Result='c.Apply.Preprocessed[i]' :Request='preprocess'></main:PreprocessViewer>
+          <strong>Hash</strong>
+          <div class="row" vg-for='i, hashRequest := range c.Actions.Hash'>
+            <main:HashViewer :Result='c.Apply.Digests[i]' :Request='hashRequest'></main:HashViewer>
           </div>
         </div>
      </div>

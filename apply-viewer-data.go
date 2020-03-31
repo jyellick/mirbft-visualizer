@@ -31,7 +31,6 @@ func (ac *ApplyViewer) BeforeBuild() {
 }
 
 func ApplyLength(apply *tpb.Event_Apply) int {
-	return len(apply.Preprocessed) +
-		len(apply.Processed) +
+	return len(apply.Digests) +
 		len(apply.Checkpoints)
 }
