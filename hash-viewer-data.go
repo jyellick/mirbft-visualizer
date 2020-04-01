@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/IBM/mirbft"
 	tpb "github.com/IBM/mirbft/testengine/testenginepb"
 )
@@ -12,12 +13,25 @@ type HashViewer struct {
 }
 
 func (hv *HashViewer) BeforeBuild() {
-	/*
-		requestData := pv.Request.RequestData
-		if pv.Result == nil {
-			pv.Summary = fmt.Sprintf("Preprocess ClientID=%x ReqNo=%d", Trunc8(request.RequestData.ClientId), request.RequestData.ReqNo)
-		} else {
-			pv.Summary = fmt.Sprintf("Preprocess ClientID=%x ReqNo=%d Digest=%x", Trunc8(request.RequestData.ClientId), request.RequestData.ReqNo, Trunc8(pv.Result.Digest))
+	var hashType string
+	switch {
+	case hv.Request.Request != nil:
+		requestData := hv.Request.Request.RequestData
+		hashType = fmt.Sprintf("Request ClientID=%x ReqNo=%d", Trunc8(requestData.ClientId), requestData.ReqNo)
+	case hv.Request.Batch != nil:
+		batch := hv.Request.Batch
+		reqs := make([]string, len(batch.Requests))
+		for i, req := range batch.Requests {
+			reqs[i] = fmt.Sprintf("(ClientID=%x ReqNo=%d Digest=%d)", req.ClientId, req.ReqNo, req.Digest)
 		}
-	*/
+		hashType = fmt.Sprintf("Batch Source=%d SeqNo=%d Epoch=%d Reqs=%v", batch.Source, batch.SeqNo, batch.Epoch, reqs)
+	case hv.Request.EpochChange != nil:
+		epochChange := hv.Request.EpochChange
+		hashType = fmt.Sprintf("EpochChange Source=%d Epoch=%d", epochChange.Source, epochChange.EpochChange.NewEpoch)
+	}
+	if hv.Result == nil {
+		hv.Summary = fmt.Sprintf("Hash %s", hashType)
+	} else {
+		hv.Summary = fmt.Sprintf("Hash %s Digest=%x", hashType, Trunc8(hv.Result.Digest))
+	}
 }

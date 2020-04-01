@@ -58,7 +58,7 @@ func (c *ApplyViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					_ = vgparent
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
-					if len(c.Actions.Preprocess) > 0 {
+					if len(c.Apply.Digests) > 0 {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
 						vgparent.AppendChild(vgn)
 						{
@@ -89,7 +89,7 @@ func (c *ApplyViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 									vgparent.AppendChild(vgn)
 									{
-										vgcompKey := vugu.MakeCompKey(0x5E83AE427EC530B0, vgiterkey)
+										vgcompKey := vugu.MakeCompKey(0x5E84A45F8C0E5FF3, vgiterkey)
 										// ask BuildEnv for prior instance of this specific component
 										vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 										if vgcomp == nil {

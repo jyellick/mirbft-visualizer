@@ -86,7 +86,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E83AE42FDF63F6B, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E84A45F5A68C2FE, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -139,7 +139,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E83AE4248B9D6BD, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E84A45F06F07DB4, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -174,7 +174,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
 						vgparent.AppendChild(vgn)
 						{
-							vghtml := fmt.Sprint("Preprocess")
+							vghtml := fmt.Sprint("Hash")
 							vgn.InnerHTML = &vghtml
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
@@ -194,7 +194,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E83AE421D080263, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E84A45FDAB2AB94, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 									if vgcomp == nil {

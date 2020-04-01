@@ -17,7 +17,7 @@
           </div>
         </div>
         <div vg-if='len(c.Actions.Hash) > 0'>
-          <strong>Preprocess</strong>
+          <strong>Hash</strong>
           <div class="row" vg-for='i, hashRequest := range c.Actions.Hash'>
             <main:HashViewer :Request='hashRequest'></main:HashViewer>
           </div>

@@ -39,7 +39,10 @@ func MsgToSummary(outerMsg *pb.Msg) string {
 		return fmt.Sprintf("Suspect epoch %d is bad", msg.Epoch)
 	case *pb.Msg_EpochChange:
 		msg := innerMsg.EpochChange
-		return fmt.Sprintf("Epoch change to epoch %d", msg.NewEpoch)
+		return fmt.Sprintf("EpochChange to epoch %d", msg.NewEpoch)
+	case *pb.Msg_EpochChangeAck:
+		msg := innerMsg.EpochChangeAck
+		return fmt.Sprintf("EpochChangeAck to epoch %d with digest %x from %d", msg.NewEpoch, Trunc8(msg.Digest), msg.Sender)
 	case *pb.Msg_NewEpoch:
 		msg := innerMsg.NewEpoch
 		return fmt.Sprintf("NewEpoch config for epoch %d", msg.Config.Number)
@@ -66,7 +69,7 @@ func MsgToSummary(outerMsg *pb.Msg) string {
 		msg := innerMsg.Checkpoint
 		return fmt.Sprintf("Checkpoint seq_no=%d value=%x", msg.SeqNo, Trunc8(msg.Value))
 	default:
-		return fmt.Sprintf("Message of type %T", outerMsg.Type)
+		return fmt.Sprintf("Message of type %T (Implement me)", outerMsg.Type)
 	}
 }
 
