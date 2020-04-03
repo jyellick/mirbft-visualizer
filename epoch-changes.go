@@ -67,7 +67,7 @@ func (c *EpochChanges) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 						vgparent.AppendChild(vgn)
 						{
-							vghtml := fmt.Sprint(fmt.Sprintf("%v", et.EpochChanges))
+							vghtml := fmt.Sprint(fmt.Sprintf("%v", prettyEpochChanges(et.EpochChanges)))
 							vgn.InnerHTML = &vghtml
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}

@@ -42,7 +42,7 @@ func MsgToSummary(outerMsg *pb.Msg) string {
 		return fmt.Sprintf("EpochChange to epoch %d", msg.NewEpoch)
 	case *pb.Msg_EpochChangeAck:
 		msg := innerMsg.EpochChangeAck
-		return fmt.Sprintf("EpochChangeAck to epoch %d with digest %x from %d", msg.NewEpoch, Trunc8(msg.Digest), msg.Sender)
+		return fmt.Sprintf("EpochChangeAck to epoch %d from %d", msg.EpochChange.NewEpoch, msg.Originator)
 	case *pb.Msg_NewEpoch:
 		msg := innerMsg.NewEpoch
 		return fmt.Sprintf("NewEpoch config for epoch %d", msg.Config.Number)
