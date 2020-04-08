@@ -1,0 +1,12 @@
+<div class="w-100 card">
+   <div class="card-header w-100 p-0" role="group">
+      <button class="text-left btn btn-outline-primary w-100" type="button" data-toggle="collapse" :data-target='fmt.Sprintf("#%p-%p", c, c.Commit)' aria-expanded="false" :aria-controls='fmt.Sprintf("%p-%p", c, c.Commit)' vg-html='c.CommitSummary'></button>
+    <!--<div class="btg-group w-100">
+    </div>-->
+  </div>
+  <div :id='fmt.Sprintf("%p-%p", c, c.Commit)' class="mp-0 collapse">
+     <div class="p-0 card-body">
+       <pre><code vg-html='c.CommitAsJSON'></code></pre>
+     </div>
+  </div>
+</div>

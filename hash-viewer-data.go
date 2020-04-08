@@ -16,12 +16,12 @@ func (hv *HashViewer) BeforeBuild() {
 	var hashType string
 	switch {
 	case hv.Request.Request != nil:
-		requestData := hv.Request.Request.RequestData
+		requestData := hv.Request.Request.Request
 		hashType = fmt.Sprintf("Request ClientID=%x ReqNo=%d", Trunc8(requestData.ClientId), requestData.ReqNo)
 	case hv.Request.Batch != nil:
 		batch := hv.Request.Batch
-		reqs := make([]string, len(batch.Requests))
-		for i, req := range batch.Requests {
+		reqs := make([]string, len(batch.RequestAcks))
+		for i, req := range batch.RequestAcks {
 			reqs[i] = fmt.Sprintf("(ClientID=%x ReqNo=%d Digest=%d)", req.ClientId, req.ReqNo, req.Digest)
 		}
 		hashType = fmt.Sprintf("Batch Source=%d SeqNo=%d Epoch=%d Reqs=%v", batch.Source, batch.SeqNo, batch.Epoch, reqs)

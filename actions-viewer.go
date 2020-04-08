@@ -86,7 +86,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E873CCE5F765ABA, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E8D4C7C3F6F9092, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -139,7 +139,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E873CCEA8700B37, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E8D4C7CCBB9480F, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -179,11 +179,9 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)
-						for i, hashRequest := range c.Actions.Hash {
-							var vgiterkey interface{} = i
+						for vgiterkeyt, hashRequest := range c.Actions.Hash {
+							var vgiterkey interface{} = vgiterkeyt
 							_ = vgiterkey
-							i := i
-							_ = i
 							hashRequest := hashRequest
 							_ = hashRequest
 							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
@@ -194,7 +192,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E873CCE7D071CE7, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5E8D4C7C0698EA9E, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 									if vgcomp == nil {
@@ -210,6 +208,57 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								}
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 								vgparent.AppendChild(vgn)
+							}
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+						vgparent.AppendChild(vgn)
+					}
+				}
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+				vgparent.AppendChild(vgn)
+				if len(c.Actions.Commits) > 0 {
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute(nil)}
+					vgparent.AppendChild(vgn)
+					{
+						vgparent := vgn
+						_ = vgparent
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+						vgparent.AppendChild(vgn)
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "strong", Attr: []vugu.VGAttribute(nil)}
+						vgparent.AppendChild(vgn)
+						{
+							vghtml := fmt.Sprint("Commit")
+							vgn.InnerHTML = &vghtml
+						}
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+						vgparent.AppendChild(vgn)
+						for vgiterkeyt, commit := range c.Actions.Commits {
+							var vgiterkey interface{} = vgiterkeyt
+							_ = vgiterkey
+							commit := commit
+							_ = commit
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "row"}}}
+							vgparent.AppendChild(vgn)
+							{
+								vgparent := vgn
+								_ = vgparent
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+								{
+									vgcompKey := vugu.MakeCompKey(0x5E8D4C7CE37FB781, vgiterkey)
+									// ask BuildEnv for prior instance of this specific component
+									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*CommitViewer)
+									if vgcomp == nil {
+										// create new one if needed
+										vgcomp = new(CommitViewer)
+										vgin.BuildEnv.WireComponent(vgcomp)
+									}
+									vgin.BuildEnv.UseComponent(vgcompKey, vgcomp)	// ensure we can use this in the cache next time around
+									vgcomp.Commit = commit
+									vgout.Components = append(vgout.Components, vgcomp)
+									vgn = &vugu.VGNode{Component: vgcomp}
+									vgparent.AppendChild(vgn)
+								}
 							}
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
