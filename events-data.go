@@ -167,10 +167,20 @@ func (e *Events) StepNext(event *vugu.DOMEvent) {
 	e.Update()
 }
 
+func (e *Events) StepInstant(event *vugu.DOMEvent) {
+	fmt.Println("Stepping instant")
+	event.PreventDefault()
+	e.stepWindow(1)
+}
+
 func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
 	fmt.Println("Stepping step window")
 	event.PreventDefault()
-	endTime := e.EventLog.FakeTime + e.StepWindow
+	e.stepWindow(e.StepWindow)
+}
+
+func (e *Events) stepWindow(ms uint64) {
+	endTime := e.EventLog.FakeTime + ms
 	for e.EventLog.NextEventLogEntry != nil && e.EventLog.NextEventLogEntry.Event.Time <= endTime {
 		err := e.Stepper.Step()
 		if err != nil {
@@ -202,6 +212,7 @@ func (e *Events) Update() {
 
 		err := e.Stepper.Step()
 		if err != nil {
+			fmt.Printf("%+v", err)
 			panic(err)
 		}
 	}

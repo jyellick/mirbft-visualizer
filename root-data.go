@@ -21,7 +21,7 @@ func (r *Root) Bootstrap(parameters *BootstrapParameters) {
 	logger := wasmZap(parameters.EventEnv)
 
 	recorder := testengine.BasicRecorder(parameters.NodeCount, 0, 100)
-	recorder.NetworkConfig.NumberOfBuckets = int32(parameters.BucketCount)
+	recorder.NetworkState.Config.NumberOfBuckets = int32(parameters.BucketCount)
 	recorder.Logger = logger
 	for _, clientConfig := range recorder.ClientConfigs {
 		clientConfig.MaxInFlight = 1

@@ -18,8 +18,14 @@
         </div>
         <div vg-if='len(c.Actions.Hash) > 0'>
           <strong>Hash</strong>
-          <div class="row" vg-for='i, hashRequest := range c.Actions.Hash'>
+          <div class="row" vg-for='_, hashRequest := range c.Actions.Hash'>
             <main:HashViewer :Request='hashRequest'></main:HashViewer>
+          </div>
+        </div>
+        <div vg-if='len(c.Actions.Commits) > 0'>
+          <strong>Commit</strong>
+          <div class="row" vg-for='_, commit := range c.Actions.Commits'>
+            <main:CommitViewer :Commit='commit'></main:HashViewer>
           </div>
         </div>
      </div>

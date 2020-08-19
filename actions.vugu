@@ -5,8 +5,7 @@
       <tr class="sm"><td>Broadcasts</td><td vg-html='len(c.Actions.Broadcast)'></td></tr>
       <tr class="sm"><td>Unicasts</td><td vg-html='len(c.Actions.Unicast)'></td></tr>
       <tr class="sm"><td>Hash</td><td vg-html='len(c.Actions.Hash)'></td></tr>
-      <tr class="sm"><td>QEntries</td><td vg-html='len(c.Actions.QEntries)'></td></tr>
-      <tr class="sm"><td>PEntries</td><td vg-html='len(c.Actions.PEntries)'></td></tr>
+      <tr class="sm"><td>Persist</td><td vg-html='len(c.Actions.Persist)'></td></tr>
       <tr class="sm"><td>Commits</td><td vg-html='len(c.Actions.Commits)'></td></tr>
       <tr class="sm" style='fontWeight:"bold"'><td>Total</td><td vg-html='ActionsLength(c.Actions)'></td></tr>
     </tbody>

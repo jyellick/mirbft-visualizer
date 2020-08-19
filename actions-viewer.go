@@ -86,7 +86,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E8D4C7C3F6F9092, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5F3C9671D2F375F9, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -139,7 +139,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E8D4C7CCBB9480F, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5F3C967125501C8E, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*MessageViewer)
 									if vgcomp == nil {
@@ -192,7 +192,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E8D4C7C0698EA9E, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5F3C96713492004B, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*HashViewer)
 									if vgcomp == nil {
@@ -245,7 +245,7 @@ func (c *ActionsViewer) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
 								vgparent.AppendChild(vgn)
 								{
-									vgcompKey := vugu.MakeCompKey(0x5E8D4C7CE37FB781, vgiterkey)
+									vgcompKey := vugu.MakeCompKey(0x5F3C967111D9E9C5, vgiterkey)
 									// ask BuildEnv for prior instance of this specific component
 									vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*CommitViewer)
 									if vgcomp == nil {

@@ -19,7 +19,7 @@ func SeqBGClass(seqState mirbft.SequenceState) string {
 	case 0:
 		return ""
 	case 1:
-		return "bg-danger"
+		return "bg-secondary"
 	case 2:
 		return "bg-secondary"
 	case 3:
@@ -41,11 +41,11 @@ func SeqStateToChar(seqState mirbft.SequenceState) string {
 	case 0:
 		return " "
 	case 1:
-		return "I"
-	case 2:
 		return "A"
-	case 3:
+	case 2:
 		return "R"
+	case 3:
+		return "F"
 	case 4:
 		return "Q"
 	case 5:

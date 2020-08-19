@@ -119,7 +119,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5E8D4C7B9A8250FA, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5F3C9671547F0065, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {
@@ -266,8 +266,35 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "form-group col-md-4"}}}
 						vgparent.AppendChild(vgn)
 						{
-							vghtml := fmt.Sprint("\n          ")
-							vgn.InnerHTML = &vghtml
+							vgparent := vgn
+							_ = vgparent
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn-group w-100 align-bottom"}, vugu.VGAttribute{Namespace: "", Key: "role", Val: "group"}}}
+							vgparent.AppendChild(vgn)
+							{
+								vgparent := vgn
+								_ = vgparent
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n              "}
+								vgparent.AppendChild(vgn)
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "button", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "type", Val: "button"}, vugu.VGAttribute{Namespace: "", Key: "class", Val: "btn btn-primary"}}}
+								vgparent.AppendChild(vgn)
+								vgn.DOMEventHandlerSpecList = append(vgn.DOMEventHandlerSpecList, vugu.DOMEventHandlerSpec{
+									EventType:	"click",
+									Func:		func(event *vugu.DOMEvent) { c.StepInstant(event) },
+									// TODO: implement capture, etc. mostly need to decide syntax
+								})
+								{
+									vgparent := vgn
+									_ = vgparent
+									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "Step Instant"}
+									vgparent.AppendChild(vgn)
+								}
+								vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
+								vgparent.AppendChild(vgn)
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
+							vgparent.AppendChild(vgn)
 						}
 						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}
 						vgparent.AppendChild(vgn)

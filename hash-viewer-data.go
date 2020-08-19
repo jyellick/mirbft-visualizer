@@ -17,7 +17,7 @@ func (hv *HashViewer) BeforeBuild() {
 	switch {
 	case hv.Request.Request != nil:
 		requestData := hv.Request.Request.Request
-		hashType = fmt.Sprintf("Request ClientID=%x ReqNo=%d", Trunc8(requestData.ClientId), requestData.ReqNo)
+		hashType = fmt.Sprintf("Request ClientID=%d ReqNo=%d", requestData.ClientId, requestData.ReqNo)
 	case hv.Request.Batch != nil:
 		batch := hv.Request.Batch
 		reqs := make([]string, len(batch.RequestAcks))

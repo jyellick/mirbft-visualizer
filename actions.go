@@ -112,33 +112,13 @@ func (c *Actions) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint("QEntries")
+						vghtml := fmt.Sprint("Persist")
 						vgn.InnerHTML = &vghtml
 					}
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
 					vgparent.AppendChild(vgn)
 					{
-						vghtml := fmt.Sprint(len(c.Actions.QEntries))
-						vgn.InnerHTML = &vghtml
-					}
-				}
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
-				vgparent.AppendChild(vgn)
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
-				vgparent.AppendChild(vgn)
-				{
-					vgparent := vgn
-					_ = vgparent
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-					vgparent.AppendChild(vgn)
-					{
-						vghtml := fmt.Sprint("PEntries")
-						vgn.InnerHTML = &vghtml
-					}
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-					vgparent.AppendChild(vgn)
-					{
-						vghtml := fmt.Sprint(len(c.Actions.PEntries))
+						vghtml := fmt.Sprint(len(c.Actions.Persist))
 						vgn.InnerHTML = &vghtml
 					}
 				}

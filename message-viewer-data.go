@@ -45,13 +45,13 @@ func MsgToSummary(outerMsg *pb.Msg) string {
 		return fmt.Sprintf("EpochChangeAck to epoch %d from %d", msg.EpochChange.NewEpoch, msg.Originator)
 	case *pb.Msg_NewEpoch:
 		msg := innerMsg.NewEpoch
-		return fmt.Sprintf("NewEpoch config for epoch %d", msg.Config.Number)
+		return fmt.Sprintf("NewEpoch config for epoch %d", msg.NewConfig.Config.Number)
 	case *pb.Msg_NewEpochEcho:
 		msg := innerMsg.NewEpochEcho
-		return fmt.Sprintf("NewEpochEcho for epoch %d", msg.Config.Number)
+		return fmt.Sprintf("NewEpochEcho for epoch %d", msg.NewConfig.Config.Number)
 	case *pb.Msg_NewEpochReady:
 		msg := innerMsg.NewEpochReady
-		return fmt.Sprintf("NewEpochReady for epoch %d", msg.Config.Number)
+		return fmt.Sprintf("NewEpochReady for epoch %d", msg.NewConfig.Config.Number)
 	case *pb.Msg_Preprepare:
 		msg := innerMsg.Preprepare
 		batch := make([]string, len(msg.Batch))
