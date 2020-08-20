@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	pb "github.com/IBM/mirbft/mirbftpb"
 	"github.com/IBM/mirbft/testengine"
 	tpb "github.com/IBM/mirbft/testengine/testenginepb"
 	"github.com/vugu/vugu"
@@ -15,7 +16,7 @@ type EventStepper interface {
 type Events struct {
 	Stepper    EventStepper
 	EventLog   *testengine.EventLog
-	Nodes      []*testengine.PlaybackNode
+	Nodes      map[uint64]*testengine.PlaybackNode
 	FilterNode *uint64
 	StepWindow uint64
 }
@@ -115,9 +116,11 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 
 		ei.PendingEvents[event.Target] = struct{}{}
 
-		if apply, ok := event.Type.(*tpb.Event_Apply_); ok {
-			if ApplyLength(apply.Apply) == 0 {
-				continue
+		if se, ok := event.Type.(*tpb.Event_StateEvent); ok {
+			if apply, ok := se.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
+				if ApplyLength(apply.AddResults) == 0 {
+					continue
+				}
 			}
 		}
 
@@ -195,11 +198,13 @@ func (e *Events) stepWindow(ms uint64) {
 
 func (e *Events) Update() {
 	for e.EventLog.NextEventLogEntry != nil {
-		if apply, ok := e.EventLog.NextEventLogEntry.Event.Type.(*tpb.Event_Apply_); ok {
-			if ApplyLength(apply.Apply) == 0 {
-				err := e.Stepper.Step()
-				if err != nil {
-					panic(err)
+		if se, ok := e.EventLog.NextEventLogEntry.Event.Type.(*tpb.Event_StateEvent); ok {
+			if apply, ok := se.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
+				if ApplyLength(apply.AddResults) == 0 {
+					err := e.Stepper.Step()
+					if err != nil {
+						panic(err)
+					}
 				}
 			}
 		}
@@ -219,23 +224,25 @@ func (e *Events) Update() {
 }
 
 func (e *Events) EventNode(event *testengine.EventLogEntry) *testengine.PlaybackNode {
-	return e.Nodes[int(event.Event.Target)]
+	return e.Nodes[event.Event.Target]
 }
 
 func EventType(event *tpb.Event) string {
 	switch et := event.Type.(type) {
-	case *tpb.Event_Tick_:
-		return "Tick"
-	case *tpb.Event_Receive_:
-		return fmt.Sprintf("Receive from %d", et.Receive.Source)
+	case *tpb.Event_StateEvent:
+		switch se := et.StateEvent.Type.(type) {
+		case *pb.StateEvent_Tick:
+			return "Tick"
+		case *pb.StateEvent_Step:
+			return fmt.Sprintf("Receive from %d", se.Step.Source)
+		case *pb.StateEvent_AddResults:
+			return "Apply"
+		case *pb.StateEvent_Propose:
+			return "Propose"
+		}
 	case *tpb.Event_Process_:
 		return "Process"
-	case *tpb.Event_Apply_:
-		return "Apply"
-	case *tpb.Event_Propose_:
-		return "Propose"
-	default:
-		return "Unknown"
 	}
 
+	return "Unknown"
 }

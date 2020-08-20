@@ -37,69 +37,71 @@ func (c *EpochChanges) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 			}
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
 			vgparent.AppendChild(vgn)
-			vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tbody", Attr: []vugu.VGAttribute(nil)}
-			vgparent.AppendChild(vgn)
-			{
-				vgparent := vgn
-				_ = vgparent
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+			if c.MirNode.Status.EpochChanger != nil {
+				vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tbody", Attr: []vugu.VGAttribute(nil)}
 				vgparent.AppendChild(vgn)
-				for _, et := range c.MirNode.Status.EpochChanger.EpochTargets {
-					var vgiterkey interface{} = fmt.Sprintf("epoch-%d", et.Number)
-					_ = vgiterkey
-					et := et
-					_ = et
-					vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
+				{
+					vgparent := vgn
+					_ = vgparent
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
 					vgparent.AppendChild(vgn)
-					{
-						vgparent := vgn
-						_ = vgparent
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
-						vgparent.AppendChild(vgn)
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-						vgparent.AppendChild(vgn)
-						{
-							vghtml := fmt.Sprint(et.Number)
-							vgn.InnerHTML = &vghtml
-						}
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
-						vgparent.AppendChild(vgn)
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+					for _, et := range c.MirNode.Status.EpochChanger.EpochTargets {
+						var vgiterkey interface{} = fmt.Sprintf("epoch-%d", et.Number)
+						_ = vgiterkey
+						et := et
+						_ = et
+						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "tr", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "sm"}}}
 						vgparent.AppendChild(vgn)
 						{
-							vghtml := fmt.Sprint(fmt.Sprintf("%v", prettyEpochChanges(et.EpochChanges)))
-							vgn.InnerHTML = &vghtml
+							vgparent := vgn
+							_ = vgparent
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+							vgparent.AppendChild(vgn)
+							{
+								vghtml := fmt.Sprint(et.Number)
+								vgn.InnerHTML = &vghtml
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+							vgparent.AppendChild(vgn)
+							{
+								vghtml := fmt.Sprint(fmt.Sprintf("%v", prettyEpochChanges(et.EpochChanges)))
+								vgn.InnerHTML = &vghtml
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+							vgparent.AppendChild(vgn)
+							{
+								vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Echos))
+								vgn.InnerHTML = &vghtml
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+							vgparent.AppendChild(vgn)
+							{
+								vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Readies))
+								vgn.InnerHTML = &vghtml
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
+							vgparent.AppendChild(vgn)
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
+							vgparent.AppendChild(vgn)
+							{
+								vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Suspicions))
+								vgn.InnerHTML = &vghtml
+							}
+							vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
+							vgparent.AppendChild(vgn)
 						}
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
-						vgparent.AppendChild(vgn)
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-						vgparent.AppendChild(vgn)
-						{
-							vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Echos))
-							vgn.InnerHTML = &vghtml
-						}
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
-						vgparent.AppendChild(vgn)
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-						vgparent.AppendChild(vgn)
-						{
-							vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Readies))
-							vgn.InnerHTML = &vghtml
-						}
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
-						vgparent.AppendChild(vgn)
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "td", Attr: []vugu.VGAttribute(nil)}
-						vgparent.AppendChild(vgn)
-						{
-							vghtml := fmt.Sprint(fmt.Sprintf("%v", et.Suspicions))
-							vgn.InnerHTML = &vghtml
-						}
-						vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n      "}
-						vgparent.AppendChild(vgn)
 					}
+					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
+					vgparent.AppendChild(vgn)
 				}
-				vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n    "}
-				vgparent.AppendChild(vgn)
 			}
 			vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n  "}
 			vgparent.AppendChild(vgn)

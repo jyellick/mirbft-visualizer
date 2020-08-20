@@ -1,5 +1,5 @@
 <div class="col-12">
   <!-- <main:Client :MirNodes='c.MirNodes' :EventQueue='c.EventQueue'></main:Client> -->
   <main:Events :Stepper='c.Stepper' :Nodes='c.Nodes' :EventLog='c.EventLog'></main:Events>
-  <main:Node vg-for='_, mirNode := range c.Nodes' :MirNode="mirNode"></main:Node>
+  <main:Node vg-for='_, mirNode := range OrderedNodes(c.Nodes)' :MirNode="mirNode"></main:Node>
 </div>

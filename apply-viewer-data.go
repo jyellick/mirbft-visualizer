@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/IBM/mirbft"
-	tpb "github.com/IBM/mirbft/testengine/testenginepb"
+	pb "github.com/IBM/mirbft/mirbftpb"
 	"reflect"
 )
 
 type ApplyViewer struct {
-	Apply        *tpb.Event_Apply `vugu:"data"`
-	Actions      *mirbft.Actions  `vugu:"data"`
+	Apply        *pb.StateEvent_ActionResults `vugu:"data"`
+	Actions      *mirbft.Actions              `vugu:"data"`
 	ApplySummary string
 }
 
@@ -30,7 +30,7 @@ func (ac *ApplyViewer) BeforeBuild() {
 	ac.ApplySummary = buffer.String()
 }
 
-func ApplyLength(apply *tpb.Event_Apply) int {
+func ApplyLength(apply *pb.StateEvent_ActionResults) int {
 	return len(apply.Digests) +
 		len(apply.Checkpoints)
 }

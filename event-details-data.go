@@ -12,18 +12,27 @@ type EventDetails struct {
 }
 
 func (ed *EventDetails) IsTick() bool {
-	_, ok := ed.Event.Event.Type.(*tpb.Event_Tick_)
+	se, ok := ed.Event.Event.Type.(*tpb.Event_StateEvent)
+	if !ok {
+		return false
+	}
+
+	_, ok = se.StateEvent.Type.(*pb.StateEvent_Tick)
 	return ok
 }
 
 func (ed *EventDetails) IsRecv() bool {
-	_, ok := ed.Event.Event.Type.(*tpb.Event_Receive_)
+	se, ok := ed.Event.Event.Type.(*tpb.Event_StateEvent)
+	if !ok {
+		return false
+	}
+
+	_, ok = se.StateEvent.Type.(*pb.StateEvent_Step)
 	return ok
 }
 
 func (ed *EventDetails) RecvMsg() *pb.Msg {
-	recv := ed.Event.Event.Type.(*tpb.Event_Receive_).Receive
-	return recv.Msg
+	return ed.Event.Event.Type.(*tpb.Event_StateEvent).StateEvent.Type.(*pb.StateEvent_Step).Step.Msg
 }
 
 func (ed *EventDetails) IsProcess() bool {
@@ -32,10 +41,15 @@ func (ed *EventDetails) IsProcess() bool {
 }
 
 func (ed *EventDetails) IsApply() bool {
-	_, ok := ed.Event.Event.Type.(*tpb.Event_Apply_)
+	se, ok := ed.Event.Event.Type.(*tpb.Event_StateEvent)
+	if !ok {
+		return false
+	}
+
+	_, ok = se.StateEvent.Type.(*pb.StateEvent_AddResults)
 	return ok
 }
 
-func (ed *EventDetails) ApplyResults() *tpb.Event_Apply {
-	return ed.Event.Event.Type.(*tpb.Event_Apply_).Apply
+func (ed *EventDetails) ApplyResults() *pb.StateEvent_ActionResults {
+	return ed.Event.Event.Type.(*tpb.Event_StateEvent).StateEvent.Type.(*pb.StateEvent_AddResults).AddResults
 }

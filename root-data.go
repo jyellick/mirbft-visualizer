@@ -12,7 +12,7 @@ type Root struct {
 	EventLog    *testengine.EventLog
 	Recording   *testengine.Recording
 	Player      *testengine.Player
-	Nodes       []*testengine.PlaybackNode
+	Nodes       map[uint64]*testengine.PlaybackNode
 }
 
 func (r *Root) Bootstrap(parameters *BootstrapParameters) {

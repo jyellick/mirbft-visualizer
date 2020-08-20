@@ -25,7 +25,7 @@
         <div vg-if='len(c.Actions.Commits) > 0'>
           <strong>Commit</strong>
           <div class="row" vg-for='_, commit := range c.Actions.Commits'>
-            <main:CommitViewer :Commit='commit'></main:HashViewer>
+            <main:CommitViewer :Commit='commit'></main:CommitViewer>
           </div>
         </div>
      </div>

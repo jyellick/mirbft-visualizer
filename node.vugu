@@ -2,18 +2,18 @@
   <div class="col-12">
     <div class="row">
       <div class="col-12 p-2">
-        <main:Sequences vg-key='fmt.Sprintf("sequences-%d", c.MirNode.Node.Config.ID)' :MirNode="c.MirNode"><main:Sequences/>
+        <main:Sequences vg-key='fmt.Sprintf("sequences-%d", c.MirNode.ID)' :MirNode="c.MirNode"><main:Sequences/>
       </div>
     </div>
     <div class="row border">
       <div class="col-4 border-right">
-        <main:Actions vg-key='fmt.Sprintf("actions-%d", c.MirNode.Node.Config.ID)' :MirNode="c.MirNode"></main:Actions>
+        <main:Actions vg-key='fmt.Sprintf("actions-%d", c.MirNode.ID)' :MirNode="c.MirNode"></main:Actions>
       </div>
       <div class="col-4 border-right">
-        <main:EpochChanges vg-key='fmt.Sprintf("epochchanges-%d", c.MirNode.Node.Config.ID)' :MirNode="c.MirNode"></main:EpochChanges>
+        <main:EpochChanges vg-key='fmt.Sprintf("epochchanges-%d", c.MirNode.ID)' :MirNode="c.MirNode"></main:EpochChanges>
       </div>
       <div class="col-4 border-left">
-        <main:Checkpoints vg-key='fmt.Sprintf("checkpoints-%d", c.MirNode.Node.Config.ID)' :MirNode="c.MirNode"></main:Actions>
+        <main:Checkpoints vg-key='fmt.Sprintf("checkpoints-%d", c.MirNode.ID)' :MirNode="c.MirNode"></main:Actions>
       </div>
     </div>
   </div>

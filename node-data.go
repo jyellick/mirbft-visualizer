@@ -13,5 +13,5 @@ type Node struct {
 
 func (n *Node) BeforeBuild() {
 	n.Status = n.MirNode.Status
-	n.ID = n.MirNode.Node.Config.ID
+	n.ID = n.MirNode.ID
 }
