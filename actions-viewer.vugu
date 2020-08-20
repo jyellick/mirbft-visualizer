@@ -4,16 +4,10 @@
   </div>
   <div :id='fmt.Sprintf("%p-%p", c, c.Actions)' class="mp-0 collapse">
      <div class="card-body">
-        <div vg-if='len(c.Actions.Broadcast) > 0'>
-        <strong>Broadcasts</strong>
-          <div class="row" vg-for='_, msg := range c.Actions.Broadcast'>
-            <main:MessageViewer :Msg='msg'></main:MessageViewer>
-          </div>
-        </div>
-        <div vg-if='len(c.Actions.Unicast) > 0'>
-          <strong>Unicasts</strong>
-          <div class="row" vg-for='_, msg := range c.Actions.Broadcast'>
-            <main:MessageViewer :Msg='msg'></main:MessageViewer>
+        <div vg-if='len(c.Actions.Send) > 0'>
+          <strong>Sends</strong>
+          <div class="row" vg-for='_, send := range c.Actions.Send'>
+            <main:MessageViewer :Msg='send.Msg'></main:MessageViewer> <!-- TODO, note targets -->
           </div>
         </div>
         <div vg-if='len(c.Actions.Hash) > 0'>

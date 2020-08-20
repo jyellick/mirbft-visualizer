@@ -2,8 +2,7 @@
   <table class="table table-sm">
     <thead><tr><th>Action</th><th>Outstanding</th></tr></thead>
     <tbody>
-      <tr class="sm"><td>Broadcasts</td><td vg-html='len(c.Actions.Broadcast)'></td></tr>
-      <tr class="sm"><td>Unicasts</td><td vg-html='len(c.Actions.Unicast)'></td></tr>
+      <tr class="sm"><td>Sends</td><td vg-html='len(c.Actions.Send)'></td></tr>
       <tr class="sm"><td>Hash</td><td vg-html='len(c.Actions.Hash)'></td></tr>
       <tr class="sm"><td>Persist</td><td vg-html='len(c.Actions.Persist)'></td></tr>
       <tr class="sm"><td>Commits</td><td vg-html='len(c.Actions.Commits)'></td></tr>
