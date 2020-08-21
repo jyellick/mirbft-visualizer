@@ -44,7 +44,7 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
 					{
-						vgcompKey := vugu.MakeCompKey(0x5F3EC8E5A360E1EB, fmt.Sprintf("sequences-%d", c.MirNode.ID))
+						vgcompKey := vugu.MakeCompKey(0x5F3FD2744DE3452E, fmt.Sprintf("sequences-%d", c.MirNode.ID))
 						// ask BuildEnv for prior instance of this specific component
 						vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Sequences)
 						if vgcomp == nil {
@@ -79,7 +79,7 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
 					{
-						vgcompKey := vugu.MakeCompKey(0x5F3EC8E556AA3FEB, fmt.Sprintf("actions-%d", c.MirNode.ID))
+						vgcompKey := vugu.MakeCompKey(0x5F3FD2743A59C72D, fmt.Sprintf("actions-%d", c.MirNode.ID))
 						// ask BuildEnv for prior instance of this specific component
 						vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Actions)
 						if vgcomp == nil {
@@ -106,7 +106,7 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
 					{
-						vgcompKey := vugu.MakeCompKey(0x5F3EC8E55343611E, fmt.Sprintf("epochchanges-%d", c.MirNode.ID))
+						vgcompKey := vugu.MakeCompKey(0x5F3FD274CA62C0E7, fmt.Sprintf("epochchanges-%d", c.MirNode.ID))
 						// ask BuildEnv for prior instance of this specific component
 						vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EpochChanges)
 						if vgcomp == nil {
@@ -133,7 +133,7 @@ func (c *Node) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 					vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n        "}
 					vgparent.AppendChild(vgn)
 					{
-						vgcompKey := vugu.MakeCompKey(0x5F3EC8E5EF0D6963, fmt.Sprintf("checkpoints-%d", c.MirNode.ID))
+						vgcompKey := vugu.MakeCompKey(0x5F3FD274C02E0200, fmt.Sprintf("checkpoints-%d", c.MirNode.ID))
 						// ask BuildEnv for prior instance of this specific component
 						vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*Checkpoints)
 						if vgcomp == nil {

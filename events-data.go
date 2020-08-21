@@ -100,7 +100,7 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 			continue
 		}
 
-		if _, ok := event.Type.(*tpb.Event_Process_); ok {
+		if _, ok := event.StateEvent.Type.(*pb.StateEvent_ActionsReceived); ok {
 			ei.PostProcessing[event.Target] = struct{}{}
 
 			if _, ok := ei.PendingEvents[event.Target]; ok {
@@ -116,11 +116,9 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 
 		ei.PendingEvents[event.Target] = struct{}{}
 
-		if se, ok := event.Type.(*tpb.Event_StateEvent); ok {
-			if apply, ok := se.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
-				if ApplyLength(apply.AddResults) == 0 {
-					continue
-				}
+		if apply, ok := event.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
+			if ApplyLength(apply.AddResults) == 0 {
+				continue
 			}
 		}
 
@@ -198,13 +196,11 @@ func (e *Events) stepWindow(ms uint64) {
 
 func (e *Events) Update() {
 	for e.EventLog.NextEventLogEntry != nil {
-		if se, ok := e.EventLog.NextEventLogEntry.Event.Type.(*tpb.Event_StateEvent); ok {
-			if apply, ok := se.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
-				if ApplyLength(apply.AddResults) == 0 {
-					err := e.Stepper.Step()
-					if err != nil {
-						panic(err)
-					}
+		if apply, ok := e.EventLog.NextEventLogEntry.Event.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
+			if ApplyLength(apply.AddResults) == 0 {
+				err := e.Stepper.Step()
+				if err != nil {
+					panic(err)
 				}
 			}
 		}
@@ -228,19 +224,16 @@ func (e *Events) EventNode(event *testengine.EventLogEntry) *testengine.Playback
 }
 
 func EventType(event *tpb.Event) string {
-	switch et := event.Type.(type) {
-	case *tpb.Event_StateEvent:
-		switch se := et.StateEvent.Type.(type) {
-		case *pb.StateEvent_Tick:
-			return "Tick"
-		case *pb.StateEvent_Step:
-			return fmt.Sprintf("Receive from %d", se.Step.Source)
-		case *pb.StateEvent_AddResults:
-			return "Apply"
-		case *pb.StateEvent_Propose:
-			return "Propose"
-		}
-	case *tpb.Event_Process_:
+	switch se := event.StateEvent.Type.(type) {
+	case *pb.StateEvent_Tick:
+		return "Tick"
+	case *pb.StateEvent_Step:
+		return fmt.Sprintf("Receive from %d", se.Step.Source)
+	case *pb.StateEvent_AddResults:
+		return "Apply"
+	case *pb.StateEvent_Propose:
+		return "Propose"
+	case *pb.StateEvent_ActionsReceived:
 		return "Process"
 	}
 
