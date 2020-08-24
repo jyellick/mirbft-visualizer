@@ -14,10 +14,10 @@
         <div class="row mp-0" style="display:block;position:relative;height:200px;overflow-y:scroll;">
           <div class="col mp-0">
           <div class="row border rounded" vg-for='iterator, event := c.Events(); event != nil; event = iterator.Next()'>
-            <div class="col-1 my-auto" vg-html='event.Event.Target'></div>
-            <div class="col-1 my-auto" vg-html='EventType(event.Event)'></div>
+            <div class="col-1 my-auto" vg-html='event.NodeId'></div>
+            <div class="col-1 my-auto" vg-html='EventType(event)'></div>
             <div class="col-8 my-auto"><main:EventDetails :PlaybackNode='c.EventNode(event)' :Event='event'></main:EventDetails></div>
-            <div class="col-2 my-auto" vg-html='event.Event.Time'></div>
+            <div class="col-2 my-auto" vg-html='event.Time'></div>
           </div>
           </div>
         </div>

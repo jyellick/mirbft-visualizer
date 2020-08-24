@@ -1,11 +1,12 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 
 	pb "github.com/IBM/mirbft/mirbftpb"
+	rpb "github.com/IBM/mirbft/recorder/recorderpb"
 	"github.com/IBM/mirbft/testengine"
-	tpb "github.com/IBM/mirbft/testengine/testenginepb"
 	"github.com/vugu/vugu"
 )
 
@@ -18,7 +19,7 @@ type Events struct {
 	EventLog   *testengine.EventLog
 	Nodes      map[uint64]*testengine.PlaybackNode
 	FilterNode *uint64
-	StepWindow uint64
+	StepWindow int64
 }
 
 func (e *Events) BeforeBuild() {
@@ -33,15 +34,15 @@ func (e *Events) BeforeBuild() {
 func (e *Events) ModCheck(_ *vugu.ModTracker, old interface{}) (bool, interface{}) {
 	type modCheck struct {
 		FilterNode *uint64
-		StepWindow uint64
-		NextEvent  *testengine.EventLogEntry
+		StepWindow int64
+		NextEvent  *list.Element
 		// Counter    uint64
 	}
 
 	newData := modCheck{
 		FilterNode: e.FilterNode,
 		StepWindow: e.StepWindow,
-		NextEvent:  e.EventLog.NextEventLogEntry,
+		NextEvent:  e.EventLog.List.Front(),
 		// Counter:    e.EventQueue.Counter,
 	}
 	/*
@@ -81,40 +82,40 @@ func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
 }
 
 type EventIterator struct {
-	CurrentEvent   *testengine.EventLogEntry
+	CurrentEvent   *list.Element
 	FilterNode     *uint64
-	MaxTime        uint64
+	MaxTime        int64
 	PendingEvents  map[uint64]struct{}
 	PostProcessing map[uint64]struct{}
 }
 
-func (ei *EventIterator) Next() *testengine.EventLogEntry {
-	for ; ei.CurrentEvent != nil; ei.CurrentEvent = ei.CurrentEvent.Next {
-		event := ei.CurrentEvent.Event
+func (ei *EventIterator) Next() *rpb.RecordedEvent {
+	for ; ei.CurrentEvent != nil; ei.CurrentEvent = ei.CurrentEvent.Next() {
+		event := ei.CurrentEvent.Value.(*rpb.RecordedEvent)
 
 		if event.Time > ei.MaxTime {
 			return nil
 		}
 
-		if ei.FilterNode != nil && event.Target != *ei.FilterNode {
+		if ei.FilterNode != nil && event.NodeId != *ei.FilterNode {
 			continue
 		}
 
 		if _, ok := event.StateEvent.Type.(*pb.StateEvent_ActionsReceived); ok {
-			ei.PostProcessing[event.Target] = struct{}{}
+			ei.PostProcessing[event.NodeId] = struct{}{}
 
-			if _, ok := ei.PendingEvents[event.Target]; ok {
+			if _, ok := ei.PendingEvents[event.NodeId]; ok {
 				continue
 			}
 		} else {
-			if _, ok := ei.PostProcessing[event.Target]; ok {
+			if _, ok := ei.PostProcessing[event.NodeId]; ok {
 				// Until we have processed all previous events for a node
 				// we can't properly populate the process actions
 				continue
 			}
 		}
 
-		ei.PendingEvents[event.Target] = struct{}{}
+		ei.PendingEvents[event.NodeId] = struct{}{}
 
 		if apply, ok := event.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
 			if ApplyLength(apply.AddResults) == 0 {
@@ -127,15 +128,15 @@ func (ei *EventIterator) Next() *testengine.EventLogEntry {
 
 	result := ei.CurrentEvent
 	if result != nil {
-		ei.CurrentEvent = ei.CurrentEvent.Next
+		ei.CurrentEvent = ei.CurrentEvent.Next()
 	}
 
-	return result
+	return result.Value.(*rpb.RecordedEvent)
 }
 
-func (e *Events) Events() (*EventIterator, *testengine.EventLogEntry) {
+func (e *Events) Events() (*EventIterator, *rpb.RecordedEvent) {
 	ei := &EventIterator{
-		CurrentEvent:   e.EventLog.NextEventLogEntry,
+		CurrentEvent:   e.EventLog.List.Front(),
 		FilterNode:     e.FilterNode,
 		MaxTime:        e.EventLog.FakeTime + e.StepWindow,
 		PendingEvents:  map[uint64]struct{}{},
@@ -180,9 +181,9 @@ func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
 	e.stepWindow(e.StepWindow)
 }
 
-func (e *Events) stepWindow(ms uint64) {
+func (e *Events) stepWindow(ms int64) {
 	endTime := e.EventLog.FakeTime + ms
-	for e.EventLog.NextEventLogEntry != nil && e.EventLog.NextEventLogEntry.Event.Time <= endTime {
+	for e.EventLog.List.Front() != nil && e.EventLog.List.Front().Value.(*rpb.RecordedEvent).Time <= endTime {
 		err := e.Stepper.Step()
 		if err != nil {
 			fmt.Printf("Err was: %+v", err)
@@ -195,8 +196,9 @@ func (e *Events) stepWindow(ms uint64) {
 }
 
 func (e *Events) Update() {
-	for e.EventLog.NextEventLogEntry != nil {
-		if apply, ok := e.EventLog.NextEventLogEntry.Event.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
+	for e.EventLog.List.Front() != nil {
+		event := e.EventLog.List.Front().Value.(*rpb.RecordedEvent)
+		if apply, ok := event.StateEvent.Type.(*pb.StateEvent_AddResults); ok {
 			if ApplyLength(apply.AddResults) == 0 {
 				err := e.Stepper.Step()
 				if err != nil {
@@ -205,9 +207,9 @@ func (e *Events) Update() {
 			}
 		}
 
-		if e.EventLog.NextEventLogEntry == nil ||
+		if e.EventLog.List.Front() == nil ||
 			e.FilterNode == nil ||
-			*e.FilterNode == e.EventLog.NextEventLogEntry.Event.Target {
+			*e.FilterNode == e.EventLog.List.Front().Value.(*rpb.RecordedEvent).NodeId {
 			break
 		}
 
@@ -219,11 +221,11 @@ func (e *Events) Update() {
 	}
 }
 
-func (e *Events) EventNode(event *testengine.EventLogEntry) *testengine.PlaybackNode {
-	return e.Nodes[event.Event.Target]
+func (e *Events) EventNode(event *rpb.RecordedEvent) *testengine.PlaybackNode {
+	return e.Nodes[event.NodeId]
 }
 
-func EventType(event *tpb.Event) string {
+func EventType(event *rpb.RecordedEvent) string {
 	switch se := event.StateEvent.Type.(type) {
 	case *pb.StateEvent_Tick:
 		return "Tick"

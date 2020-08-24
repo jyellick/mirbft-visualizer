@@ -100,7 +100,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
 									vgparent.AppendChild(vgn)
 									{
-										vghtml := fmt.Sprint(event.Event.Target)
+										vghtml := fmt.Sprint(event.NodeId)
 										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
@@ -108,7 +108,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-1 my-auto"}}}
 									vgparent.AppendChild(vgn)
 									{
-										vghtml := fmt.Sprint(EventType(event.Event))
+										vghtml := fmt.Sprint(EventType(event))
 										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n            "}
@@ -119,7 +119,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5F3FD27468D93C5B, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5F43FA5E092B7166, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {
@@ -140,7 +140,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(3), Data: "div", Attr: []vugu.VGAttribute{vugu.VGAttribute{Namespace: "", Key: "class", Val: "col-2 my-auto"}}}
 									vgparent.AppendChild(vgn)
 									{
-										vghtml := fmt.Sprint(event.Event.Time)
+										vghtml := fmt.Sprint(event.Time)
 										vgn.InnerHTML = &vghtml
 									}
 									vgn = &vugu.VGNode{Type: vugu.VGNodeType(1), Data: "\n          "}

@@ -86,16 +86,7 @@ func (b *Bootstrap) SelectFile(event *vugu.DOMEvent) {
 			return nil
 		}
 
-		length := 0
-		for event := el.NextEventLogEntry; event != nil; event = event.Next {
-			length++
-		}
-
-		if el.NextEventLogEntry != el.FirstEventLogEntry {
-			fmt.Println("Someone forgot to rewind this log")
-		}
-
-		fmt.Printf("Load eventlog of length %d\n", length)
+		fmt.Printf("Load eventlog of length %d\n", el.List.Len())
 		b.Load(event.EventEnv(), el)
 		return nil
 	})

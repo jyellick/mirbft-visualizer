@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 
 	"github.com/IBM/mirbft/testengine"
 	"github.com/vugu/vugu"
@@ -27,7 +28,7 @@ func (r *Root) Bootstrap(parameters *BootstrapParameters) {
 		clientConfig.MaxInFlight = 1
 	}
 
-	recording, err := recorder.Recording()
+	recording, err := recorder.Recording(ioutil.Discard)
 	if err != nil {
 		panic(err)
 	}
