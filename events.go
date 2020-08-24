@@ -119,7 +119,7 @@ func (c *Events) Build(vgin *vugu.BuildIn) (vgout *vugu.BuildOut) {
 										vgparent := vgn
 										_ = vgparent
 										{
-											vgcompKey := vugu.MakeCompKey(0x5F43FA5E092B7166, vgiterkey)
+											vgcompKey := vugu.MakeCompKey(0x5F441583C35817C5, vgiterkey)
 											// ask BuildEnv for prior instance of this specific component
 											vgcomp, _ := vgin.BuildEnv.CachedComponent(vgcompKey).(*EventDetails)
 											if vgcomp == nil {

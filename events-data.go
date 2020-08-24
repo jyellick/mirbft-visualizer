@@ -87,6 +87,7 @@ type EventIterator struct {
 	MaxTime        int64
 	PendingEvents  map[uint64]struct{}
 	PostProcessing map[uint64]struct{}
+	Nodes          map[uint64]*testengine.PlaybackNode
 }
 
 func (ei *EventIterator) Next() *rpb.RecordedEvent {
@@ -97,13 +98,20 @@ func (ei *EventIterator) Next() *rpb.RecordedEvent {
 			return nil
 		}
 
+		if _, ok := ei.Nodes[event.NodeId]; !ok {
+			if _, ok := event.StateEvent.Type.(*pb.StateEvent_Initialize); !ok {
+				// If the node has not been initialized, renders will fail
+				// until it has been
+				continue
+			}
+		}
+
 		if ei.FilterNode != nil && event.NodeId != *ei.FilterNode {
 			continue
 		}
 
 		if _, ok := event.StateEvent.Type.(*pb.StateEvent_ActionsReceived); ok {
 			ei.PostProcessing[event.NodeId] = struct{}{}
-
 			if _, ok := ei.PendingEvents[event.NodeId]; ok {
 				continue
 			}
@@ -127,10 +135,11 @@ func (ei *EventIterator) Next() *rpb.RecordedEvent {
 	}
 
 	result := ei.CurrentEvent
-	if result != nil {
-		ei.CurrentEvent = ei.CurrentEvent.Next()
+	if result == nil {
+		return nil
 	}
 
+	ei.CurrentEvent = ei.CurrentEvent.Next()
 	return result.Value.(*rpb.RecordedEvent)
 }
 
@@ -141,6 +150,7 @@ func (e *Events) Events() (*EventIterator, *rpb.RecordedEvent) {
 		MaxTime:        e.EventLog.FakeTime + e.StepWindow,
 		PendingEvents:  map[uint64]struct{}{},
 		PostProcessing: map[uint64]struct{}{},
+		Nodes:          e.Nodes,
 	}
 	return ei, ei.Next()
 }

@@ -45,6 +45,10 @@ func (r *Root) Load(eventEnv vugu.EventEnv, el *testengine.EventLog) {
 
 	logger := wasmZap(eventEnv)
 
+	if el.List.Len() == 0 {
+		panic("Cannot initialize based on an empty log")
+	}
+
 	player, err := testengine.NewPlayer(el, logger)
 	if err != nil {
 		panic(err)
