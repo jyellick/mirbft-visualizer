@@ -35,6 +35,7 @@ The [MirBFT library](https://github.com/IBM/mirbft) is still under heavy develop
 * The ability to skip to a certain time in the log.
 * The ability to skip to the next instance of a certain event type in the log.
 * Predefined profiles for different interesting configurations (e.g. Classical PBFT, Leader Spinning, etc.)
+* Create a UI component for epoch change state.
 * General prettification.
 
 ## Contributing
