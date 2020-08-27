@@ -63,7 +63,7 @@ func (e *Events) ModCheck(_ *vugu.ModTracker, old interface{}) (bool, interface{
 
 }
 
-func (e *Events) SetNodeFilter(event *vugu.DOMEvent) {
+func (e *Events) SetNodeFilter(event vugu.DOMEvent) {
 	group := event.JSEvent().Get("target").Get("value").String()
 	if group == "all" {
 		e.FilterNode = nil
@@ -155,7 +155,7 @@ func (e *Events) Events() (*EventIterator, *rpb.RecordedEvent) {
 	return ei, ei.Next()
 }
 
-func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
+func (e *Events) SetStepWindow(event vugu.DOMEvent) {
 	stepWindow := event.JSEvent().Get("target").Get("value").String()
 
 	n, err := fmt.Sscanf(stepWindow, "%d", &e.StepWindow)
@@ -168,7 +168,7 @@ func (e *Events) SetStepWindow(event *vugu.DOMEvent) {
 	}
 }
 
-func (e *Events) StepNext(event *vugu.DOMEvent) {
+func (e *Events) StepNext(event vugu.DOMEvent) {
 	fmt.Println("Stepping next")
 	event.PreventDefault()
 	err := e.Stepper.Step()
@@ -179,13 +179,13 @@ func (e *Events) StepNext(event *vugu.DOMEvent) {
 	e.Update()
 }
 
-func (e *Events) StepInstant(event *vugu.DOMEvent) {
+func (e *Events) StepInstant(event vugu.DOMEvent) {
 	fmt.Println("Stepping instant")
 	event.PreventDefault()
 	e.stepWindow(1)
 }
 
-func (e *Events) StepStepWindow(event *vugu.DOMEvent) {
+func (e *Events) StepStepWindow(event vugu.DOMEvent) {
 	fmt.Println("Stepping step window")
 	event.PreventDefault()
 	e.stepWindow(e.StepWindow)

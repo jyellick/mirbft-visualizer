@@ -15,8 +15,9 @@ Naturally, this project depends on the [MirBFT library](https://github.com/IBM/m
 
 It is possible to build a deployable WASM application using the [instructions on the Vugu site](https://www.vugu.org/doc/build-and-dist).  At some point, I'll add a link to a built one that can be demoed via the Internet in your browser here.  However, at this stage of rapid development, it's usually easier to simply run the development server yourself.  You can do this like so:
 
-```
-$ go run devserver.go 
+```sh
+$ go get -u github.com/vugu/vgrun
+$ vgrun devserver.go
 2020/08/27 12:13:43 Starting HTTP Server at "127.0.0.1:8844"
 ```
 

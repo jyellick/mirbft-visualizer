@@ -3,11 +3,13 @@ package main
 import (
 	"github.com/IBM/mirbft"
 	"github.com/IBM/mirbft/testengine"
+	"github.com/vugu/vugu"
 )
 
 type Sequences struct {
-	MirNode *testengine.PlaybackNode
-	Status  *mirbft.Status `vugu:"data"`
+	DefaultSlot vugu.Builder
+	MirNode     *testengine.PlaybackNode
+	Status      *mirbft.Status
 }
 
 func (s *Sequences) BeforeBuild() {

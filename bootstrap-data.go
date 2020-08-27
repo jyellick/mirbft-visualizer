@@ -35,41 +35,41 @@ func (b *Bootstrap) BeforeBuild() {
 	}
 }
 
-func ValueMustScan(event *vugu.DOMEvent, output *int) {
+func ValueMustScan(event vugu.DOMEvent, output *int) {
 	n, err := fmt.Sscanf(event.PropString("target", "value"), "%d", output)
 	if n != 1 || err != nil {
 		panic("bad value")
 	}
 }
 
-func (b *Bootstrap) SetNodeCount(event *vugu.DOMEvent) {
+func (b *Bootstrap) SetNodeCount(event vugu.DOMEvent) {
 	ValueMustScan(event, &b.Parameters.NodeCount)
 }
 
-func (b *Bootstrap) SetBucketCount(event *vugu.DOMEvent) {
+func (b *Bootstrap) SetBucketCount(event vugu.DOMEvent) {
 	ValueMustScan(event, &b.Parameters.BucketCount)
 }
 
-func (b *Bootstrap) SetHeartbeatTicks(event *vugu.DOMEvent) {
+func (b *Bootstrap) SetHeartbeatTicks(event vugu.DOMEvent) {
 	ValueMustScan(event, &b.Parameters.HeartbeatTicks)
 }
 
-func (b *Bootstrap) SetSuspectTicks(event *vugu.DOMEvent) {
+func (b *Bootstrap) SetSuspectTicks(event vugu.DOMEvent) {
 	ValueMustScan(event, &b.Parameters.SuspectTicks)
 }
 
-func (b *Bootstrap) SetNewEpochTimeoutTicks(event *vugu.DOMEvent) {
+func (b *Bootstrap) SetNewEpochTimeoutTicks(event vugu.DOMEvent) {
 	ValueMustScan(event, &b.Parameters.NewEpochTimeoutTicks)
 }
 
-func (b *Bootstrap) Submit(event *vugu.DOMEvent) {
+func (b *Bootstrap) Submit(event vugu.DOMEvent) {
 	event.PreventDefault()
 	fmt.Printf("Submitting bootstrap with value %+v\n", b.Parameters)
 	b.Parameters.EventEnv = event.EventEnv()
 	b.Bootstrap(b.Parameters)
 }
 
-func (b *Bootstrap) SelectFile(event *vugu.DOMEvent) {
+func (b *Bootstrap) SelectFile(event vugu.DOMEvent) {
 	event.PreventDefault()
 	file := event.JSEvent().Get("target").Get("files").Index(0)
 	fileSize := file.Get("size").Int()
