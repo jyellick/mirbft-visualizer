@@ -2,9 +2,7 @@ module github.com/jyellick/mirbft-visualizer
 
 go 1.13
 
-replace github.com/IBM/mirbft => /home/yellickj/oss/mirbft
-
-// replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0
+replace github.com/IBM/mirbft => github.com/jyellick/mirbft v0.0.0-20200827044224-a07ea68efd60
 
 replace github.com/vugu/vugu => /home/yellickj/oss/vugu
 

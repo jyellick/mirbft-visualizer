@@ -3,6 +3,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/agl/ed25519 v0.0.0-20170116200512-5312a6153412/go.mod h1:WPjqKcmVOxf0XSf3YxCJs6N6AOSrOx3obionmG7T0y0=
+github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
+github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
 github.com/cespare/xxhash v1.1.0 h1:a6HrQnmkObjyL+Gs60czilIUGqrzKutQD6XZog3p+ko=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
 github.com/chromedp/cdproto v0.0.0-20191009033829-c22f49c9ff0a/go.mod h1:PfAWWKJqjlGFYJEidUM6aVIWPr0EpobeyVWEEmplX7g=
@@ -35,6 +37,8 @@ github.com/jyellick/mirbft v0.0.0-20200320142314-18227fb396d0 h1:rQuMnBchdJ8X4OT
 github.com/jyellick/mirbft v0.0.0-20200320142314-18227fb396d0/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
 github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0 h1:ERbFnhe+dqjwc+1t2eD8wnjWkHdme3HejQh6yNbyQNE=
 github.com/jyellick/mirbft v0.0.0-20200320171701-69f00c9b3cb0/go.mod h1:IW4RojwaNQFyiwq5ffOeCuLmzjCumnoFIHL5f5aM2Oc=
+github.com/jyellick/mirbft v0.0.0-20200827044224-a07ea68efd60 h1:hy/Esc/qI7lqj4kOuaXW4CjtnxO/2vTYl3VBL8EaAzw=
+github.com/jyellick/mirbft v0.0.0-20200827044224-a07ea68efd60/go.mod h1:y4rwfTEhigBss2QVaTW3oX+PmGUfK/LDbdZL6rKEP9I=
 github.com/jyellick/vugu v0.1.0-fork h1:IOfceUosFvHdq3KzQaXRFsNqCUjgax8uIeWRbvYp9W4=
 github.com/jyellick/vugu v0.1.0-fork/go.mod h1:XcDIa6J18Rk/c56X88PTzawJTS2pSAGdTN6u5RE1ZWc=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
@@ -136,6 +140,7 @@ golang.org/x/tools v0.0.0-20191125144606-a911d9008d1f/go.mod h1:b+2E5dAYhXwXZwtn
 golang.org/x/tools v0.0.0-20200129045341-207d3de1faaf/go.mod h1:TB2adYChydJhpapKDTa4BR/hXlZSLoq2Wpct/0txZ28=
 golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
+gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLkstjWtayDeSgw=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
